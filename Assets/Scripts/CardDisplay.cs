@@ -7,6 +7,7 @@ using TMPro;
 
 public class CardDisplay : MonoBehaviour
 {
+    public string position;
     public Card card;
     public TMP_Text nameText;
     public TMP_Text descriptionText;
@@ -16,6 +17,7 @@ public class CardDisplay : MonoBehaviour
     public Image auraImage;
     void Start()
     {
+        position = card.position;
         artworkImage.sprite = card.artwork;
         auraImage.sprite = card.aura;                                                                                                                                                                                                                                                                                                                                                                                                                    
         typeImage.sprite = card.type;

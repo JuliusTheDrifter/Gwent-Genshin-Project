@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Diluc
   id: 1
-  position: Melee
+  position: Melee1
   description: A
   effect: PowerUp
   points: 8

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,12 +14,14 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     public GameObject DropZone;
     private GameObject startParent;
     private GameObject dropZone;
+    public BattleBehaviour endTurn;
     private bool IsOverDropZone;
+    private bool canBePlaced;
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
     }
-    void Start()//new
+    void Start()
     {
         Canvas = GameObject.Find("Board");
         DropZone = GameObject.Find("Area");
@@ -38,26 +41,38 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     {
         startPosition = transform.position;
         isDragging = true;
-            
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += 3 * eventData.delta;
+        if(!canBePlaced)
+        {
+            rectTransform.anchoredPosition += 3 * eventData.delta;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         isDragging = false;
-        if(IsOverDropZone)
+        if(IsOverDropZone && CorrectZone())
         {
             transform.SetParent(dropZone.transform, false);
-            this.enabled = false;
+            canBePlaced=true;
+            endTurn = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
+            endTurn.EndTurn();
         }
         else
         {
             transform.position = startPosition;
             transform.SetParent(startParent.transform, false);
         }
+    }
+    public bool CorrectZone()
+    {
+        ZoneConditions conditions = dropZone.GetComponent<ZoneConditions>(); 
+        string s = conditions.theZone;
+        string t = gameObject.GetComponent<CardDisplay>().position;
+        if(s==t)return true;
+        else return false;
     }
 }
