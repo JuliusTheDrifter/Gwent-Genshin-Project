@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Julius-Gwent-Impact.sln"
+    "dotnet.defaultSolution": "Gwent-Genshin-Project.sln"
 }

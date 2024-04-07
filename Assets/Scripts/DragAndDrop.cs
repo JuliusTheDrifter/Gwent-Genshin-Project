@@ -15,6 +15,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     private GameObject startParent;
     private GameObject dropZone;
     public BattleBehaviour endTurn;
+    public BattleBehaviour turns;
     private bool IsOverDropZone;
     private bool canBePlaced;
     private void Awake()
@@ -45,9 +46,15 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(!canBePlaced)
+        turns = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
+        bool rotateMouse = turns.player1Turn;
+        if(rotateMouse)
         {
             rectTransform.anchoredPosition += 3 * eventData.delta;
+        }
+        else
+        {
+            rectTransform.anchoredPosition -= 3 * eventData.delta;
         }
     }
 

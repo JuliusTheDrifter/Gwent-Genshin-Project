@@ -4,55 +4,70 @@ using System.Numerics;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 public enum BattleState {START,PLAYER1TURN,PLAYER2TURN,WON,LOST}
 public class BattleBehaviour : MonoBehaviour
 {
     public bool player1Turn;
+    public bool round;
+    private int counter = 0;
     public GameObject player1Hand;
     public GameObject player2Hand;
+    public Button leader1;
+    public Button leader2;
+    [SerializeField] private Camera mainCamera;
     
     void Start()
     {
         EndTurn();
     }
+    public void OnClick()
+    {
+        round =! round;
+        player1Turn =! player1Turn;
+        EndTurn();
+        counter += 1;
+        if(counter==2)
+        {
+            counter = 0;
+        }
+    }
     public void EndTurn()
     {
-        player1Turn =! player1Turn;
+        if(!round)
+        {
+            player1Turn =! player1Turn;
+        }
         if(player1Turn)
         {
-            Visibility1(player1Hand,true);
-            Visibility2(player2Hand,false);
-            NoInteractions(player2Hand,false);
-            NoInteractions(player1Hand,true);
+            mainCamera.transform.rotation = UnityEngine.Quaternion.Euler(0,0,0);
+            Visibility(player1Hand,true);
+            NoInteractions(leader1,true);
+            Visibility(player2Hand,false);
+            NoInteractions(leader2,false);
         }
         else
         {
-            Visibility1(player1Hand,false);
-            Visibility2(player2Hand,true);
-            NoInteractions(player1Hand,false);
-            NoInteractions(player2Hand,true);
+            mainCamera.transform.rotation = UnityEngine.Quaternion.Euler(180,180,0);
+            Visibility(player1Hand,false);
+            Pose(player2Hand);
+            NoInteractions(leader1,false);
+            Visibility(player2Hand,true);
+            NoInteractions(leader2,true);
         }
     }
-    public void NoInteractions(GameObject playerHand,bool  active)
+    public void NoInteractions(Button leader,bool  active)
     {
-        DragAndDrop[] cards = playerHand.GetComponentsInChildren<DragAndDrop>();
         if(active)
         {
-            foreach(var card in cards)
-            {
-                card.enabled = true;
-            }
+            leader.interactable = active;
         }
         else
         {
-            foreach(var card in cards)
-            {
-                card.enabled = false;
-            }
+            leader.interactable = active;
         }
     }
-    public void  Visibility1(GameObject playerHand,bool visible)
+    public void  Visibility(GameObject playerHand,bool visible)
     {
         UnityEngine.Vector3 pos = transform.position;
         foreach(Transform card in playerHand.transform)
@@ -71,80 +86,14 @@ public class BattleBehaviour : MonoBehaviour
             }
         }
     }
-    public void  Visibility2(GameObject playerHand,bool visible)
+    public void Pose(GameObject playerHand)
     {
-        UnityEngine.Vector3 pos = transform.position;
+        UnityEngine.Quaternion pos = transform.rotation;
         foreach(Transform card in playerHand.transform)
         {
-            if(!visible)
-            {
-                pos = card.transform.position;
-                pos.z = -10;
-                card.transform.position = pos;
-            }
-            else
-            {
-                pos = card.transform.position;
-                pos.z = 0;
-                card.transform.position = pos;
-            }
+            pos = card.transform.rotation;
+            pos = UnityEngine.Quaternion.Euler(180f,180f,0);
+            card.transform.rotation = pos;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*public BattleState state;
-    void Start()
-    {
-        state = BattleState.START;
-        SetupBattle();
-    }
-    void Update()
-    {
-        
-    }
-    void SetupBattle()
-    {
-        state = BattleState.PLAYER1TURN;
-        Player();
-    }
-    void Player()
-    {
-
-    }
-    public void OnPassButton()
-    {
-        if(state != BattleState.PLAYER1TURN)
-        {
-            return;
-        }
-    }*/

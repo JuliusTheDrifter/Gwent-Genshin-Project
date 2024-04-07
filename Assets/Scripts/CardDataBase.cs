@@ -31,8 +31,9 @@ public class CardDataBase : MonoBehaviour
         cardList.Add(new Card("Another clear yet to define?",17,"Clear","None",0,Resources.Load<Sprite>(""),Resources.Load<Sprite>(""),Resources.Load<Sprite>("")));
         cardList.Add(new Card("Katherine",18,"Substitute","None",0,Resources.Load<Sprite>(""),Resources.Load<Sprite>(""),Resources.Load<Sprite>("")));
         cardList.Add(new Card("Liben",19,"Substitute","None",0,Resources.Load<Sprite>(""),Resources.Load<Sprite>(""),Resources.Load<Sprite>("")));*/
-        for(int i=0;i<15;i++)
+        for(int i=0;i<5;i++)
         cardList.Add(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CardsPrefab/Diluc.prefab"));
+        cardList.Add(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CardsPrefab/Eula.prefab"));
         Debug.Log($"La cantidad de cartas en el deck es de: {cardList.Count}");
     }
     /*void Start()
