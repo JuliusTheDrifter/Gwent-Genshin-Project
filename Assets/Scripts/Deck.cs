@@ -7,35 +7,61 @@ using Unity.VisualScripting;
 
 public class Deck : MonoBehaviour
 {
-        public List<CardDisplay> deck = new List<CardDisplay>();
-        //lista con 
-                
-        public Transform[] cardSlots;
-        public bool[] availableCardSlots;
-
-        public TMP_Text deckSizeText;
-
-        /*public void DrawCard()
-        {
-            if(deck.Count >= 1)
-            {
-                Card rdmCard = deck[Random.Range(0,deck.Count)];
-
-                for(int i=0;i<availableCardSlots.Length;i++)
-                {
-                    if(availableCardSlots[i]==true)
-                    {
-                        rdmCard.gameObject.SetActive(true);
-                        rdmCard.transform.position = cardSlots[i].position;
-                        availableCardSlots[i] = false;
-                        deck.Remove(rdmCard);
-                        return;
-                    }
-                }
-            }
-        }
-    private void Update() 
+    public GameObject Card1;
+    public GameObject Card2;
+    public GameObject Card3;
+    public GameObject Card4;
+    public GameObject Card5;
+    public GameObject Card6;
+    public GameObject Card7;
+    public GameObject Card8;
+    public GameObject Card9;
+    public GameObject Card10;
+    public GameObject Card11;
+    public GameObject Card12;
+    public GameObject Card13;
+    public GameObject Card14;
+    public GameObject Card15;
+    public GameObject Card16;
+    public GameObject Card17;
+    public GameObject Card18;
+    public GameObject Card19;
+    public GameObject Card20;
+    public GameObject Card21;
+    public GameObject Card22;
+    public GameObject Card23;
+    public GameObject Card24;
+    
+    List<GameObject> cards = new List<GameObject>();
+    void Awake()
     {
-        deckSizeText.text = deck.Count.ToString();    
-    }*/
+        cards.Add(Card1);
+        cards.Add(Card2);
+        cards.Add(Card3);
+        cards.Add(Card4);
+        cards.Add(Card5);
+        cards.Add(Card6);
+        cards.Add(Card7);
+        cards.Add(Card8);
+        cards.Add(Card9);
+        cards.Add(Card10);
+        cards.Add(Card11);
+        cards.Add(Card12);
+        cards.Add(Card13);
+        cards.Add(Card14);
+        cards.Add(Card15);
+        cards.Add(Card16);
+        cards.Add(Card17);
+        cards.Add(Card18);
+        cards.Add(Card19);
+        cards.Add(Card20);
+        cards.Add(Card21);
+        cards.Add(Card22);
+        cards.Add(Card23);
+        cards.Add(Card24);
+    }
+    public List<GameObject> GetCards()
+    {
+        return cards;
+    }
 }

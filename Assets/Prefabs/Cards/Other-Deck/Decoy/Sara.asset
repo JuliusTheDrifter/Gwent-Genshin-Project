@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79f84f51d3aff2241930c6b313649825, type: 3}
-  m_Name: Diluc
+  m_Name: Sara
   m_EditorClassIdentifier: 
-  name: Diluc
-  id: 1
-  position: Melee 1
-  description: A
-  effect: PowerUp
-  points: 8
+  name: Sara
+  id: 30
+  position: 
+  description: 
+  effect: 
+  points: 0
   artwork: {fileID: 0}
-  type: {fileID: 21300000, guid: f406cd94637e26d4e926b7400a2c0e39, type: 3}
+  type: {fileID: 21300000, guid: 893ae5d88bdacda4db7bf04fada97cd7, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

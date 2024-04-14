@@ -48,13 +48,16 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     {
         turns = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         bool rotateMouse = turns.player1Turn;
-        if(rotateMouse)
+        if(!canBePlaced)
         {
-            rectTransform.anchoredPosition += 3 * eventData.delta;
-        }
-        else
-        {
-            rectTransform.anchoredPosition -= 3 * eventData.delta;
+            if(rotateMouse)
+            {
+                rectTransform.anchoredPosition += 3 * eventData.delta;
+            }
+            else
+            {
+                rectTransform.anchoredPosition -= 3 * eventData.delta;
+            }
         }
     }
 
@@ -77,9 +80,9 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     public bool CorrectZone()
     {
         ZoneConditions conditions = dropZone.GetComponent<ZoneConditions>(); 
-        string s = conditions.theZone;
-        string t = gameObject.GetComponent<CardDisplay>().position;
-        if(s==t)return true;
+        string zoneName = conditions.theZone;
+        string cardPosition = gameObject.GetComponent<CardDisplay>().position;
+        if(zoneName==cardPosition)return true;
         else return false;
     }
 }
