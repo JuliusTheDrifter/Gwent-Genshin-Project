@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Sucrose
   id: 12
-  position: Siege 1
+  position: Siege1
   description: 
   effect: 
   points: 5

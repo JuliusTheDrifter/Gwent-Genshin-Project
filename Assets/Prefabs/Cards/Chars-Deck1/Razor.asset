@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Razor
   id: 11
-  position: Ranged 1
+  position: Ranged1
   description: 
   effect: 
   points: 6

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Kaeya
   id: 7
-  position: Ranged 1
+  position: Ranged1
   description: 
   effect: 
   points: 8

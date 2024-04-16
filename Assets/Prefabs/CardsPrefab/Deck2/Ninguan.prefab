@@ -12,9 +12,17 @@ PrefabInstance:
       propertyPath: card
       value: 
       objectReference: {fileID: 11400000, guid: 27d091e4bb54cf8418ecc53ed26be2a7, type: 2}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: team
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: position
+      value: Siege2
+      objectReference: {fileID: 0}
     - target: {fileID: 7110510941306949610, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Name
-      value: Ninguan Variant
+      value: Ninguan
       objectReference: {fileID: 0}
     - target: {fileID: 7404561511116606540, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Pivot.x

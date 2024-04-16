@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Collei
   id: 17
-  position: Ranged 2
+  position: Ranged2
   description: 
   effect: 
   points: 6

@@ -37,8 +37,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: c6165693e8eafa845871cde47ca1dde0, type: 2}
     - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: position
-      value: Meele 1
+      value: Melee1
       objectReference: {fileID: 0}
     - target: {fileID: 7110510941306949610, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Name

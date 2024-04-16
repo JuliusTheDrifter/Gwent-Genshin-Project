@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Fischl
   id: 5
-  position: Ranged 1
+  position: Ranged1
   description: 
   effect: 
   points: 4

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Xinque
   id: 23
-  position: Melee 2
+  position: Melee2
   description: 
   effect: 
   points: 6

@@ -16,7 +16,7 @@ MonoBehaviour:
   id: 25
   position: Weather
   description: 
-  effect: 
+  effect: Weather
   points: 0
   artwork: {fileID: 21300000, guid: 5ac9005ba9a0dbb4db055a8f6cdcb6dd, type: 3}
   type: {fileID: 21300000, guid: 7b7a9cbd55746ca45aaedfaffecbf610, type: 3}

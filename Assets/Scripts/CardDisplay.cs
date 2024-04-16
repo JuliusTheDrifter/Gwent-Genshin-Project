@@ -7,7 +7,9 @@ using TMPro;
 
 public class CardDisplay : MonoBehaviour
 {
-    public string position;
+   public string position;
+    public int team;
+    public int points;
     public Card card;
     public TMP_Text nameText;
     public TMP_Text descriptionText;
@@ -17,12 +19,12 @@ public class CardDisplay : MonoBehaviour
     public Image auraImage;
     void Start()
     {
-        position = card.position;
         artworkImage.sprite = card.artwork;
         auraImage.sprite = card.aura;                                                                                                                                                                                                                                                                                                                                                                                                                    
         typeImage.sprite = card.type;
         nameText.text = card.name;
         descriptionText.text = card.description;
-        pointsText.text = card.points.ToString();
+        points = card.points;
+        pointsText.text = points.ToString();
     }
 }

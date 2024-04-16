@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Chongyun
   id: 16
-  position: Siege 2
+  position: Siege2
   description: 
   effect: 
   points: 8

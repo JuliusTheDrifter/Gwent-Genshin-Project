@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: c3e831f761aa4ef4488aec113c7bf8f9, type: 2}
     - target: {fileID: 3447838857191496233, guid: 2244b72b74a6f0844b41bcd0ed4e06dc, type: 3}
       propertyPath: position
-      value: Meele 1
+      value: Melee1
       objectReference: {fileID: 0}
     - target: {fileID: 4430964048525826906, guid: 2244b72b74a6f0844b41bcd0ed4e06dc, type: 3}
       propertyPath: m_Enabled

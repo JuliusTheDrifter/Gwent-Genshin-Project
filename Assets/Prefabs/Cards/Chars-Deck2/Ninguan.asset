@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ningguan
   id: 21
-  position: Siege 2
+  position: Siege2
   description: 
   effect: 
   points: 7

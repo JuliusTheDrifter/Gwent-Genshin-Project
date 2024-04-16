@@ -10,19 +10,18 @@ public class Card: ScriptableObject
 {
     public new string name;
     public int id;
-    public string position;
     public string description;
     public string effect;
     public int points;
+    public bool isEnhanced;
     public Sprite artwork;
     public Sprite type;
     public Sprite aura;
 
-    public Card(string name,int id,string position,string description,string effect,int points,Sprite artwork,Sprite type,Sprite aura)
+    public Card(string name,int id,string description,string effect,int points,Sprite artwork,Sprite type,Sprite aura)
 {
     this.name=name;
     this.id=id;
-    this.position=position;
     this.description=description;
     this.effect=effect;
     this.points=points;

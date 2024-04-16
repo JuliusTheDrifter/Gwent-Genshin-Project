@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Noelle
   id: 10
-  position: Melee 1
+  position: Melee1
   description: 
   effect: 
   points: 8

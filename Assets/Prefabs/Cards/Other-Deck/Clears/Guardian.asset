@@ -16,7 +16,7 @@ MonoBehaviour:
   id: 31
   position: Weather
   description: 
-  effect: 
+  effect: Cleanse
   points: 0
   artwork: {fileID: 21300000, guid: 88c84b2d0441b0e4895421d7ee2ca29b, type: 3}
   type: {fileID: 21300000, guid: 7b7a9cbd55746ca45aaedfaffecbf610, type: 3}

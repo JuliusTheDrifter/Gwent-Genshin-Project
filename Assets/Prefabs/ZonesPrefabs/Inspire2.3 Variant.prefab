@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5428279980908157152, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: theZone
-      value: Inspire 2.3
+      value: InspireS2
       objectReference: {fileID: 0}
     - target: {fileID: 5738220847043498666, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: m_Pivot.x
@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5905442721903550789, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: m_Size.y
-      value: 66.6474
+      value: 191.72107
       objectReference: {fileID: 0}
     - target: {fileID: 5905442721903550789, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: m_Offset.x
@@ -106,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5905442721903550789, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: m_Offset.y
-      value: -2.8690796
+      value: -2.0774536
       objectReference: {fileID: 0}
     - target: {fileID: 5974690696037650917, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: m_Name

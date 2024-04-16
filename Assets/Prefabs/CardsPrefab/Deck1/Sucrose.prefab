@@ -12,9 +12,17 @@ PrefabInstance:
       propertyPath: card
       value: 
       objectReference: {fileID: 11400000, guid: 60f67bd73b6033d489c40389c1621960, type: 2}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: position
+      value: Siege1
+      objectReference: {fileID: 0}
     - target: {fileID: 7110510941306949610, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Name
-      value: Sucrose Variant
+      value: Sucrose
       objectReference: {fileID: 0}
     - target: {fileID: 7404561511116606540, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Pivot.x

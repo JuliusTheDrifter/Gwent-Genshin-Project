@@ -12,9 +12,17 @@ PrefabInstance:
       propertyPath: card
       value: 
       objectReference: {fileID: 11400000, guid: f75d0a5a9775fe84b98d6d79dc2b7299, type: 2}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: team
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: position
+      value: Ranged2
+      objectReference: {fileID: 0}
     - target: {fileID: 7110510941306949610, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Name
-      value: Collei Variant
+      value: Collei
       objectReference: {fileID: 0}
     - target: {fileID: 7404561511116606540, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Pivot.x

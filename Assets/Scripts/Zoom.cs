@@ -8,7 +8,7 @@ public class Zoom : MonoBehaviour
     public GameObject Canvas;
     public GameObject zoomCard;
     private Vector2 zoomScale = new Vector2(3,3);
-    public void Awake()
+    /*public void Awake()
     {
         Canvas = GameObject.Find("Board");
     }
@@ -21,5 +21,5 @@ public class Zoom : MonoBehaviour
     public void OnMouseExit()
     {
         Destroy(zoomCard);
-    } 
+    }*/
 }

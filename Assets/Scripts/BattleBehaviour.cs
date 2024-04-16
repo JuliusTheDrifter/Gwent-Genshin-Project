@@ -5,6 +5,7 @@ using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public enum BattleState {START,PLAYER1TURN,PLAYER2TURN,WON,LOST}
 public class BattleBehaviour : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class BattleBehaviour : MonoBehaviour
     public GameObject player2Hand;
     public Button leader1;
     public Button leader2;
+    public TMP_Text player1Points;
+    public TMP_Text player2Points;
     [SerializeField] private Camera mainCamera;
     
     void Start()
@@ -29,6 +32,17 @@ public class BattleBehaviour : MonoBehaviour
         counter += 1;
         if(counter==2)
         {
+            int p1points = int.Parse(player1Points.text);
+            int p2points = int.Parse(player2Points.text);
+            if(p1points > p2points)
+            {
+
+            }
+            else
+            {
+
+            }
+            CleanField();
             counter = 0;
         }
     }
@@ -94,6 +108,17 @@ public class BattleBehaviour : MonoBehaviour
             pos = card.transform.rotation;
             pos = UnityEngine.Quaternion.Euler(180f,180f,0);
             card.transform.rotation = pos;
+        }
+    }
+    void CleanField()
+    {
+        GameObject field = GameObject.Find("Board");
+        foreach(Transform zone in field.transform)
+        {
+            foreach(Transform card in zone.transform)
+            {
+                Destroy(card.gameObject);
+            }
         }
     }
 }

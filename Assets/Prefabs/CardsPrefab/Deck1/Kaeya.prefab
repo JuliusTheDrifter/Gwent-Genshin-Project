@@ -12,9 +12,17 @@ PrefabInstance:
       propertyPath: card
       value: 
       objectReference: {fileID: 11400000, guid: 5ea098cb8900beb408d1fa8b12d3d2a5, type: 2}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: position
+      value: Ranged1
+      objectReference: {fileID: 0}
     - target: {fileID: 7110510941306949610, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Name
-      value: Kaeya Variant
+      value: Kaeya
       objectReference: {fileID: 0}
     - target: {fileID: 7404561511116606540, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Pivot.x

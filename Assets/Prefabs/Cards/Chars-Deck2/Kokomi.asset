@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Kokomi
   id: 20
-  position: Siege 2
+  position: Siege2
   description: 
   effect: 
   points: 9

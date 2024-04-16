@@ -550,6 +550,7 @@ GameObject:
   - component: {fileID: 2256172140151336617}
   - component: {fileID: 81902216170795345}
   - component: {fileID: 1463311484170942619}
+  - component: {fileID: 5692171923325644139}
   m_Layer: 6
   m_Name: Card
   m_TagString: Untagged
@@ -632,6 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e1dfa245bd68d449c808826096da46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: 
   card: {fileID: 0}
   nameText: {fileID: 1837441773028792908}
   descriptionText: {fileID: 7508856050699867847}
@@ -653,7 +655,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Canvas: {fileID: 0}
   DropZone: {fileID: 0}
-  Hand: {fileID: 0}
+  endTurn: {fileID: 0}
+  turns: {fileID: 0}
+  effects: {fileID: 0}
 --- !u!114 &6378974440190719931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,6 +789,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!114 &5692171923325644139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110510941306949610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fa24246881e6a438993c2441c72d00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zone: {fileID: 0}
 --- !u!1 &8930626304699000741
 GameObject:
   m_ObjectHideFlags: 0

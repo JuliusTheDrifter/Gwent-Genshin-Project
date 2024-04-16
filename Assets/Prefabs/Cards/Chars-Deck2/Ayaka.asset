@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ayaka
   id: 13
-  position: Melee 2
+  position: Melee2
   description: 
   effect: 
   points: 15

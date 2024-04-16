@@ -16,6 +16,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     private GameObject dropZone;
     public BattleBehaviour endTurn;
     public BattleBehaviour turns;
+    public Effects effects;
     private bool IsOverDropZone;
     private bool canBePlaced;
     private void Awake()
@@ -70,6 +71,32 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             canBePlaced=true;
             endTurn = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
             endTurn.EndTurn();
+            UnityEngine.Debug.Log("Effect");
+            effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
+            effects.PlayCardEffect(gameObject.GetComponent<CardDisplay>().card.effect,gameObject);
+            
+            if(effects.weatherLoop)
+            {
+                CardDisplay[] cards = GameObject.Find("Weather").GetComponentsInChildren<CardDisplay>();
+                if(cards != null)
+                {
+                    foreach(var card in cards)
+                    {
+                        effects.PlayCardEffect(card.card.effect,card.gameObject);
+                    }
+                }
+            }
+            if(effects.inspireLoop)
+            {
+                /*CardDisplay[] cards = GameObject.Find("Weather").GetComponentsInChildren<CardDisplay>();
+                if(cards != null)
+                {
+                    foreach(var card in cards)
+                    {
+                        effects.PlayCardEffect(card.card.effect,card.gameObject);
+                    }
+                }*/
+            }
         }
         else
         {

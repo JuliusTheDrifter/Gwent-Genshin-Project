@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bennet
   id: 4
-  position: Melee 1
+  position: Melee1
   description: 
   effect: 
   points: 4

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Candance
   id: 15
-  position: Melee 2
+  position: Melee2
   description: 
   effect: 
   points: 0

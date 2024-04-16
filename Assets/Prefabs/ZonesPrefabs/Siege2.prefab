@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5428279980908157152, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: theZone
-      value: Siege 2
+      value: Siege2
       objectReference: {fileID: 0}
     - target: {fileID: 5738220847043498666, guid: 4c2167b8b2701c64099a33042d4b97d6, type: 3}
       propertyPath: m_Pivot.x

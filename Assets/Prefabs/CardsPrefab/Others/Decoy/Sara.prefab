@@ -12,9 +12,13 @@ PrefabInstance:
       propertyPath: card
       value: 
       objectReference: {fileID: 11400000, guid: a54bbf889eba9da4eaf19b6d8b1cf7af, type: 2}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7110510941306949610, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Name
-      value: Sara Variant
+      value: Sara
       objectReference: {fileID: 0}
     - target: {fileID: 7404561511116606540, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Pivot.x

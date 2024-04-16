@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Yoimiya
   id: 24
-  position: Ranged 2
+  position: Ranged2
   description: 
   effect: 
   points: 8
