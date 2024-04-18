@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Noelle
   id: 10
-  position: Melee1
   description: 
   effect: 
   points: 8
-  artwork: {fileID: 0}
+  isEnhanced: 1
+  artwork: {fileID: 21300000, guid: 165352a8d7775364fa631baaeadf7c30, type: 3}
   type: {fileID: 21300000, guid: f406cd94637e26d4e926b7400a2c0e39, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bennet
   id: 4
-  position: Melee1
   description: 
-  effect: 
+  effect: Lowest
   points: 4
-  artwork: {fileID: 0}
+  isEnhanced: 0
+  artwork: {fileID: 21300000, guid: 196b9342721f893489e42cc8eefe08eb, type: 3}
   type: {fileID: 21300000, guid: f406cd94637e26d4e926b7400a2c0e39, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

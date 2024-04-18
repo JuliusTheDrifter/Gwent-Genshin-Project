@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: team
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6116527465612418345, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
+      propertyPath: position
+      value: Ranged2
+      objectReference: {fileID: 0}
     - target: {fileID: 7110510941306949610, guid: dbbf841a59c395049bfa9142a2380226, type: 3}
       propertyPath: m_Name
       value: Sara2

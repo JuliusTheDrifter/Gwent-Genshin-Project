@@ -14,6 +14,7 @@ public class Card: ScriptableObject
     public string effect;
     public int points;
     public bool isEnhanced;
+    public bool golden;
     public Sprite artwork;
     public Sprite type;
     public Sprite aura;

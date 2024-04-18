@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Sara
   id: 30
-  position: 
   description: 
-  effect: 
+  effect: Decoy
   points: 0
+  isEnhanced: 0
   artwork: {fileID: 0}
   type: {fileID: 21300000, guid: 893ae5d88bdacda4db7bf04fada97cd7, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

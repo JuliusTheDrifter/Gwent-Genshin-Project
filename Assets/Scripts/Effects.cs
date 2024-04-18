@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Effects : MonoBehaviour
@@ -11,15 +12,9 @@ public class Effects : MonoBehaviour
     public GameObject zone1;
     public GameObject zone2;
     public GameObject zone3;
-    public GameObject zone4;
-    public GameObject zone5;
-    public GameObject zone6;
     public bool inspireLoop;
     public bool weatherLoop;
-    void Update()
-    {
-
-    }
+    public BattleBehaviour decoy;
     public void PlayCardEffect(string effect, GameObject card)
     {
         if(effect == "OwnFileIncrease")
@@ -46,14 +41,31 @@ public class Effects : MonoBehaviour
         {
             Multiply(card);
         }
-        /*if(effect == "Highest")
+        if(effect == "Highest")
         {
             AnnihilateHighest();
         }
         if(effect == "Lowest")
         {
             AnnihilateLowest(card);
-        }*/
+        }
+        if(effect == "EraseFile")
+        {
+            EraseFile(card);
+        }
+        if(effect == "Decoy")
+        {
+            decoy = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
+            decoy.decoyTime = true;
+            if(card.GetComponent<CardDisplay>().team == 1)
+            {
+                decoy.team1 = true;
+            }
+            else
+            {
+                decoy.team2 = true;
+            }
+        }
     }
     void OwnFileIncrease(GameObject cardplayed)
     {
@@ -62,9 +74,14 @@ public class Effects : MonoBehaviour
         CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
         foreach(var card in cards)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             card.points = card.card.points;
             card.points += 5;
             card.pointsText.text = card.points.ToString();
+            card.pointsText.color = Color.green;
         }
     }
     void Weather(GameObject cardplayed)
@@ -88,14 +105,24 @@ public class Effects : MonoBehaviour
         CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
         foreach(var card in cards)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             card.points = 1;
             card.pointsText.text = card.points.ToString();
+            card.pointsText.color = Color.red;
         }
         CardDisplay[] cards2 = zone2.GetComponentsInChildren<CardDisplay>();
         foreach(var card in cards2)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             card.points = 1;
             card.pointsText.text = card.points.ToString();
+            card.pointsText.color = Color.red;
         }
         weatherLoop = true;
     }
@@ -128,12 +155,16 @@ public class Effects : MonoBehaviour
             {
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.black;
+                card.card.isEnhanced = false;
             }
             CardDisplay[] siege2 = zone3.GetComponentsInChildren<CardDisplay>();
             foreach(var card in siege2)
             {
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.black;
+                card.card.isEnhanced = false;
             }
         }
         if(weatherCheck[1]!=0)
@@ -145,12 +176,16 @@ public class Effects : MonoBehaviour
             {
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.black;
+                card.card.isEnhanced = false;
             }
             CardDisplay[] ranged2 = zone3.GetComponentsInChildren<CardDisplay>();
             foreach(var card in ranged2)
             {
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.black;
+                card.card.isEnhanced = false;
             }
         }
         if(weatherCheck[2]!=0)
@@ -162,12 +197,16 @@ public class Effects : MonoBehaviour
             {
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.black;
+                card.card.isEnhanced = false;
             }
             CardDisplay[] melee2 = zone3.GetComponentsInChildren<CardDisplay>();
             foreach(var card in melee2)
             {
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.black;
+                card.card.isEnhanced = false;
             }
         }
         Destroy(cardplayed);
@@ -188,9 +227,14 @@ public class Effects : MonoBehaviour
         {
             if(!card.card.isEnhanced)
             {
+                if(card.card.golden)
+                {
+                    continue;
+                }
                 card.points = card.card.points;
                 card.points += 5;
                 card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.green;
                 card.card.isEnhanced = true;
             }
         }
@@ -216,6 +260,10 @@ public class Effects : MonoBehaviour
         CardDisplay[] cards1 = zone1.GetComponentsInChildren<CardDisplay>();
         foreach(var card in cards1)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             sum += card.points;
             div++;
         }
@@ -223,6 +271,10 @@ public class Effects : MonoBehaviour
         CardDisplay[] cards2 = zone2.GetComponentsInChildren<CardDisplay>();
         foreach(var card in cards2)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             sum += card.points;
             div++;
         }
@@ -230,22 +282,44 @@ public class Effects : MonoBehaviour
         CardDisplay[] cards3 = zone3.GetComponentsInChildren<CardDisplay>();
         foreach(var card in cards3)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             sum += card.points;
             div++;
         }
             
-        sum = sum/div;
+        sum /= div;
         foreach(var card in cards1)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             card.points = sum;
+            card.pointsText.text = card.points.ToString();
+            card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
         }
         foreach(var card in cards2)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             card.points = sum;
+            card.pointsText.text = card.points.ToString();
+            card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
         }
         foreach(var card in cards3)
         {
+            if(card.card.golden)
+            {
+                continue;
+            }
             card.points = sum;
+            card.pointsText.text = card.points.ToString();
+            card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
         }
     }
     void Multiply(GameObject cardplayed)
@@ -264,81 +338,163 @@ public class Effects : MonoBehaviour
             if(id == card.card.id)
             {
                 card.points *= counter;
+                card.pointsText.text = card.points.ToString();
+                card.pointsText.color = Color.blue;
             }
         }
     }
-    /*void AnnihilateHighest()
+    void AnnihilateHighest()
     {
-        
-    }
-    void AnnihilateLowest(GameObject cardplayed)
-    {
-        int team = cardplayed.GetComponent<CardDisplay>().team;
-        int max1 = int.MaxValue;
-        int max2 = int.MaxValue;
-        int max3 = int.MaxValue;
-        int cardid1 = 0;
-        int cardid2 = 0;
-        int cardid3 = 0;
-        if(team == 1)
+        int max1 = int.MinValue;
+        int max2 = int.MinValue;
+        GameObject cardtodestroy1 = null;
+        GameObject cardtodestroy2 = null;
+        zone1 = GameObject.Find("UnitsZone1");
+        foreach(Transform zone in zone1.transform)
         {
-            zone1 = GameObject.Find("Melee 2");
-            zone2 = GameObject.Find("Ranged 2");
-            zone3 = GameObject.Find("Siege 2");
-            CardDisplay[] cards1 = zone1.GetComponentsInChildren<CardDisplay>();
-            if(cards1 != null)
+            CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
             {
-                foreach(var card in cards1)
+                if(card.card.golden)
                 {
-                    if(card.card.points < max1)
-                    {
-                        max1 = card.card.points;
-                        cardid1 = card.card.id;
-                    }
+                    continue;
+                }
+                if(card.points>max1)
+                {
+                    max1 = card.points;
+                    cardtodestroy1 = card.gameObject;
                 }
             }
-            CardDisplay[] cards2 = zone2.GetComponentsInChildren<CardDisplay>();
-            if(cards2 != null)
+        }
+        zone2 = GameObject.Find("UnitsZone2");
+        foreach(Transform zone in zone2.transform)
+        {
+            CardDisplay[] cards = zone2.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
             {
-                foreach(var card in cards2)
+                if(card.card.golden)
                 {
-                    if(card.card.points < max2)
-                    {
-                        max2 = card.card.points;
-                        cardid2 = card.card.id;
-                    }
+                    continue;
+                }
+                if(card.points>max2)
+                {
+                    max2 = card.points;
+                    cardtodestroy2 = card.gameObject;
                 }
             }
-            CardDisplay[] cards3 = zone3.GetComponentsInChildren<CardDisplay>();
-            if(cards3 != null)
-            {
-                foreach(var card in cards3)
-                {
-                    if(card.card.points < max3)
-                    {
-                        max3 = card.card.points;
-                        cardid3 = card.card.id;
-                    }
-                }
-            }
-            if(Math.Min(max1,Math.Min(max2,max3)) == max1)
-            {
-
-            }
-            else if(Math.Min(max1,Math.Min(max2,max3)) == max2)
-            {
-                cardid1 = cardid2;
-            }
-            else if(Math.Min(max1,Math.Min(max2,max3)) == max3)
-            {
-                cardid1 = cardid3;
-            }
-            GameObject cardToEliminate = FindCardByID(cardid1);
-            Destroy(cardToEliminate);
+        }
+        if(max1>max2)
+        {
+            Destroy(cardtodestroy1);
         }
         else
         {
-
+            Destroy(cardtodestroy2);
         }
-    }*/
+    }
+    void AnnihilateLowest(GameObject cardplayed)
+    {
+        int min = int.MaxValue;
+        GameObject cardtodestroy = null;
+        if(cardplayed.GetComponent<CardDisplay>().team == 1)
+        {
+            zone1 = GameObject.Find("UnitsZone2");
+        }
+        else
+        {
+            zone1 = GameObject.Find("UnitsZone1");
+        }
+        foreach(Transform zone in zone1.transform)
+        {
+            CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
+            {
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                if(card.points<min)
+                {
+                    min = card.points;
+                    cardtodestroy = card.gameObject;
+                }
+            }
+        }
+        if(cardtodestroy != null)
+        {
+            Destroy(cardtodestroy);
+        }
+    }
+    void EraseFile(GameObject cardplayed)
+    {
+        int units1 = 0;
+        int units2 = 0;
+        int units3 = 0;
+        if(cardplayed.GetComponent<CardDisplay>().team == 1)
+        {
+            zone1 = GameObject.Find("Melee2");
+            zone2 = GameObject.Find("Ranged2");
+            zone3 = GameObject.Find("Siege2");
+        }
+        else
+        {
+            zone1 = GameObject.Find("Melee1");
+            zone2 = GameObject.Find("Ranged1");
+            zone3 = GameObject.Find("Siege1");
+        }
+        foreach(Transform card in zone1.transform)
+        {
+            units1++;
+        }
+        Debug.Log("This is units1 "+units1);
+        foreach(Transform card in zone2.transform)
+        {
+            units2++;
+        }
+        Debug.Log("This is units2 "+units2);
+        foreach(Transform card in zone3.transform)
+        {
+            units3++;
+        }
+        Debug.Log("This is units3 "+units3);
+        if(units1 == 0) units1 = int.MaxValue;
+        if(units2 == 0) units2 = int.MaxValue;
+        if(units3 == 0) units3 = int.MaxValue;
+        if(units1 <= Math.Min(units2,units3))
+        {
+            CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
+            { 
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                Destroy(card.gameObject);
+            }
+        }
+        else if(units2 <= Math.Min(units1,units3))
+        {
+            CardDisplay[] cards = zone2.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
+            {
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                Destroy(card.gameObject);
+            }
+        }
+        else if(units3 <= Math.Min(units2,units1))
+        {
+            CardDisplay[] cards = zone3.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
+            {
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                Destroy(card.gameObject);
+            }
+        }
+    }
 }

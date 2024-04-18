@@ -548,6 +548,7 @@ GameObject:
   - component: {fileID: 6565638925306025960}
   - component: {fileID: 6378974440190719931}
   - component: {fileID: 2256172140151336617}
+  - component: {fileID: 5069166792674520195}
   - component: {fileID: 81902216170795345}
   - component: {fileID: 1463311484170942619}
   - component: {fileID: 5692171923325644139}
@@ -634,6 +635,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: 
+  team: 0
+  points: 0
   card: {fileID: 0}
   nameText: {fileID: 1837441773028792908}
   descriptionText: {fileID: 7508856050699867847}
@@ -658,6 +661,9 @@ MonoBehaviour:
   endTurn: {fileID: 0}
   turns: {fileID: 0}
   effects: {fileID: 0}
+  deck: {fileID: 0}
+  draw: {fileID: 0}
+  changeCards: {fileID: 0}
 --- !u!114 &6378974440190719931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,6 +723,51 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6565638925306025960}
+          m_TargetAssemblyTypeName: DragAndDrop, Assembly-CSharp
+          m_MethodName: OnPointerClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &5069166792674520195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110510941306949610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6565638925306025960}
+          m_TargetAssemblyTypeName: DragAndDrop, Assembly-CSharp
+          m_MethodName: ChangingCards
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!61 &81902216170795345
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -749,7 +800,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 2.2052307, y: 3.3078842}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -760,7 +811,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 142.3024, y: 193.7829}
+  m_Size: {x: 107.01813, y: 159.23375}
   m_EdgeRadius: 0
 --- !u!50 &1463311484170942619
 Rigidbody2D:
@@ -801,7 +852,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2fa24246881e6a438993c2441c72d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zone: {fileID: 0}
+  zone1: {fileID: 0}
+  zone2: {fileID: 0}
+  zone3: {fileID: 0}
+  inspireLoop: 0
+  weatherLoop: 0
+  decoy: {fileID: 0}
 --- !u!1 &8930626304699000741
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,10 +950,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.7
+  m_fontSize: 20
   m_fontSizeBase: 20
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
