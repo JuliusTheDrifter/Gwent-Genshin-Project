@@ -23,19 +23,28 @@ public class BattleBehaviour : MonoBehaviour
     public Button leader2;
     public Draw draw;
     public WinnerScreen winner;
-    public ChangeCards time;
+    public ChangeCards time1;
+    public ChangeCards time2;
     public TMP_Text player1Points;
     public TMP_Text player2Points;
     [SerializeField] private Camera mainCamera;
     
     void Start()
     {
+        draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
+        for(int i=0;i<10;i++)
+        {
+            draw.Draw1();
+            draw.Draw2();
+        }
         EndTurn();
+        time1 = GameObject.Find("ToChangeP1").GetComponent<ChangeCards>();
+        time2 = GameObject.Find("ToChangeP2").GetComponent<ChangeCards>();
+        time1.changeTime = true;
+        time2.changeTime = true;
+        time2.Hide();
         Immovable(player1Hand,false);
         Immovable(player2Hand,false);
-        time = GameObject.Find("ToChangeP1").GetComponent<ChangeCards>();
-        time.changeTime1 = true;
-        time.changeTime2 = true;
     }
     public void OnClick()
     {
@@ -70,10 +79,6 @@ public class BattleBehaviour : MonoBehaviour
                 winner.RoundShow("P1");
                 player1Turn = false;
                 EndTurn();
-                Immovable(player1Hand,false);
-                Immovable(player2Hand,false);
-                time.changeTime1 = true;
-                time.changeTime2 = true;
             }
             else if(p2points > p1points)
             {
@@ -91,10 +96,6 @@ public class BattleBehaviour : MonoBehaviour
                 winner.RoundShow("P2");
                 player1Turn = true;
                 EndTurn();
-                Immovable(player1Hand,false);
-                Immovable(player2Hand,false);
-                time.changeTime1 = true;
-                time.changeTime2 = true;
             }
             else
             {
@@ -123,10 +124,6 @@ public class BattleBehaviour : MonoBehaviour
                 winner.RoundShow("Tie");
                 player1Turn = false;
                 EndTurn();
-                Immovable(player1Hand,false);
-                Immovable(player2Hand,false);
-                time.changeTime1 = true;
-                time.changeTime2 = true;
             }
             if(P1roundsWon == 2)
             {
@@ -156,6 +153,12 @@ public class BattleBehaviour : MonoBehaviour
         }
         else
         {
+            if(time2.changeTime)
+            {
+                UnityEngine.Vector3 pos = time2.gameObject.transform.position;
+                pos.z = 0;
+                time2.gameObject.transform.position = pos;
+            }
             mainCamera.transform.rotation = UnityEngine.Quaternion.Euler(180,180,0);
             Visibility(player1Hand,false);
             Pose(player2Hand);

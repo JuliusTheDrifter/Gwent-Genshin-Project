@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class Zoom : MonoBehaviour
 {
-    public GameObject Canvas;
+    /*public GameObject Canvas;
     public GameObject zoomCard;
     private Vector2 zoomScale = new Vector2(3,3);
     public void Awake()
@@ -22,5 +22,5 @@ public class Zoom : MonoBehaviour
     public void OnMouseExit()
     {
         Destroy(zoomCard);
-    }
+    }*/
 }

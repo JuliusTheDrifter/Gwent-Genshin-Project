@@ -137,6 +137,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                 transform.position = zone1.transform.position;
                 transform.SetParent(zone1.transform,false);
                 decoy.decoyTime = false;
+                canBePlaced=false;
                 decoy.EndTurn();
             }
         }
@@ -148,6 +149,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                 transform.position = zone1.transform.position;
                 transform.SetParent(zone1.transform,false);
                 decoy.decoyTime = false;
+                canBePlaced=false;
                 decoy.EndTurn();
             }
         }
@@ -155,40 +157,53 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     public void ChangingCards()
     {
         draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
-        changeCards = GameObject.Find("ToChangeP1").GetComponent<ChangeCards>();
+        endTurn = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         CardDisplay cardDisplay = GetComponent<CardDisplay>();
-        int counter = 0;
-        if(changeCards.changeTime1)
+        if(endTurn.player1Turn)
         {
-            deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
-            List<GameObject> deckCards = deck.GetCards();
-            if(cardDisplay.team == 1)
+            changeCards = GameObject.Find("ToChangeP1").GetComponent<ChangeCards>();
+            GameObject hand = GameObject.Find("Hand1");
+            if(changeCards.changeTime)
             {
-                deckCards.Add(gameObject);
-                Destroy(gameObject);
-                draw.Draw1();
-                counter++;
-                if(counter ==2)
+                deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
+                List<GameObject> deckCards = deck.GetCards();
+                if(cardDisplay.team == 1)
                 {
-                    changeCards.HideB1();
+                    deckCards.Add(gameObject);
+                    draw.Draw1();
+                    Destroy(gameObject);
+                    changeCards.counter++;
+                    if(changeCards.counter ==2)
+                    {
+                        endTurn.Immovable(hand,true);
+                        changeCards.changeTime = false;
+                        changeCards.Hide();
+                    }
                 }
             }
         }
-        else if(changeCards.changeTime2)
+        else if(!endTurn.player1Turn)
         {
-            deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
-            List<GameObject> deckCards = deck.GetCards();
-            if(cardDisplay.team == 2)
+            changeCards = GameObject.Find("ToChangeP2").GetComponent<ChangeCards>();
+            GameObject hand = GameObject.Find("Hand1");
+            if(changeCards.changeTime)
             {
-                deckCards.Add(gameObject);
-                Destroy(gameObject);
-                draw.Draw2();
-                counter++;
-                if(counter == 2)
+                deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
+                List<GameObject> deckCards = deck.GetCards();
+                if(cardDisplay.team == 2)
                 {
-                    changeCards.HideB2();
+                    deckCards.Add(gameObject);
+                    draw.Draw2();
+                    Destroy(gameObject);
+                    changeCards.counter++;
+                    if(changeCards.counter == 2)
+                    {
+                        endTurn.Immovable(hand,true);
+                        changeCards.changeTime = false;
+                        changeCards.Hide();
+                    }
                 }
-            }
+            } 
         }
     }
 }

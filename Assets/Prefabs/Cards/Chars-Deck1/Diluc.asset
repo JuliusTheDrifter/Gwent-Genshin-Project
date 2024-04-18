@@ -15,8 +15,8 @@ MonoBehaviour:
   name: Diluc
   id: 1
   description: 
-  effect: PowerUp
-  points: 8
+  effect: OwnFileIncrease
+  points: 15
   isEnhanced: 0
   golden: 1
   artwork: {fileID: 0}

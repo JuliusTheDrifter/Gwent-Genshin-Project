@@ -18,6 +18,7 @@ MonoBehaviour:
   effect: Decoy
   points: 0
   isEnhanced: 0
-  artwork: {fileID: 0}
+  golden: 0
+  artwork: {fileID: 21300000, guid: ada6b42eb7ccd3b4e9b11f57817d2f88, type: 3}
   type: {fileID: 21300000, guid: 893ae5d88bdacda4db7bf04fada97cd7, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

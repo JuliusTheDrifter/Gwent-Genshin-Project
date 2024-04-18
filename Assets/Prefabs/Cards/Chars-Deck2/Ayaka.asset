@@ -15,10 +15,10 @@ MonoBehaviour:
   name: Ayaka
   id: 13
   description: 
-  effect: 
+  effect: OwnFileIncrease
   points: 15
   isEnhanced: 0
   golden: 1
   artwork: {fileID: 21300000, guid: 6ed89b48cc075c746bebdbd0a6739048, type: 3}
-  type: {fileID: 21300000, guid: f406cd94637e26d4e926b7400a2c0e39, type: 3}
+  type: {fileID: 21300000, guid: 8caeb6ce392527e41b68d913f991486c, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

@@ -310,10 +310,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71be52206ce0b0846b23eba8c7a42fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeTime1: 0
-  changeTime2: 0
+  changeTime: 0
   movement: {fileID: 0}
-  hand: {fileID: 0}
+  hand: {fileID: 5974690695027835894}
+  counter: 0
 --- !u!114 &52140410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1206,10 +1206,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71be52206ce0b0846b23eba8c7a42fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeTime1: 0
-  changeTime2: 0
+  changeTime: 0
   movement: {fileID: 0}
-  hand: {fileID: 0}
+  hand: {fileID: 1874766597}
+  counter: 0
 --- !u!114 &782826274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1743,9 +1743,9 @@ MonoBehaviour:
   Card13: {fileID: 2277232433184625156, guid: c87a85f6de567fc42afb3df854ade24d, type: 3}
   Card14: {fileID: 8653524356647486010, guid: a119ec31c9a5d6c43bc9a003fe64df2e, type: 3}
   Card15: {fileID: 4748812765844077450, guid: 542f7deb1cf1b214c993cefa412eb8bb, type: 3}
-  Card16: {fileID: 6056416734244641062, guid: 833a03eec96458247817aad806a6b93d, type: 3}
-  Card17: {fileID: 8436405284470909320, guid: 9b0a25c92922d6b4fb80a751494b7fe0, type: 3}
-  Card18: {fileID: 4441844972386518643, guid: b3a041f941b90fc4895598e7cd319c53, type: 3}
+  Card16: {fileID: 6056416734244641062, guid: fbf2d64baf0242b448c74b042414fcb6, type: 3}
+  Card17: {fileID: 8436405284470909320, guid: fb86b09791d231b4d90c57afd3b6a6aa, type: 3}
+  Card18: {fileID: 4441844972386518643, guid: fa4c374e021f75c47a0f6cebc35415b6, type: 3}
   Card19: {fileID: 4284435316919879812, guid: ccb0c6687cb1d3c43b731553703ca18e, type: 3}
   Card20: {fileID: 5262313147761494447, guid: 0878b796993e0824f8a5f9c6a3d14a2f, type: 3}
   Card21: {fileID: 4283894047918921683, guid: 6f18a714a7da1254286c1f0f37d0b858, type: 3}
@@ -1856,6 +1856,14 @@ PrefabInstance:
     - target: {fileID: 2937066411584886443, guid: 5719c46a38d6243468faccc6d2fc5540, type: 3}
       propertyPath: m_Name
       value: InspireM2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3160553876871079435, guid: 5719c46a38d6243468faccc6d2fc5540, type: 3}
+      propertyPath: m_Size.x
+      value: 113.868866
+      objectReference: {fileID: 0}
+    - target: {fileID: 3160553876871079435, guid: 5719c46a38d6243468faccc6d2fc5540, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.9669342
       objectReference: {fileID: 0}
     - target: {fileID: 3858057290894317028, guid: 5719c46a38d6243468faccc6d2fc5540, type: 3}
       propertyPath: m_Pivot.x
@@ -2121,7 +2129,8 @@ MonoBehaviour:
   leader2: {fileID: 6298994530274539426}
   draw: {fileID: 0}
   winner: {fileID: 0}
-  time: {fileID: 0}
+  time1: {fileID: 0}
+  time2: {fileID: 0}
   player1Points: {fileID: 2124461916}
   player2Points: {fileID: 1602369519}
   mainCamera: {fileID: 519420031}
@@ -2191,10 +2200,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Card: {fileID: 0}
-  Hand1: {fileID: 0}
-  Hand2: {fileID: 0}
-  deck1: {fileID: 0}
-  deck2: {fileID: 0}
+  Hand1: {fileID: 5974690695027835894}
+  Hand2: {fileID: 1874766597}
+  deck1: {fileID: 1439104642}
+  deck2: {fileID: 1025610757}
   deck1Size: {fileID: 802229031}
   deck2Size: {fileID: 2069163149}
 --- !u!1001 &1339428865
@@ -2288,6 +2297,14 @@ PrefabInstance:
     - target: {fileID: 2033062332050886590, guid: a49e64d30a955dc418e50e8ef30de85d, type: 3}
       propertyPath: m_Name
       value: InspireS2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245297564855516958, guid: a49e64d30a955dc418e50e8ef30de85d, type: 3}
+      propertyPath: m_Size.x
+      value: 127.15463
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245297564855516958, guid: a49e64d30a955dc418e50e8ef30de85d, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.6938324
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2626,6 +2643,14 @@ PrefabInstance:
     - target: {fileID: 4758772758355026707, guid: ae7d40f1d6baa9644888d7677b8a35ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655360613607297276, guid: ae7d40f1d6baa9644888d7677b8a35ed, type: 3}
+      propertyPath: m_Size.x
+      value: 117.19034
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655360613607297276, guid: ae7d40f1d6baa9644888d7677b8a35ed, type: 3}
+      propertyPath: m_Offset.x
+      value: -4.288376
       objectReference: {fileID: 0}
     - target: {fileID: 6864209727617605724, guid: ae7d40f1d6baa9644888d7677b8a35ed, type: 3}
       propertyPath: m_Name
