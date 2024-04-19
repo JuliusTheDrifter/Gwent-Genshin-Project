@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Effects : MonoBehaviour
+public class Effects : MonoBehaviour //This script has the effects of the cards
 {
     public GameObject zone1;
     public GameObject zone2;
@@ -15,6 +15,7 @@ public class Effects : MonoBehaviour
     public bool inspireLoop;
     public bool weatherLoop;
     public BattleBehaviour decoy;
+    //This method checks which effect the card has and call the method corresponding to it
     public void PlayCardEffect(string effect, GameObject card)
     {
         if(effect == "OwnFileIncrease")
@@ -53,7 +54,7 @@ public class Effects : MonoBehaviour
         {
             EraseFile(card);
         }
-        if(effect == "Decoy")
+        if(effect == "Decoy") //This allows the decoy effect to happen
         {
             decoy = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
             decoy.decoyTime = true;
@@ -67,11 +68,17 @@ public class Effects : MonoBehaviour
             }
         }
     }
+    //All of the effects ignore the golden cards
+    //All of the points effects change the texts colors when applied
+
+    //Increases the points of the cards in the same zone of the card that activated the effect
     void OwnFileIncrease(GameObject cardplayed)
     {
         string cardPosition = cardplayed.GetComponent<CardDisplay>().position;
         zone1 = GameObject.Find(cardPosition);
+        //Gets the CardDisplay script from all the children of the zone
         CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
+        //Increases the card points by 5
         foreach(var card in cards)
         {
             if(card.card.golden)
@@ -84,9 +91,11 @@ public class Effects : MonoBehaviour
             card.pointsText.color = Color.green;
         }
     }
+    //Decreases all cards points in the zones selected to 1 affecting the player and the enemy player
     void Weather(GameObject cardplayed)
     {
         string weatherType = cardplayed.GetComponent<CardDisplay>().card.name;
+        //Selects the zones to affect depending on the weather type
         if(weatherType == "Frost")
         {
             zone1 = GameObject.Find("Siege1");
@@ -124,8 +133,10 @@ public class Effects : MonoBehaviour
             card.pointsText.text = card.points.ToString();
             card.pointsText.color = Color.red;
         }
+        //Activates the weatherLoop so the effect is always active each time a card is dropped
         weatherLoop = true;
     }
+    //Erase all the weather cards activated
     void Cleanse(GameObject cardplayed)
     {
         zone1 = GameObject.Find("Weather");
@@ -146,6 +157,7 @@ public class Effects : MonoBehaviour
             }
             Destroy(card.gameObject);
         }
+        //For each weather type erased, returns the cards points affected by the weather back to normla
         if(weatherCheck[0]!=0)
         {
             zone2 = GameObject.Find("Siege1");
@@ -156,7 +168,7 @@ public class Effects : MonoBehaviour
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.black;
-                card.card.isEnhanced = false;
+                card.isEnhanced = false;
             }
             CardDisplay[] siege2 = zone3.GetComponentsInChildren<CardDisplay>();
             foreach(var card in siege2)
@@ -164,7 +176,7 @@ public class Effects : MonoBehaviour
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.black;
-                card.card.isEnhanced = false;
+                card.isEnhanced = false;
             }
         }
         if(weatherCheck[1]!=0)
@@ -177,7 +189,7 @@ public class Effects : MonoBehaviour
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.black;
-                card.card.isEnhanced = false;
+                card.isEnhanced = false;
             }
             CardDisplay[] ranged2 = zone3.GetComponentsInChildren<CardDisplay>();
             foreach(var card in ranged2)
@@ -185,7 +197,7 @@ public class Effects : MonoBehaviour
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.black;
-                card.card.isEnhanced = false;
+                card.isEnhanced = false;
             }
         }
         if(weatherCheck[2]!=0)
@@ -198,7 +210,7 @@ public class Effects : MonoBehaviour
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.black;
-                card.card.isEnhanced = false;
+                card.isEnhanced = false;
             }
             CardDisplay[] melee2 = zone3.GetComponentsInChildren<CardDisplay>();
             foreach(var card in melee2)
@@ -206,12 +218,13 @@ public class Effects : MonoBehaviour
                 card.points = card.card.points;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.black;
-                card.card.isEnhanced = false;
+                card.isEnhanced = false;
             }
         }
         Destroy(cardplayed);
         weatherLoop = false;
     }
+    //Increases the points of the cards in a specific zone
     void Inspire(GameObject cardplayed)
     {
         string zoneInspired = cardplayed.GetComponent<CardDisplay>().position;
@@ -225,7 +238,8 @@ public class Effects : MonoBehaviour
         CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
         foreach(var card in cards)
         {
-            if(!card.card.isEnhanced)
+            //Checks if the cards was already affected by this effect
+            if(!card.isEnhanced)
             {
                 if(card.card.golden)
                 {
@@ -235,11 +249,12 @@ public class Effects : MonoBehaviour
                 card.points += 5;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.green;
-                card.card.isEnhanced = true;
+                card.isEnhanced = true;
             }
         }
         inspireLoop = true;
     }
+    //Calculates the average of all the player cards and sets their points to that average
     void Average(GameObject cardplayed)
     {
         if(cardplayed.GetComponent<CardDisplay>().team == 1)
@@ -322,6 +337,7 @@ public class Effects : MonoBehaviour
             card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
         }
     }
+    //The points of the card with this effect gets multiplied by the amount of others cards with the same id in the field
     void Multiply(GameObject cardplayed)
     {
         string zone = cardplayed.GetComponent<CardDisplay>().position;
@@ -343,6 +359,7 @@ public class Effects : MonoBehaviour
             }
         }
     }
+    //Eliminates the card with the highest points in the whole field
     void AnnihilateHighest()
     {
         int max1 = int.MinValue;
@@ -392,6 +409,7 @@ public class Effects : MonoBehaviour
             Destroy(cardtodestroy2);
         }
     }
+    //Eliminates the card with the lowest points of the enemy areas
     void AnnihilateLowest(GameObject cardplayed)
     {
         int min = int.MaxValue;
@@ -425,6 +443,7 @@ public class Effects : MonoBehaviour
             Destroy(cardtodestroy);
         }
     }
+    //Erase all of the cards of the enemy area with the less amount of cards
     void EraseFile(GameObject cardplayed)
     {
         int units1 = 0;

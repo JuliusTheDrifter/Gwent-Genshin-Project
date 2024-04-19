@@ -5,7 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.XR;
 
-public class Draw : MonoBehaviour
+public class Draw : MonoBehaviour //This script is to draw cards
 {
     public GameObject Card;
     public GameObject Hand1;
@@ -20,15 +20,11 @@ public class Draw : MonoBehaviour
         Hand2 = GameObject.Find("Hand2");
         deck1 = GameObject.Find("DeckManager1").GetComponent<Deck>();
         deck2 = GameObject.Find("DeckManager2").GetComponent<Deck>();
+        //To display the deck size in the UI
         deck1Size.text = deck1.GetCards().Count.ToString();
         deck2Size.text = deck1.GetCards().Count.ToString();
-        /*for(int i=0;i<10;i++)
-        {
-            Draw1();
-            Draw2();
-        }*/
     }
-    public void Draw1()
+    public void Draw1() //Draw a random card from the deck1 and removes it from the deck1 list
     {
         List<GameObject> deckCards = deck1.GetCards();
         int randomIndex = Random.Range(0, deckCards.Count);

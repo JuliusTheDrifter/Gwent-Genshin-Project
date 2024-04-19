@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 
-public class Deck : MonoBehaviour
+public class Deck : MonoBehaviour //This scrip is where the deck is formed
 {
     public GameObject Card1;
     public GameObject Card2;
@@ -31,8 +31,9 @@ public class Deck : MonoBehaviour
     public GameObject Card22;
     public GameObject Card23;
     public GameObject Card24;
+    public GameObject Card25;
     
-    List<GameObject> cards = new List<GameObject>();
+    List<GameObject> cards = new List<GameObject>(); //In this list I'll add each card to later assing them via hierarchy
     void Awake()
     {
         cards.Add(Card1);
@@ -59,8 +60,9 @@ public class Deck : MonoBehaviour
         cards.Add(Card22);
         cards.Add(Card23);
         cards.Add(Card24);
+        cards.Add(Card25);
     }
-    public List<GameObject> GetCards()
+    public List<GameObject> GetCards() //This method is to obtain all the cards from the list
     {
         return cards;
     }

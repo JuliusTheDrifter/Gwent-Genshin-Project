@@ -5,11 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class CardDisplay : MonoBehaviour
+public class CardDisplay : MonoBehaviour //This script is the information that will be shown in the UI
 {
    public string position;
     public int team;
     public int points;
+    public bool isEnhanced;
     public Card card;
     public TMP_Text nameText;
     public TMP_Text descriptionText;
@@ -17,7 +18,7 @@ public class CardDisplay : MonoBehaviour
     public Image artworkImage;
     public Image typeImage;
     public Image auraImage;
-    void Start()
+    void Start() //This is to show the info in the UI
     {
         artworkImage.sprite = card.artwork;
         auraImage.sprite = card.aura;                                                                                                                                                                                                                                                                                                                                                                                                                    

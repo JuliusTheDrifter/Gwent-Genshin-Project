@@ -637,6 +637,7 @@ MonoBehaviour:
   position: 
   team: 0
   points: 0
+  isEnhanced: 0
   card: {fileID: 0}
   nameText: {fileID: 1837441773028792908}
   descriptionText: {fileID: 7508856050699867847}
@@ -800,7 +801,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.2052307, y: 3.3078842}
+  m_Offset: {x: 5.1455994, y: -3.6754646}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -811,7 +812,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 107.01813, y: 159.23375}
+  m_Size: {x: 20.277649, y: 21.772163}
   m_EdgeRadius: 0
 --- !u!50 &1463311484170942619
 Rigidbody2D:

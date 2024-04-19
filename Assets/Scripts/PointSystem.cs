@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.Collections;
-
+//This is the script to manage the total points of each player and show it in the UI
 public class PointSystem : MonoBehaviour
 {
    public TMP_Text player1Points;
@@ -20,6 +20,7 @@ public class PointSystem : MonoBehaviour
       CollectP1Points();
       CollectP2Points();
    }
+   //Collect the points of all the cards in the player 1 areas
    void CollectP1Points()
    {
       int mpoints = 0;
@@ -43,6 +44,7 @@ public class PointSystem : MonoBehaviour
       int totalpoints = mpoints + rpoints + spoints;
       player1Points.text = totalpoints.ToString();
    }
+   //Collect the points of all the cards in the player 2 areas
    void CollectP2Points()
    {
       int mpoints = 0;

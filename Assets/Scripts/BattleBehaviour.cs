@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 public enum BattleState {START,PLAYER1TURN,PLAYER2TURN,WON,LOST}
-public class BattleBehaviour : MonoBehaviour
+public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage the turns and rounds
 {
     public bool player1Turn;
     public bool round;
@@ -31,13 +31,21 @@ public class BattleBehaviour : MonoBehaviour
     
     void Start()
     {
+        //Here each player draw 10 cards at the start of the game
+        //Player 1 draws 1 more card than player 2 because of his leader effect
         draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
-        for(int i=0;i<10;i++)
+        for(int i=0;i<11;i++)
         {
             draw.Draw1();
+        }
+        for(int i=0;i<10;i++)
+        {
             draw.Draw2();
         }
+        NoInteractions(leader1,false);
+        NoInteractions(leader2,false);
         EndTurn();
+        //Here the script ChangeCards is used only at the first round for the player to change a maximun of 2 cards
         time1 = GameObject.Find("ToChangeP1").GetComponent<ChangeCards>();
         time2 = GameObject.Find("ToChangeP2").GetComponent<ChangeCards>();
         time1.changeTime = true;
@@ -46,7 +54,7 @@ public class BattleBehaviour : MonoBehaviour
         Immovable(player1Hand,false);
         Immovable(player2Hand,false);
     }
-    public void OnClick()
+    public void OnClick() //This method is to manage the rounds
     {
         round =! round;
         player1Turn =! player1Turn;
@@ -55,7 +63,7 @@ public class BattleBehaviour : MonoBehaviour
         if(counter==2)
         {
             draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
-            for(int i=0;i<2;i++)
+            for(int i=0;i<2;i++) //Each player draws 2 cards at the start of each round
             {
                 draw.Draw1();
                 draw.Draw2();
@@ -63,13 +71,13 @@ public class BattleBehaviour : MonoBehaviour
             winner = GameObject.Find("FinalPanel").GetComponent<WinnerScreen>();
             int p1points = int.Parse(player1Points.text);
             int p2points = int.Parse(player2Points.text);
-            if(p1points > p2points)
+            if(p1points > p2points) //Here the winner of the round is chosen
             {
                 P1roundsWon++;
                 if(P1roundsWon ==1)
                 {
                     Image roundColor = GameObject.Find("RoundC1").GetComponent<Image>();
-                    roundColor.color = Color.green;
+                    roundColor.color = Color.green; //This turns the red circules to green
                 }
                 else if(P1roundsWon ==2)
                 {
@@ -80,7 +88,7 @@ public class BattleBehaviour : MonoBehaviour
                 player1Turn = false;
                 EndTurn();
             }
-            else if(p2points > p1points)
+            else if(p2points >= p1points)
             {
                 P2roundsWon++;
                 if(P2roundsWon ==1)
@@ -97,34 +105,7 @@ public class BattleBehaviour : MonoBehaviour
                 player1Turn = true;
                 EndTurn();
             }
-            else
-            {
-                P1roundsWon++;
-                if(P1roundsWon ==1)
-                {
-                    Image roundColor = GameObject.Find("RoundC1").GetComponent<Image>();
-                    roundColor.color = Color.green;
-                }
-                else if(P1roundsWon ==2)
-                {
-                    Image roundColor = GameObject.Find("RoundC2").GetComponent<Image>();
-                    roundColor.color = Color.green;
-                }
-                P2roundsWon++;
-                if(P2roundsWon ==1)
-                {
-                    Image roundColor = GameObject.Find("RoundC3").GetComponent<Image>();
-                    roundColor.color = Color.green;
-                }
-                else if(P2roundsWon ==2)
-                {
-                    Image roundColor = GameObject.Find("RoundC4").GetComponent<Image>();
-                    roundColor.color = Color.green;
-                }
-                winner.RoundShow("Tie");
-                player1Turn = false;
-                EndTurn();
-            }
+            //Here the winner of the game is chosen
             if(P1roundsWon == 2)
             {
                 winner.FinalShow("P1");
@@ -137,7 +118,7 @@ public class BattleBehaviour : MonoBehaviour
             counter = 0;
         }
     }
-    public void EndTurn()
+    public void EndTurn() //This method changes turns every time is called
     {
         if(!round)
         {
@@ -145,11 +126,9 @@ public class BattleBehaviour : MonoBehaviour
         }
         if(player1Turn)
         {
-            mainCamera.transform.rotation = UnityEngine.Quaternion.Euler(0,0,0);
+            mainCamera.transform.rotation = UnityEngine.Quaternion.Euler(0,0,0); //Put the camera back to normal
             Visibility(player1Hand,true);
-            NoInteractions(leader1,true);
             Visibility(player2Hand,false);
-            NoInteractions(leader2,false);
         }
         else
         {
@@ -159,15 +138,13 @@ public class BattleBehaviour : MonoBehaviour
                 pos.z = 0;
                 time2.gameObject.transform.position = pos;
             }
-            mainCamera.transform.rotation = UnityEngine.Quaternion.Euler(180,180,0);
+            mainCamera.transform.rotation = UnityEngine.Quaternion.Euler(180,180,0); //Rotates the camera
             Visibility(player1Hand,false);
             Pose(player2Hand);
-            NoInteractions(leader1,false);
             Visibility(player2Hand,true);
-            NoInteractions(leader2,true);
         }
     }
-    public void NoInteractions(Button leader,bool  active)
+    public void NoInteractions(Button leader,bool  active) //This method disables/enables the Leader button
     {
         if(active)
         {
@@ -178,6 +155,7 @@ public class BattleBehaviour : MonoBehaviour
             leader.interactable = active;
         }
     }
+    //This method disable/enable the Drag method so the cards can't/can be movable
     public void Immovable(GameObject hand,bool movable)
     {
         DragAndDrop[] cards = hand.GetComponentsInChildren<DragAndDrop>();
@@ -186,6 +164,7 @@ public class BattleBehaviour : MonoBehaviour
             card.enabled = movable;
         }
     }
+    //This method hides/shows the cards from the hand by putting each card in -10/0 in the z axis
     public void  Visibility(GameObject playerHand,bool visible)
     {
         UnityEngine.Vector3 pos = transform.position;
@@ -205,7 +184,7 @@ public class BattleBehaviour : MonoBehaviour
             }
         }
     }
-    public void Pose(GameObject playerHand)
+    public void Pose(GameObject playerHand) //This method rotates the player2 cards
     {
         UnityEngine.Quaternion pos = transform.rotation;
         foreach(Transform card in playerHand.transform)
@@ -215,7 +194,7 @@ public class BattleBehaviour : MonoBehaviour
             card.transform.rotation = pos;
         }
     }
-    void CleanField()
+    void CleanField() //This method eliminates the cards from the field
     {
         GameObject units1 = GameObject.Find("UnitsZone1");
         foreach(Transform zone in units1.transform)

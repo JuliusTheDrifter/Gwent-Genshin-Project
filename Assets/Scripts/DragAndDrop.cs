@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+//This method is to move the cards with the mouse and drop it in specific areas
 public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 {
     private RectTransform rectTransform;
@@ -22,7 +22,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     public ChangeCards changeCards;
     private bool IsOverDropZone;
     private bool canBePlaced;
-    private void Awake()
+    private void Awake() //Gets the rectTransform of the card
     {
         rectTransform = GetComponent<RectTransform>();
     }
@@ -44,7 +44,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        startPosition = transform.position;
+        startPosition = transform.position; //Saves the starting position
         isDragging = true;
     }
 
@@ -52,8 +52,10 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     {
         turns = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         bool rotateMouse = turns.player1Turn;
+        //This checks if the card can move
         if(!canBePlaced)
         {
+            //This rotates the mouse mobility acording to the turn
             if(rotateMouse)
             {
                 rectTransform.anchoredPosition += 3 * eventData.delta;
@@ -68,15 +70,16 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     public void OnEndDrag(PointerEventData eventData)
     {
         isDragging = false;
-        if(IsOverDropZone && CorrectZone())
+        if(IsOverDropZone && CorrectZone()) //This checks if the card can be placed in the zone
         {
+            //This sets the card as child of the dropzone
             transform.SetParent(dropZone.transform, false);
             canBePlaced=true;
             endTurn = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
             UnityEngine.Debug.Log("Effect");
             effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
             effects.PlayCardEffect(gameObject.GetComponent<CardDisplay>().card.effect,gameObject);
-            
+            //This is to check if there's any Inspire card and activate its effect again
             if(effects.inspireLoop)
             {
                 CardDisplay[] cards = new CardDisplay[6];
@@ -94,7 +97,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                     }
                 }
             }
-
+            //This is to check if there's any Weather card and activate its effect again
             if(effects.weatherLoop)
             {
                 CardDisplay[] cards = GameObject.Find("Weather").GetComponentsInChildren<CardDisplay>();
@@ -106,17 +109,20 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                     }
                 }
             }
+            //If you drop a decoy the turn won't end until you use its effect, else the turn will end when you drop any other card
             if(!endTurn.decoyTime)
             {
                 endTurn.EndTurn();
             }
         }
+        //If the cards wasn't placed correctly, it will return to the starting position
         else
         {
             transform.position = startPosition;
             transform.SetParent(startParent.transform, false);
         }
     }
+    //This method checks is the theZone component and compares it to the cardPosition string and returns a bool
     public bool CorrectZone()
     {
         ZoneConditions conditions = dropZone.GetComponent<ZoneConditions>(); 
@@ -125,10 +131,12 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
         if(zoneName==cardPosition)return true;
         else return false;
     }
+    //This method is for the Decoy effect, it returns the card on the field you clicked on to the hand
     public void OnPointerClick()
     {
         CardDisplay cardDisplay = GetComponent<CardDisplay>();
         BattleBehaviour decoy = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
+        //Checks if the decoy is active and if the team of the card clicked is the correct one
         if(decoy.decoyTime && decoy.team1)
         {
             if(cardDisplay.team ==1)
@@ -154,15 +162,18 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             }
         }
     }
+    //This method allows the player to change a maximun of 2 cards by adding the card click to the deck and drawing another one
     public void ChangingCards()
     {
         draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
         endTurn = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         CardDisplay cardDisplay = GetComponent<CardDisplay>();
+        //This checks which turn is it
         if(endTurn.player1Turn)
         {
             changeCards = GameObject.Find("ToChangeP1").GetComponent<ChangeCards>();
             GameObject hand = GameObject.Find("Hand1");
+            //This checks if it's changing time
             if(changeCards.changeTime)
             {
                 deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
