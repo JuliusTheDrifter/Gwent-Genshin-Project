@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using Unity.VisualScripting;
-using UnityEditor.Build;
 using UnityEngine;
 [System.Serializable]
 [CreateAssetMenu(fileName="New Card",menuName="Card")] //This allows me to create cards in Unity

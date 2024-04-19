@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Razor
   id: 11
-  description: 
+  description: 'Effect: Calculates the average of all the player cards and sets their
+    points to that average'
   effect: Average
   points: 6
-  isEnhanced: 0
+  golden: 0
   artwork: {fileID: 21300000, guid: c2361dfd05e42a149ac6996cfdd36088, type: 3}
   type: {fileID: 21300000, guid: d4605397402a50945a50facaa5bd6bd1, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

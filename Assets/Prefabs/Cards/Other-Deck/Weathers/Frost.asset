@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Frost
   id: 25
-  position: Weather
-  description: 
+  description: 'Effect: Decreases the points of both,ally or enemy, Siege areas cards'
   effect: Weather
   points: 0
+  golden: 0
   artwork: {fileID: 21300000, guid: 5ac9005ba9a0dbb4db055a8f6cdcb6dd, type: 3}
   type: {fileID: 21300000, guid: 7b7a9cbd55746ca45aaedfaffecbf610, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

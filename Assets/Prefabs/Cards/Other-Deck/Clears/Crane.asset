@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Crane
   id: 32
-  position: Weather
-  description: 
+  description: 'Effect: Cleanse the weathers'
   effect: Cleanse
   points: 0
+  golden: 0
   artwork: {fileID: 21300000, guid: 7d7c82aa8f6da504c82af0839092e84a, type: 3}
   type: {fileID: 21300000, guid: 7b7a9cbd55746ca45aaedfaffecbf610, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

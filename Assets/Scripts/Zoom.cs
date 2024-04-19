@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 public class Zoom : MonoBehaviour //This script shows a bigger form of the card when the mouse is over the card

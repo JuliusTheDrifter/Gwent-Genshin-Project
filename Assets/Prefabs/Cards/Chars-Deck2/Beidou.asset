@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Beidou
   id: 14
-  description: 
+  description: 'Effect: Eliminates the file with the less amount of enemies'
   effect: EraseFile
   points: 8
-  isEnhanced: 0
   golden: 0
   artwork: {fileID: 21300000, guid: a2a0a9fec04e01244b415f309df2e621, type: 3}
   type: {fileID: 21300000, guid: ca9459662eca6124fb63db76cda3d919, type: 3}

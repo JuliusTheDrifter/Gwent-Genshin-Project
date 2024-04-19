@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ayaka
   id: 13
-  description: 
+  description: 'Effect: Increases the points of the cards in the same file'
   effect: OwnFileIncrease
   points: 15
-  isEnhanced: 0
   golden: 1
   artwork: {fileID: 21300000, guid: 6ed89b48cc075c746bebdbd0a6739048, type: 3}
   type: {fileID: 21300000, guid: 8caeb6ce392527e41b68d913f991486c, type: 3}

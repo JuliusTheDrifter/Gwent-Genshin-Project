@@ -27,6 +27,8 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
     public ChangeCards time2;
     public TMP_Text player1Points;
     public TMP_Text player2Points;
+    public TMP_Text GraveYard1;
+    public TMP_Text GraveYard2;
     [SerializeField] private Camera mainCamera;
     
     void Start()
@@ -196,11 +198,14 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
     }
     void CleanField() //This method eliminates the cards from the field
     {
+        int deathcard1 = 0;
+        int deathcard2 = 0;
         GameObject units1 = GameObject.Find("UnitsZone1");
         foreach(Transform zone in units1.transform)
         {
             foreach(Transform card in zone.transform)
             {
+                deathcard1++;
                 Destroy(card.gameObject);
             }
         }
@@ -209,6 +214,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
         {
             foreach(Transform card in zone.transform)
             {
+                deathcard2++;
                 Destroy(card.gameObject);
             }
         }
@@ -217,6 +223,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
         {
             foreach(Transform card in zone.transform)
             {
+                deathcard1++;
                 Destroy(card.gameObject);
             }
         }
@@ -225,13 +232,21 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
         {
             foreach(Transform card in zone.transform)
             {
+                deathcard2++;
                 Destroy(card.gameObject);
             }
         }
         GameObject weather = GameObject.Find("Weather");
         foreach(Transform card in weather.transform)
         {
+            CardDisplay cardDisplay = card.gameObject.GetComponent<CardDisplay>();
+            if(cardDisplay.team == 1) deathcard1++;
+            else deathcard2++;
+
             Destroy(card.gameObject);
         }
+        //To show the amount of cards that were eliminated
+        GraveYard1.text = deathcard1.ToString();
+        GraveYard2.text = deathcard2.ToString();
     }
 }

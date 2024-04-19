@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Winds
   id: 26
-  position: Weather
-  description: 
+  description: 'Effect: Decreases the points of both,ally or enemy, Ranged areas
+    cards'
   effect: Weather
   points: 0
+  golden: 0
   artwork: {fileID: 21300000, guid: 1c2c28e8a38bcee44a602cb191ca749d, type: 3}
   type: {fileID: 21300000, guid: 7b7a9cbd55746ca45aaedfaffecbf610, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

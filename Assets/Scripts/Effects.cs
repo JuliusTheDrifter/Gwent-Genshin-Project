@@ -15,6 +15,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     public bool inspireLoop;
     public bool weatherLoop;
     public BattleBehaviour decoy;
+    public BattleBehaviour deathCount;
     //This method checks which effect the card has and call the method corresponding to it
     public void PlayCardEffect(string effect, GameObject card)
     {
@@ -139,6 +140,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     //Erase all the weather cards activated
     void Cleanse(GameObject cardplayed)
     {
+        deathCount = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         zone1 = GameObject.Find("Weather");
         int[] weatherCheck = new int[3];
         foreach(Transform card in zone1.transform)
@@ -154,6 +156,20 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
             if(card.gameObject.GetComponent<CardDisplay>().card.name == "Earthquake")
             {
                 weatherCheck[2]=1;
+            }
+            //To add the cards to the graveyard
+            CardDisplay cardDisplay = card.gameObject.GetComponent<CardDisplay>();
+            if(cardDisplay.team ==1)
+            {
+                int deathcard = int.Parse(deathCount.GraveYard1.text);
+                deathcard++;
+                deathCount.GraveYard1.text = deathcard.ToString();
+            }
+            else
+            {
+                int deathcard = int.Parse(deathCount.GraveYard2.text);
+                deathcard++;
+                deathCount.GraveYard1.text = deathcard.ToString();
             }
             Destroy(card.gameObject);
         }
@@ -220,6 +236,19 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 card.pointsText.color = Color.black;
                 card.isEnhanced = false;
             }
+        }
+        CardDisplay toDestroy = cardplayed.GetComponent<CardDisplay>();
+        if(toDestroy.team == 1)
+        {
+            int deathcard = int.Parse(deathCount.GraveYard1.text);
+            deathcard++;
+            deathCount.GraveYard1.text = deathcard.ToString();
+        }
+        else
+        {
+            int deathcard = int.Parse(deathCount.GraveYard2.text);
+            deathcard++;
+            deathCount.GraveYard2.text = deathcard.ToString();
         }
         Destroy(cardplayed);
         weatherLoop = false;
@@ -367,6 +396,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         GameObject cardtodestroy1 = null;
         GameObject cardtodestroy2 = null;
         zone1 = GameObject.Find("UnitsZone1");
+        deathCount = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         foreach(Transform zone in zone1.transform)
         {
             CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
@@ -402,10 +432,16 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         }
         if(max1>max2)
         {
+            int deathcard = int.Parse(deathCount.GraveYard1.text);
+            deathcard++;
+            deathCount.GraveYard1.text = deathcard.ToString();
             Destroy(cardtodestroy1);
         }
         else
         {
+            int deathcard = int.Parse(deathCount.GraveYard2.text);
+            deathcard++;
+            deathCount.GraveYard2.text = deathcard.ToString();
             Destroy(cardtodestroy2);
         }
     }
@@ -414,6 +450,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     {
         int min = int.MaxValue;
         GameObject cardtodestroy = null;
+        deathCount = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         if(cardplayed.GetComponent<CardDisplay>().team == 1)
         {
             zone1 = GameObject.Find("UnitsZone2");
@@ -440,6 +477,19 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         }
         if(cardtodestroy != null)
         {
+            CardDisplay cardDisplay = cardtodestroy.GetComponent<CardDisplay>();
+            if(cardDisplay.team == 1)
+            {
+                int deathcard = int.Parse(deathCount.GraveYard1.text);
+                deathcard++;
+                deathCount.GraveYard1.text = deathcard.ToString();
+            }
+            else
+            {
+                int deathcard = int.Parse(deathCount.GraveYard2.text);
+                deathcard++;
+                deathCount.GraveYard2.text = deathcard.ToString();
+            }
             Destroy(cardtodestroy);
         }
     }
@@ -488,6 +538,18 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 {
                     continue;
                 }
+                if(card.team == 1)
+                {
+                    int deathcard = int.Parse(deathCount.GraveYard1.text);
+                    deathcard++;
+                    deathCount.GraveYard1.text = deathcard.ToString();
+                }
+                else
+                {
+                    int deathcard = int.Parse(deathCount.GraveYard2.text);
+                    deathcard++;
+                    deathCount.GraveYard2.text = deathcard.ToString();
+                }
                 Destroy(card.gameObject);
             }
         }
@@ -500,6 +562,18 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 {
                     continue;
                 }
+                if(card.team == 1)
+                {
+                    int deathcard = int.Parse(deathCount.GraveYard1.text);
+                    deathcard++;
+                    deathCount.GraveYard1.text = deathcard.ToString();
+                }
+                else
+                {
+                    int deathcard = int.Parse(deathCount.GraveYard2.text);
+                    deathcard++;
+                    deathCount.GraveYard2.text = deathcard.ToString();
+                }
                 Destroy(card.gameObject);
             }
         }
@@ -511,6 +585,18 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 if(card.card.golden)
                 {
                     continue;
+                }
+                if(card.team == 1)
+                {
+                    int deathcard = int.Parse(deathCount.GraveYard1.text);
+                    deathcard++;
+                    deathCount.GraveYard1.text = deathcard.ToString();
+                }
+                else
+                {
+                    int deathcard = int.Parse(deathCount.GraveYard2.text);
+                    deathcard++;
+                    deathCount.GraveYard2.text = deathcard.ToString();
                 }
                 Destroy(card.gameObject);
             }

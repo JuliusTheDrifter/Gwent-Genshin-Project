@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Diluc
   id: 1
-  description: 
+  description: 'Effect: Increases the points of the cards in the same file'
   effect: OwnFileIncrease
   points: 15
-  isEnhanced: 0
   golden: 1
   artwork: {fileID: 0}
   type: {fileID: 21300000, guid: 8caeb6ce392527e41b68d913f991486c, type: 3}

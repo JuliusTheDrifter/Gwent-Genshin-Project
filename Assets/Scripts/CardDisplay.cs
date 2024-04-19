@@ -26,6 +26,10 @@ public class CardDisplay : MonoBehaviour //This script is the information that w
         nameText.text = card.name;
         descriptionText.text = card.description;
         points = card.points;
-        pointsText.text = points.ToString();
+        //This is to only show the points of the units cards
+        if(position == "Melee1"||position == "Melee2"||position == "Ranged1"||position == "Ranged2"||position == "Siege1"||position == "Siege2")
+        {
+            pointsText.text = points.ToString();
+        }
     }
 }

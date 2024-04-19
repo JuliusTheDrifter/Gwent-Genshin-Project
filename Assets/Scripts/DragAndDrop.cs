@@ -22,7 +22,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     public ChangeCards changeCards;
     private bool IsOverDropZone;
     private bool canBePlaced;
-    private void Awake() //Gets the rectTransform of the card
+    void Awake() //Gets the rectTransform of the card
     {
         rectTransform = GetComponent<RectTransform>();
     }
@@ -127,8 +127,15 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     {
         ZoneConditions conditions = dropZone.GetComponent<ZoneConditions>(); 
         string zoneName = conditions.theZone;
-        string cardPosition = gameObject.GetComponent<CardDisplay>().position;
-        if(zoneName==cardPosition)return true;
+        CardDisplay card = gameObject.GetComponent<CardDisplay>();
+        if(zoneName==card.position)return true;
+        //Decoys can be placed in all the units zones
+        else if(card.team==1&&zoneName=="Melee1"&&card.card.effect=="Decoy")return true;
+        else if(card.team==1&&zoneName=="Ranged1"&&card.card.effect=="Decoy")return true;
+        else if(card.team==1&&zoneName=="Siege1"&&card.card.effect=="Decoy")return true;
+        else if(card.team==2&&zoneName=="Melee2"&&card.card.effect=="Decoy")return true;
+        else if(card.team==2&&zoneName=="Ranged2"&&card.card.effect=="Decoy")return true;
+        else if(card.team==2&&zoneName=="Siege2"&&card.card.effect=="Decoy")return true;
         else return false;
     }
     //This method is for the Decoy effect, it returns the card on the field you clicked on to the hand

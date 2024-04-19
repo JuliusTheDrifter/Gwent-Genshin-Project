@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ningguan
   id: 21
-  description: 
+  description: The Tianquan of the Liyue Qixing and owner of the floating Jade Chamber
   effect: 
   points: 7
-  isEnhanced: 0
+  golden: 0
   artwork: {fileID: 21300000, guid: 08dd012523aa43f4f8f47029d2b80e56, type: 3}
   type: {fileID: 21300000, guid: ca9459662eca6124fb63db76cda3d919, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

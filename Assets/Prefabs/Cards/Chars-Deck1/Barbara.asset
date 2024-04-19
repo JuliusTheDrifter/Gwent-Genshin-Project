@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Barbara
   id: 3
-  description: 
+  description: Effect :Eliminates the file with the less amount of enemies
   effect: EraseFile
   points: 5
-  isEnhanced: 1
+  golden: 0
   artwork: {fileID: 21300000, guid: 69dbc96bbf97be94c8df92ffb90c07f6, type: 3}
   type: {fileID: 21300000, guid: ca9459662eca6124fb63db76cda3d919, type: 3}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}
