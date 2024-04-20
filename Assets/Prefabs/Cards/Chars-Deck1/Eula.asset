@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Eula
   id: 2
   description: Captain of the Reconnaissance Company of the Knights of Favonius
-  effect: 
+  effect: CallWeather
   points: 10
   golden: 0
   artwork: {fileID: 0}

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Mona
   id: 9
-  description: An astrologist of knowledgeable skill and high pride
-  effect: 
+  description: 'Effect: Draw a card'
+  effect: Draw
   points: 7
   golden: 0
   artwork: {fileID: 21300000, guid: 9accaf25e147e1643893f87d8d00f6aa, type: 3}

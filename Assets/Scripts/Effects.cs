@@ -12,10 +12,16 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     public GameObject zone1;
     public GameObject zone2;
     public GameObject zone3;
+    public GameObject zone4;
+    public GameObject zone5;
+    public GameObject zone6;
     public bool inspireLoop;
     public bool weatherLoop;
     public BattleBehaviour decoy;
     public BattleBehaviour deathCount;
+    public Draw draw;
+    public Deck deck;
+    public Effects effects;
     //This method checks which effect the card has and call the method corresponding to it
     public void PlayCardEffect(string effect, GameObject card)
     {
@@ -54,6 +60,23 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         if(effect == "EraseFile")
         {
             EraseFile(card);
+        }
+        if(effect == "Draw") //Draw a card
+        {
+            draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
+            CardDisplay cardDisplay = card.GetComponent<CardDisplay>();
+            if(cardDisplay.team == 1)
+            {
+                draw.Draw1();
+            }
+            else
+            {
+                draw.Draw2();
+            }
+        }
+        if(effect == "CallWeather")
+        {
+            CallWeather(card);
         }
         if(effect == "Decoy") //This allows the decoy effect to happen
         {
@@ -283,87 +306,67 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         }
         inspireLoop = true;
     }
-    //Calculates the average of all the player cards and sets their points to that average
+    //Calculates the average of all the cards in the field and sets their points to that average
     void Average(GameObject cardplayed)
     {
-        if(cardplayed.GetComponent<CardDisplay>().team == 1)
-        {
-            zone1 = GameObject.Find("Melee1");
-            zone2 = GameObject.Find("Ranged1");
-            zone3 = GameObject.Find("Siege1");
-        }
-        else
-        {
-            zone1 = GameObject.Find("Melee2");
-            zone2 = GameObject.Find("Ranged2");
-            zone3 = GameObject.Find("Siege2");
-        }
         int sum = 0;
         int div = 0;
-        
-        CardDisplay[] cards1 = zone1.GetComponentsInChildren<CardDisplay>();
-        foreach(var card in cards1)
+        zone1 = GameObject.Find("UnitsZone1");
+        foreach(Transform zone in zone1.transform)
         {
-            if(card.card.golden)
+            CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
             {
-                continue;
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                sum += card.points;
+                div++;
             }
-            sum += card.points;
-            div++;
         }
-            
-        CardDisplay[] cards2 = zone2.GetComponentsInChildren<CardDisplay>();
-        foreach(var card in cards2)
+        zone2 = GameObject.Find("UnitsZone2");
+        foreach(Transform zone in zone2.transform)
         {
-            if(card.card.golden)
+            CardDisplay[] cards = zone2.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
             {
-                continue;
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                sum += card.points;
+                div++;
             }
-            sum += card.points;
-            div++;
         }
-            
-        CardDisplay[] cards3 = zone3.GetComponentsInChildren<CardDisplay>();
-        foreach(var card in cards3)
-        {
-            if(card.card.golden)
-            {
-                continue;
-            }
-            sum += card.points;
-            div++;
-        }
-            
         sum /= div;
-        foreach(var card in cards1)
+        foreach(Transform zone in zone1.transform)
         {
-            if(card.card.golden)
+            CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
             {
-                continue;
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                card.points = sum;
+                card.pointsText.text = card.points.ToString();
+                card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
             }
-            card.points = sum;
-            card.pointsText.text = card.points.ToString();
-            card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
         }
-        foreach(var card in cards2)
+        foreach(Transform zone in zone2.transform)
         {
-            if(card.card.golden)
+            CardDisplay[] cards = zone2.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
             {
-                continue;
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                card.points = sum;
+                card.pointsText.text = card.points.ToString();
+                card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
             }
-            card.points = sum;
-            card.pointsText.text = card.points.ToString();
-            card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
-        }
-        foreach(var card in cards3)
-        {
-            if(card.card.golden)
-            {
-                continue;
-            }
-            card.points = sum;
-            card.pointsText.text = card.points.ToString();
-            card.pointsText.color = card.pointsText.color = new Color(1, 0.5f, 0);
         }
     }
     //The points of the card with this effect gets multiplied by the amount of others cards with the same id in the field
@@ -493,43 +496,62 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
             Destroy(cardtodestroy);
         }
     }
-    //Erase all of the cards of the enemy area with the less amount of cards
+    //Erase all of the cards of area in the field with the less amount of cards
     void EraseFile(GameObject cardplayed)
     {
         int units1 = 0;
         int units2 = 0;
         int units3 = 0;
-        if(cardplayed.GetComponent<CardDisplay>().team == 1)
-        {
-            zone1 = GameObject.Find("Melee2");
-            zone2 = GameObject.Find("Ranged2");
-            zone3 = GameObject.Find("Siege2");
-        }
-        else
-        {
-            zone1 = GameObject.Find("Melee1");
-            zone2 = GameObject.Find("Ranged1");
-            zone3 = GameObject.Find("Siege1");
-        }
+        int units4 = 0;
+        int units5 = 0;
+        int units6 = 0;
+        
+        zone1 = GameObject.Find("Melee1");
+        zone2 = GameObject.Find("Melee2");
+        zone3 = GameObject.Find("Ranged1");
+        zone4 = GameObject.Find("Ranged2");
+        zone5 = GameObject.Find("Siege1");
+        zone6 = GameObject.Find("Siege2");
         foreach(Transform card in zone1.transform)
         {
             units1++;
         }
-        Debug.Log("This is units1 "+units1);
         foreach(Transform card in zone2.transform)
         {
             units2++;
         }
-        Debug.Log("This is units2 "+units2);
         foreach(Transform card in zone3.transform)
         {
             units3++;
         }
-        Debug.Log("This is units3 "+units3);
+        foreach(Transform card in zone4.transform)
+        {
+            units4++;
+        }
+        foreach(Transform card in zone5.transform)
+        {
+            units5++;
+        }
+        foreach(Transform card in zone6.transform)
+        {
+            units6++;
+        }
         if(units1 == 0) units1 = int.MaxValue;
         if(units2 == 0) units2 = int.MaxValue;
         if(units3 == 0) units3 = int.MaxValue;
-        if(units1 <= Math.Min(units2,units3))
+        if(units4 == 0) units4 = int.MaxValue;
+        if(units5 == 0) units5 = int.MaxValue;
+        if(units6 == 0) units6 = int.MaxValue;
+        int[] units = {units1,units2,units3,units4,units5,units6};
+        int temp = int.MaxValue;
+        for(int i=0;i<units.Length;i++)
+        {
+            if(units[i] < temp)
+            {
+                temp = units[i];
+            }
+        }
+        if(units1 == temp)
         {
             CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
             foreach(var card in cards)
@@ -538,22 +560,14 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 {
                     continue;
                 }
-                if(card.team == 1)
-                {
-                    int deathcard = int.Parse(deathCount.GraveYard1.text);
-                    deathcard++;
-                    deathCount.GraveYard1.text = deathcard.ToString();
-                }
-                else
-                {
-                    int deathcard = int.Parse(deathCount.GraveYard2.text);
-                    deathcard++;
-                    deathCount.GraveYard2.text = deathcard.ToString();
-                }
+                int deathcard = int.Parse(deathCount.GraveYard1.text);
+                deathcard++;
+                deathCount.GraveYard1.text = deathcard.ToString();
+                
                 Destroy(card.gameObject);
             }
         }
-        else if(units2 <= Math.Min(units1,units3))
+        else if(units2 == temp)
         {
             CardDisplay[] cards = zone2.GetComponentsInChildren<CardDisplay>();
             foreach(var card in cards)
@@ -562,22 +576,14 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 {
                     continue;
                 }
-                if(card.team == 1)
-                {
-                    int deathcard = int.Parse(deathCount.GraveYard1.text);
-                    deathcard++;
-                    deathCount.GraveYard1.text = deathcard.ToString();
-                }
-                else
-                {
-                    int deathcard = int.Parse(deathCount.GraveYard2.text);
-                    deathcard++;
-                    deathCount.GraveYard2.text = deathcard.ToString();
-                }
+                int deathcard = int.Parse(deathCount.GraveYard2.text);
+                deathcard++;
+                deathCount.GraveYard2.text = deathcard.ToString();
+
                 Destroy(card.gameObject);
             }
         }
-        else if(units3 <= Math.Min(units2,units1))
+        else if(units3 == temp)
         {
             CardDisplay[] cards = zone3.GetComponentsInChildren<CardDisplay>();
             foreach(var card in cards)
@@ -586,19 +592,107 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 {
                     continue;
                 }
-                if(card.team == 1)
-                {
-                    int deathcard = int.Parse(deathCount.GraveYard1.text);
-                    deathcard++;
-                    deathCount.GraveYard1.text = deathcard.ToString();
-                }
-                else
-                {
-                    int deathcard = int.Parse(deathCount.GraveYard2.text);
-                    deathcard++;
-                    deathCount.GraveYard2.text = deathcard.ToString();
-                }
+                int deathcard = int.Parse(deathCount.GraveYard1.text);
+                deathcard++;
+                deathCount.GraveYard1.text = deathcard.ToString();
+
                 Destroy(card.gameObject);
+            }
+        }
+        else if(units4 == temp)
+        {
+            CardDisplay[] cards = zone4.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
+            { 
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                int deathcard = int.Parse(deathCount.GraveYard2.text);
+                deathcard++;
+                deathCount.GraveYard2.text = deathcard.ToString();
+
+                Destroy(card.gameObject);
+            }
+        }
+        else if(units5 == temp)
+        {
+            CardDisplay[] cards = zone5.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
+            {
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                int deathcard = int.Parse(deathCount.GraveYard1.text);
+                deathcard++;
+                deathCount.GraveYard1.text = deathcard.ToString();
+
+                Destroy(card.gameObject);
+            }
+        }
+        else if(units6 == temp)
+        {
+            CardDisplay[] cards = zone6.GetComponentsInChildren<CardDisplay>();
+            foreach(var card in cards)
+            {
+                if(card.card.golden)
+                {
+                    continue;
+                }
+                int deathcard = int.Parse(deathCount.GraveYard2.text);
+                deathcard++;
+                deathCount.GraveYard2.text = deathcard.ToString();
+
+                Destroy(card.gameObject);
+            }
+        }
+    }
+    void CallWeather(GameObject cardplayed) //This effect sets a weather in the field
+    {
+        Debug.Log("Comenzo el efecto");
+        CardDisplay cardDisplay = cardplayed.GetComponent<CardDisplay>();
+        zone1 = GameObject.Find("Weather");
+        if(cardDisplay.team ==1)
+        {
+            Debug.Log("El if");
+            deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
+            List<GameObject> deckCards = deck.GetCards();
+            for(int i=0;i<deckCards.Count;i++)
+            {
+                Debug.Log("Iteracion numero "+i);
+                if(deckCards[i].GetComponent<CardDisplay>().name == "Frost"||deckCards[i].GetComponent<CardDisplay>().name == "Winds"||deckCards[i].GetComponent<CardDisplay>().name == "Earthquake")
+                {
+                    Debug.Log("Se cumplio el if");
+                    GameObject playerCard = Instantiate(deckCards[i], new Vector3(0, 0, 0), Quaternion.identity);
+                    playerCard.transform.SetParent(zone1.transform, false);
+                    deckCards.RemoveAt(i);
+                    draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
+                    draw.deck1Size.text = deckCards.Count.ToString();
+                    effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
+                    effects.PlayCardEffect(playerCard.GetComponent<CardDisplay>().card.effect,playerCard);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("El else");
+            deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
+            List<GameObject> deckCards = deck.GetCards();
+            for(int i=0;i<deckCards.Count;i++)
+            {
+                if(deckCards[i].GetComponent<CardDisplay>().name == "Frost"||deckCards[i].GetComponent<CardDisplay>().name == "Winds"||deckCards[i].GetComponent<CardDisplay>().name == "Earthquake")
+                {
+                    GameObject playerCard = Instantiate(deckCards[i], new Vector3(0, 0, 0), Quaternion.identity);
+                    playerCard.transform.SetParent(zone1.transform, false);
+                    deckCards.RemoveAt(i);
+                    draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
+                    draw.deck2Size.text = deckCards.Count.ToString();
+                    effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
+                    effects.PlayCardEffect(playerCard.GetComponent<CardDisplay>().card.effect,playerCard);
+                    break;
+                }
             }
         }
     }

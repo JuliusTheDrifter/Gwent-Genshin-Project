@@ -203,7 +203,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
         else if(!endTurn.player1Turn)
         {
             changeCards = GameObject.Find("ToChangeP2").GetComponent<ChangeCards>();
-            GameObject hand = GameObject.Find("Hand1");
+            GameObject hand = GameObject.Find("Hand2");
             if(changeCards.changeTime)
             {
                 deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
