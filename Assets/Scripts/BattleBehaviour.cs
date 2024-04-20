@@ -6,7 +6,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public enum BattleState {START,PLAYER1TURN,PLAYER2TURN,WON,LOST}
 public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage the turns and rounds
 {
     public bool player1Turn;

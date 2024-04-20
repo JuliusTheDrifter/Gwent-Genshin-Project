@@ -149,6 +149,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             if(cardDisplay.team ==1)
             {
                 GameObject zone1 = GameObject.Find("Hand1");
+                cardDisplay.points = cardDisplay.card.points;
                 transform.position = zone1.transform.position;
                 transform.SetParent(zone1.transform,false);
                 decoy.decoyTime = false;
@@ -161,6 +162,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             if(cardDisplay.team ==2)
             {
                 GameObject zone1 = GameObject.Find("Hand2");
+                cardDisplay.points = cardDisplay.card.points;
                 transform.position = zone1.transform.position;
                 transform.SetParent(zone1.transform,false);
                 decoy.decoyTime = false;

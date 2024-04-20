@@ -109,7 +109,6 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
             {
                 continue;
             }
-            card.points = card.card.points;
             card.points += 5;
             card.pointsText.text = card.points.ToString();
             card.pointsText.color = Color.green;
@@ -297,7 +296,6 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 {
                     continue;
                 }
-                card.points = card.card.points;
                 card.points += 5;
                 card.pointsText.text = card.points.ToString();
                 card.pointsText.color = Color.green;

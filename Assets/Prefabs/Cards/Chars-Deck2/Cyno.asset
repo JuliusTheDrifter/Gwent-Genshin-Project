@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Cyno
   id: 18
   description: As the General Mahamatra, Cyno strikes fear into his enemies
-  effect: 
+  effect: Draw
   points: 12
   golden: 0
   artwork: {fileID: 21300000, guid: 71c88b62a13990b49a798a3979a741c9, type: 3}
