@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Klee
   id: 8
-  description: 'Effect: Eliminates the card with the highest points, ally or enemy'
-  effect: Highest
+  description: 
+  effect: 
   points: 12
   golden: 0
   artwork: {fileID: 21300000, guid: e6a03ef85cbd3be4eab401e091e7b0b5, type: 3}

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Sucrose
   id: 12
-  description: An alchemist specializing in bio-alchemy
-  effect: 
+  description: 'Effect: Eliminates the card with the highest points, ally or enemy'
+  effect: Highest
   points: 5
   golden: 0
   artwork: {fileID: 21300000, guid: a4f8a251577a932428006c12a13a4017, type: 3}

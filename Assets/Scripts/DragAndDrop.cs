@@ -52,17 +52,18 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     {
         turns = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         bool rotateMouse = turns.player1Turn;
+        float f = 1.3f;
         //This checks if the card can move
         if(!canBePlaced)
         {
             //This rotates the mouse mobility acording to the turn
             if(rotateMouse)
             {
-                rectTransform.anchoredPosition += 3 * eventData.delta;
+                rectTransform.anchoredPosition += f * eventData.delta;
             }
             else
             {
-                rectTransform.anchoredPosition -= 3 * eventData.delta;
+                rectTransform.anchoredPosition -= f * eventData.delta;
             }
         }
     }
@@ -146,10 +147,12 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
         //Checks if the decoy is active and if the team of the card clicked is the correct one
         if(decoy.decoyTime && decoy.team1)
         {
-            if(cardDisplay.team ==1)
+            if(cardDisplay.team ==1 && !cardDisplay.card.golden)
             {
                 GameObject zone1 = GameObject.Find("Hand1");
                 cardDisplay.points = cardDisplay.card.points;
+                cardDisplay.pointsText.text = cardDisplay.points.ToString();
+                cardDisplay.isEnhanced = false;
                 transform.position = zone1.transform.position;
                 transform.SetParent(zone1.transform,false);
                 decoy.decoyTime = false;
@@ -159,10 +162,12 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
         }
         else if(decoy.decoyTime && decoy.team2)
         {
-            if(cardDisplay.team ==2)
+            if(cardDisplay.team ==2 && !cardDisplay.card.golden)
             {
                 GameObject zone1 = GameObject.Find("Hand2");
                 cardDisplay.points = cardDisplay.card.points;
+                cardDisplay.pointsText.text = cardDisplay.points.ToString();
+                cardDisplay.isEnhanced = false;
                 transform.position = zone1.transform.position;
                 transform.SetParent(zone1.transform,false);
                 decoy.decoyTime = false;

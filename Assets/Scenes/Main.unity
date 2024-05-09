@@ -1368,14 +1368,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b89f1ff89fa0d454d9a278522aae6eec, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9a57d8ed0f94cb84bae2f4732110ea6b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1443,7 +1443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1515,9 +1515,9 @@ MonoBehaviour:
   Card16: {fileID: 6056416734244641062, guid: fbf2d64baf0242b448c74b042414fcb6, type: 3}
   Card17: {fileID: 8436405284470909320, guid: fb86b09791d231b4d90c57afd3b6a6aa, type: 3}
   Card18: {fileID: 4441844972386518643, guid: fa4c374e021f75c47a0f6cebc35415b6, type: 3}
-  Card19: {fileID: 4284435316919879812, guid: ccb0c6687cb1d3c43b731553703ca18e, type: 3}
-  Card20: {fileID: 5262313147761494447, guid: 0878b796993e0824f8a5f9c6a3d14a2f, type: 3}
-  Card21: {fileID: 4283894047918921683, guid: 6f18a714a7da1254286c1f0f37d0b858, type: 3}
+  Card19: {fileID: 4284435316919879812, guid: 7d2e02186e07db342a4d6461bd93ad44, type: 3}
+  Card20: {fileID: 5262313147761494447, guid: b2b6a7f8d757ee84ea89495b120d49dd, type: 3}
+  Card21: {fileID: 4283894047918921683, guid: 1ca156ad324cdcd439724f8d7b1c95b3, type: 3}
   Card22: {fileID: 3619242115116273164, guid: f52dcef963d02e9498b7de799308a8bd, type: 3}
   Card23: {fileID: 3027576374075226037, guid: 96126c77dccf27046bca90cdde75578d, type: 3}
   Card24: {fileID: 3490232810987286200, guid: cb33fe343f4809e4ea672393a7d6ccc5, type: 3}

@@ -57,6 +57,24 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
     }
     public void OnClick() //This method is to manage the rounds
     {
+        if(player1Turn)
+        {
+            if(time1.changeTime)
+            {
+                Immovable(player1Hand,true);
+                time1.changeTime = false;
+                time1.Hide();
+            }
+        }
+        else if(!player1Turn)
+        {
+            if(time2.changeTime)
+            {
+                Immovable(player2Hand,true);
+                time2.changeTime = false;
+                time2.Hide();
+            } 
+        }
         round =! round;
         player1Turn =! player1Turn;
         EndTurn();

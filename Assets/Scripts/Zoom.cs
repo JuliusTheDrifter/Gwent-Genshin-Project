@@ -8,7 +8,7 @@ public class Zoom : MonoBehaviour //This script shows a bigger form of the card 
     public GameObject zoomCard;
     public BattleBehaviour turn;
     private Vector2 zoomScale = new Vector2(3,3);
-    public void Awake()
+    /*public void Awake()
     {
         Canvas = GameObject.Find("Board");
     }
@@ -32,5 +32,5 @@ public class Zoom : MonoBehaviour //This script shows a bigger form of the card 
     public void OnMouseExit() //When mouse exits the card, the zoomcard is destroyed
     {
         Destroy(zoomCard);
-    }
+    }*/
 }

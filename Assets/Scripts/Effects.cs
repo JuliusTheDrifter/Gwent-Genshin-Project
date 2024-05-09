@@ -503,7 +503,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         int units4 = 0;
         int units5 = 0;
         int units6 = 0;
-        
+        deathCount = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         zone1 = GameObject.Find("Melee1");
         zone2 = GameObject.Find("Melee2");
         zone3 = GameObject.Find("Ranged1");
