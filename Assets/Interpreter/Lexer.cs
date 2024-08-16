@@ -28,26 +28,30 @@ public class Lexer
         keywords.Add("Power", new Token(TokenType.POWER, "Power", "Power", 0, 0));
         keywords.Add("Range", new Token(TokenType.RANGE, "Range", "Range", 0, 0));
         keywords.Add("OnActivation", new Token(TokenType.ONACTIVATION, "OnActivation", "OnActivation", 0, 0));
-        keywords.Add("Effect", new Token(TokenType.FUN, "Effect", "Effect", 0, 0));
+        keywords.Add("Effect", new Token(TokenType.ONACTIVATIONEFFECT, "Effect", "Effect", 0, 0));
         keywords.Add("Selector", new Token(TokenType.SELECTOR, "Selector", "Selector", 0, 0));
         keywords.Add("Single", new Token(TokenType.SINGLE, "Single", "Single", 0, 0));
         keywords.Add("Predicate", new Token(TokenType.PREDICATE, "Predicate", "Predicate", 0, 0));
         keywords.Add("PostAction", new Token(TokenType.POSTACTION, "PostAction", "PostAction", 0, 0));
         keywords.Add("Source", new Token(TokenType.SOURCE, "Source", "Source", 0, 0));
 
-        keywords.Add("TriggerPlayer", new Token(TokenType.POINTER, "TriggerPlayer", "TriggerPlayer", 0, 0));
+        keywords.Add("Hand", new Token(TokenType.POINTER, "Hand", "Hand", 0, 0));
+        keywords.Add("Field", new Token(TokenType.POINTER, "Field", "Field", 0, 0));
+        keywords.Add("Deck", new Token(TokenType.POINTER, "Deck", "Deck", 0, 0));
+        keywords.Add("Graveyard", new Token(TokenType.POINTER, "Graveyard", "Graveyard", 0, 0));
         keywords.Add("Board", new Token(TokenType.POINTER, "Board", "Board", 0, 0));
-        keywords.Add("HandOfPlayer", new Token(TokenType.POINTER, "HandOfPlayer", "HandOfPlayer", 0, 0));
-        keywords.Add("DeckOfPlayer", new Token(TokenType.POINTER, "DeckOfPlayer", "DeckOfPlayer", 0, 0));
-        keywords.Add("FieldOfPlayer", new Token(TokenType.POINTER, "FieldOfPlayer", "FieldOfPlayer", 0, 0));
-        keywords.Add("GraveyardOfPlayer", new Token(TokenType.POINTER, "GraveyardOfPlayer", "GraveyardOfPlayer", 0, 0));
 
-        keywords.Add("Find", new Token(TokenType.METHOD, "Find", "Find", 0, 0));
-        keywords.Add("Push", new Token(TokenType.METHOD, "Push", "Push", 0, 0));
-        keywords.Add("SendBottom", new Token(TokenType.METHOD, "SendBottom", "SendBottom", 0, 0));
-        keywords.Add("Pop", new Token(TokenType.METHOD, "Pop", "Pop", 0, 0));
-        keywords.Add("Remove", new Token(TokenType.METHOD, "Remove", "Remove", 0, 0));
-        keywords.Add("Shuffle", new Token(TokenType.METHOD, "Shuffle", "Shuffle", 0, 0));
+        keywords.Add("TriggerPlayer", new Token(TokenType.FUN, "TriggerPlayer", "TriggerPlayer", 0, 0));
+        keywords.Add("HandOfPlayer", new Token(TokenType.FUN, "HandOfPlayer", "HandOfPlayer", 0, 0));
+        keywords.Add("DeckOfPlayer", new Token(TokenType.FUN, "DeckOfPlayer", "DeckOfPlayer", 0, 0));
+        keywords.Add("FieldOfPlayer", new Token(TokenType.FUN, "FieldOfPlayer", "FieldOfPlayer", 0, 0));
+        keywords.Add("GraveyardOfPlayer", new Token(TokenType.FUN, "GraveyardOfPlayer", "GraveyardOfPlayer", 0, 0));
+        keywords.Add("Find", new Token(TokenType.FUN, "Find", "Find", 0, 0));
+        keywords.Add("Push", new Token(TokenType.FUN, "Push", "Push", 0, 0));
+        keywords.Add("SendBottom", new Token(TokenType.FUN, "SendBottom", "SendBottom", 0, 0));
+        keywords.Add("Pop", new Token(TokenType.FUN, "Pop", "Pop", 0, 0));
+        keywords.Add("Remove", new Token(TokenType.FUN, "Remove", "Remove", 0, 0));
+        keywords.Add("Shuffle", new Token(TokenType.FUN, "Shuffle", "Shuffle", 0, 0));
 
         keywords.Add("Number", new Token(TokenType.NUMBERTYPE, "Number", "Number", 0, 0));
         keywords.Add("String", new Token(TokenType.STRINGTYPE, "String", "String", 0, 0));
@@ -55,17 +59,21 @@ public class Lexer
     }
     public List<Token> ScanTokens()
     {
-        while(!IsAtTheEnd())
+        try
         {
-            start = current;
-            ScanToken();
+            while (!IsAtTheEnd())
+            {
+                start = current;
+                ScanToken();
+            }
+            Tokens.Add(new Token(TokenType.EOF, "", "" , line, current));
+            return Tokens;
         }
-        Tokens.Add(new Token(TokenType.EOF,"",null, line, current));
-        return Tokens;
-    }
-    bool IsAtTheEnd()
-    {
-        return current >= Input.Length ? true:false;
+        catch (ParseException ex)
+        {
+            Console.WriteLine($"Lexic error: {ex.Message}");
+            throw;
+        }
     }
     void ScanToken()
     {
@@ -142,9 +150,13 @@ public class Lexer
             default:
             if(IsDigit(c)) Number();
             else if(IsAlpha(c)) Identifier();
-            else Console.WriteLine(line + " Unexpected character." + start + " " + current);
+            else throw new ParseException(line + " Unexpected character." + start + " " + current);
             break;
         }
+    }
+    bool IsAtTheEnd()
+    {
+        return current >= Input.Length;
     }
     char Advance()
     {
@@ -177,11 +189,10 @@ public class Lexer
         }
         if(IsAtTheEnd())
         {
-            Console.WriteLine(line + " Undeterminated string");
-            return;
+            throw new ParseException($"{line}: Unfinished string.");
         }
         Advance();
-        string value = Input.Substring(start+1,current-1);
+        string value = Input.Substring(start+1,current-start-2);
         AddToken(TokenType.STRING, value);
     }
     bool IsDigit(char c)
@@ -214,13 +225,13 @@ public class Lexer
         if(keywords.ContainsKey(text))
         {
             Token token = keywords[text];
-            Tokens.Add(new Token(token.Type,token.Lexeme,null,line,current/line));
+            Tokens.Add(new Token(token.Type,token.Lexeme,token.Lexeme,line,current/line)); //Revisar
         }
         else AddToken(type);
     }
     void AddToken(TokenType type)
     {
-        AddToken(type,null);
+        AddToken(type,""); //Revisar
     }
     void AddToken(TokenType type, Object literal)
     {
