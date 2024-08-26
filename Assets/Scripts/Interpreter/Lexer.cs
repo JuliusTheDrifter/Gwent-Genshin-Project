@@ -1,16 +1,22 @@
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System;
+using System.Diagnostics;
+using UnityEngine;
 
 public class Lexer
 {
     private readonly List<Token> Tokens = new List<Token>();
     private static Dictionary<string,Token> keywords = new Dictionary<string, Token>();
     private string Input{get;}
+    private List<string> errors;
     private int start = 0;
     private int current = 0;
     private int line = 1;
-    public Lexer(string input)
+    public Lexer(string input, List<string> errors)
     {
         Input=input;
+        this.errors = errors;
 
         keywords.Add("while", new Token(TokenType.WHILE,"while","while",0,0));
         keywords.Add("for", new Token(TokenType.FOR,"for","for",0,0));
@@ -59,8 +65,8 @@ public class Lexer
     }
     public List<Token> ScanTokens()
     {
-        try
-        {
+        //try
+        //{
             while (!IsAtTheEnd())
             {
                 start = current;
@@ -68,12 +74,12 @@ public class Lexer
             }
             Tokens.Add(new Token(TokenType.EOF, "", "" , line, current));
             return Tokens;
-        }
-        catch (ParseException ex)
+        //}
+        /*catch(ParseException ex)
         {
-            Console.WriteLine($"Lexic error: {ex.Message}");
+            /*Console.WriteLine($"Lexic error: {ex.Message}");
             throw;
-        }
+        }*/
     }
     void ScanToken()
     {
@@ -150,7 +156,11 @@ public class Lexer
             default:
             if(IsDigit(c)) Number();
             else if(IsAlpha(c)) Identifier();
-            else throw new ParseException(line + " Unexpected character." + start + " " + current);
+            else
+            {
+                errors.Add($"Lexic error: {line + " Unexpected character." + start + " " + current}");
+                if(!IsAtTheEnd()) Advance();
+            } 
             break;
         }
     }
@@ -189,11 +199,14 @@ public class Lexer
         }
         if(IsAtTheEnd())
         {
-            throw new ParseException($"{line}: Unfinished string.");
+            errors.Add($"Lexic error:Unfinished string in line {line}.");
         }
-        Advance();
-        string value = Input.Substring(start+1,current-start-2);
-        AddToken(TokenType.STRING, value);
+        else
+        {
+            Advance();
+            string value = Input.Substring(start+1,current-start-2);
+            AddToken(TokenType.STRING, value);
+        }
     }
     bool IsDigit(char c)
     {
@@ -207,7 +220,7 @@ public class Lexer
             Advance();
             while(IsDigit(Peek())) Advance();
         }
-        AddToken(TokenType.NUMBER,Double.Parse(Input.Substring(start,current-start)));
+        AddToken(TokenType.NUMBER,Convert.ToInt32(Input.Substring(start,current-start)));
     }
     bool IsAlpha(char c)
     {
@@ -233,7 +246,7 @@ public class Lexer
     {
         AddToken(type,""); //Revisar
     }
-    void AddToken(TokenType type, Object literal)
+    void AddToken(TokenType type, object literal)
     {
         string text = Input.Substring(start,current-start);
         Tokens.Add(new Token(type,text,literal,line,current/line));

@@ -67,11 +67,11 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
             CardDisplay cardDisplay = card.GetComponent<CardDisplay>();
             if(cardDisplay.team == 1)
             {
-                draw.Draw1();
+                draw.DrawCard(1);
             }
             else
             {
-                draw.Draw2();
+                draw.DrawCard(2);
             }
         }
         if(effect == "CallWeather")
@@ -653,42 +653,34 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         zone1 = GameObject.Find("Weather");
         if(cardDisplay.team ==1)
         {
-            Debug.Log("El if");
             deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
-            List<GameObject> deckCards = deck.GetCards();
+            List<Card> deckCards = deck.GetComponent<Deck>().Cards;
             for(int i=0;i<deckCards.Count;i++)
             {
-                Debug.Log("Iteracion numero "+i);
-                if(deckCards[i].GetComponent<CardDisplay>().name == "Frost"||deckCards[i].GetComponent<CardDisplay>().name == "Winds"||deckCards[i].GetComponent<CardDisplay>().name == "Earthquake")
+                if(deckCards[i].prefab.GetComponent<CardDisplay>().name == "Frost"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Winds"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Earthquake")
                 {
-                    Debug.Log("Se cumplio el if");
-                    GameObject playerCard = Instantiate(deckCards[i], new Vector3(0, 0, 0), Quaternion.identity);
+                    GameObject playerCard = Instantiate(deckCards[i].prefab, new Vector3(0, 0, 0), Quaternion.identity);
                     playerCard.transform.SetParent(zone1.transform, false);
-                    deckCards.RemoveAt(i);
-                    draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
-                    draw.deck1Size.text = deckCards.Count.ToString();
+                    deck.Remove(deckCards[i]);
                     effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
-                    effects.PlayCardEffect(playerCard.GetComponent<CardDisplay>().card.effect,playerCard);
+                    effects.PlayCardEffect(playerCard.GetComponent<CardDisplay>().card.effectText,playerCard);
                     break;
                 }
             }
         }
         else
         {
-            Debug.Log("El else");
             deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
-            List<GameObject> deckCards = deck.GetCards();
+            List<Card> deckCards = deck.GetComponent<Deck>().Cards;
             for(int i=0;i<deckCards.Count;i++)
             {
-                if(deckCards[i].GetComponent<CardDisplay>().name == "Frost"||deckCards[i].GetComponent<CardDisplay>().name == "Winds"||deckCards[i].GetComponent<CardDisplay>().name == "Earthquake")
+                if(deckCards[i].prefab.GetComponent<CardDisplay>().name == "Frost"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Winds"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Earthquake")
                 {
-                    GameObject playerCard = Instantiate(deckCards[i], new Vector3(0, 0, 0), Quaternion.identity);
+                    GameObject playerCard = Instantiate(deckCards[i].prefab, new Vector3(0, 0, 0), Quaternion.identity);
                     playerCard.transform.SetParent(zone1.transform, false);
-                    deckCards.RemoveAt(i);
-                    draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
-                    draw.deck2Size.text = deckCards.Count.ToString();
+                    deck.Remove(deckCards[i]);
                     effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
-                    effects.PlayCardEffect(playerCard.GetComponent<CardDisplay>().card.effect,playerCard);
+                    effects.PlayCardEffect(playerCard.GetComponent<CardDisplay>().card.effectText,playerCard);
                     break;
                 }
             }

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 public interface Node
 {
     public void Print(int indent = 0);
@@ -5,28 +8,29 @@ public interface Node
 
 public class Program : Node
 {
-    public List<Card> Cards;
-    public List<Effect> Effects;
+    public List<CardNode> CardNodes;
+    public List<EffectNode> EffectNodes;
     public Program()
     {
-        Cards = new List<Card>();
-        Effects = new List<Effect>();
+        CardNodes = new List<CardNode>();
+        EffectNodes = new List<EffectNode>();
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Program:");
-        foreach (var card in Cards)
+
+        Debug.Log(new string(' ', indent) + "Program:");
+        foreach (var card in CardNodes)
         {
             card.Print(indent + 2);
         }
-        foreach (var effect in Effects)
+        foreach (var effect in EffectNodes)
         {
             effect.Print(indent + 2);
         }
     }
 }
 
-public class Card : Node
+public class CardNode : Node
 {
     public Type Type;
     public Name Name;
@@ -34,11 +38,11 @@ public class Card : Node
     public Power Power;
     public Range Range;
     public OnActivation OnActivation;
-    public Card()
+    public CardNode()
     {
         
     }
-    public Card(Type type,Name name,Faction faction,Power power,Range range,OnActivation onActivation)
+    public CardNode(Type type,Name name,Faction faction,Power power,Range range,OnActivation onActivation)
     {
         Type = type;
         Name = name;
@@ -49,7 +53,8 @@ public class Card : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Card:");
+
+        Debug.Log(new string(' ', indent) + "Card:");
         Type?.Print(indent + 2);
         Name?.Print(indent + 2);
         Faction?.Print(indent + 2);
@@ -69,7 +74,8 @@ public class Name : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Name:");
+
+        Debug.Log(new string(' ', indent) + "Name:");
         name.Print(indent + 2);
     }
 }
@@ -84,7 +90,8 @@ public class Type : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Type:");
+
+        Debug.Log(new string(' ', indent) + "Type:");
         type.Print(indent + 2);
     }
 }
@@ -98,7 +105,8 @@ public class Faction : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Faction:");
+
+        Debug.Log(new string(' ', indent) + "Faction:");
         faction.Print(indent + 2);
     }
 }
@@ -113,7 +121,8 @@ public class Power : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Power:");
+
+        Debug.Log(new string(' ', indent) + "Power:");
         power.Print(indent + 2);
     }
 }
@@ -146,7 +155,8 @@ public class Range : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Range:");
+
+        Debug.Log(new string(' ', indent) + "Range:");
         if(range != null)
         {
             foreach(var expr in range)
@@ -156,7 +166,8 @@ public class Range : Node
         }
         else
         {
-            Console.WriteLine(new string(' ', indent) + "Lexeme: " + Lexeme);
+
+            Debug.Log(new string(' ', indent) + "Lexeme: " + Lexeme);
         }
     }
 }
@@ -170,7 +181,8 @@ public class OnActivation : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "OnActivation:");
+
+        Debug.Log(new string(' ', indent) + "OnActivation:");
         foreach (var element in Elements)
         {
             element.Print(indent + 2);
@@ -182,19 +194,23 @@ public class OnActivationElements : Node
 {
     public OAEffect OAEffect;
     public Selector Selector;
-    public PostAction postAction;
-    public OnActivationElements(OAEffect oaEffect, Selector selector, PostAction pA)
+    public List<PostAction> postActions;
+    public OnActivationElements(OAEffect oaEffect, Selector selector, List<PostAction> pA)
     {
         OAEffect = oaEffect;
         Selector = selector;
-        postAction = pA;
+        postActions = pA;
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "OnActivationElements:");
+
+        Debug.Log(new string(' ', indent) + "OnActivationElements:");
         OAEffect?.Print(indent + 2);
         Selector?.Print(indent + 2);
-        postAction?.Print(indent + 2);
+        foreach(var postAction in postActions)
+        {
+            postAction?.Print(indent + 2);
+        }
     }
 }
 
@@ -209,8 +225,10 @@ public class OAEffect : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "OAEffect:");
-        Console.WriteLine(new string(' ', indent + 2) + "Name: " + Name);
+
+
+        Debug.Log(new string(' ', indent) + "OAEffect:");
+        Debug.Log(new string(' ', indent + 2) + "Name: " + Name);
         foreach (var assignment in Assingments)
         {
             assignment.Print(indent + 2);
@@ -231,8 +249,10 @@ public class Selector : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Selector:");
-        Console.WriteLine(new string(' ', indent + 2) + "Source: " + Source);
+
+
+        Debug.Log(new string(' ', indent) + "Selector:");
+        Debug.Log(new string(' ', indent + 2) + "Source: " + Source);
         Single?.Print(indent + 2);
         Predicate?.Print(indent + 2);
     }
@@ -251,7 +271,8 @@ public class Single : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Single: " + Value);
+
+        Debug.Log(new string(' ', indent) + "Single: " + Value);
     }
 }
 
@@ -266,10 +287,15 @@ public class Predicate : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Predicate:");
+
+        Debug.Log(new string(' ', indent) + "Predicate:");
         Var?.Print(indent + 2);
         Condition?.Print(indent + 2);
     }
+    /*public Func<Card,bool> Evaluate()
+    {
+
+    }*/
 }
 
 public class PostAction : Node
@@ -285,23 +311,24 @@ public class PostAction : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "PostAction:");
+
+        Debug.Log(new string(' ', indent) + "PostAction:");
         Type?.Print(indent + 2);
         Selector?.Print(indent + 2);
     }
 }
 
-public class Effect : Node
+public class EffectNode : Node
 {
     public Name Name;
     public Args Params;
     public Action Action;
-    public Effect()
+    public EffectNode()
     {
        
     }
 
-    public Effect(Name name,Args param,Action action)
+    public EffectNode(Name name,Args param,Action action)
     {
         Name = name;
         Params = param;
@@ -310,7 +337,8 @@ public class Effect : Node
 
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Effect:");
+
+        Debug.Log(new string(' ', indent) + "Effect:");
         Name?.Print(indent + 2);
         Params?.Print(indent + 2);
         Action?.Print(indent + 2);
@@ -330,13 +358,13 @@ public class Action : Node
     }
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Action:");
+
+        Debug.Log(new string(' ', indent) + "Action:");
         Targets?.Print(indent + 2);
         Context?.Print(indent + 2);
         Block?.Print(indent + 2);
     }
 }
-
 
 public abstract class Expression : Node
 {
@@ -359,7 +387,7 @@ public class Number : Expression
 
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Number: " + Value);
+        Debug.Log(new string(' ', indent) + "Number: " + Value);
     }
 }
 
@@ -378,7 +406,7 @@ public class String : Expression
 
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "String: " + Value);
+        Debug.Log(new string(' ', indent) + "String: " + Value);
     }
 }
 
@@ -397,7 +425,7 @@ public class Bool : Expression
 
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Bool: " + Value);
+        Debug.Log(new string(' ', indent) + "Bool: " + Value);
     }
 }
 
@@ -421,7 +449,7 @@ public class BinaryExpression : Expression
             switch (Operators.Type)
             {
                 case TokenType.PLUS:
-                    return Convert.ToDouble(leftValue) + Convert.ToDouble(rightValue);    
+                    return Convert.ToInt32(leftValue) + Convert.ToDouble(rightValue);    
                 case TokenType.MINUS:
                     return Convert.ToDouble(leftValue) - Convert.ToDouble(rightValue);
                 case TokenType.STAR:
@@ -460,7 +488,7 @@ public class BinaryExpression : Expression
     }
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "BinaryOperator: " + Operators.Lexeme);
+        Debug.Log(new string(' ', indent) + "BinaryOperator: " + Operators.Lexeme);
         Left.Print(indent + 2);
         Right.Print(indent + 2);
     }
@@ -510,7 +538,7 @@ public class UnaryExpression : Expression
     
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "UnaryExpression: " + Operators.Lexeme);
+        Debug.Log(new string(' ', indent) + "UnaryExpression: " + Operators.Lexeme);
         Right.Print(indent + 2);
     }
 }
@@ -538,7 +566,7 @@ public class ExpressionGroup : Expression
     }
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "ExpressionGroup:");
+        Debug.Log(new string(' ', indent) + "ExpressionGroup:");
         Exp.Print(indent + 2);
     }
 }
@@ -576,12 +604,12 @@ public class Variable : Expression
 
     public override object Evaluate()
     {
-        throw new NotImplementedException();
+        return "a";
     }
 
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Variable: " + Value + " (" + type.ToString() + ")");
+        Debug.Log(new string(' ', indent) + "Variable: " + Value + " (" + type.ToString() + ")");
     }
 }
 
@@ -593,10 +621,15 @@ public class VariableComp : Variable,Stmt
     {
         args = new Args();
     }
-    
+
+    public void Execute()
+    {
+        throw new NotImplementedException();
+    }
+
     public override void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "VariableComp: " + Value);
+        Debug.Log(new string(' ', indent) + "VariableComp: " + Value);
         args?.Print(indent + 2);
     }
 }
@@ -611,7 +644,7 @@ public class Args : Node
 
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Args:");
+        Debug.Log(new string(' ', indent) + "Args:");
         foreach (var arg in Arguments)
         {
             arg.Print(indent + 2);
@@ -621,7 +654,7 @@ public class Args : Node
 
 public interface Stmt : Node
 {
-    
+    public void Execute();
 }
 
 public class StmsBlock : Node
@@ -635,7 +668,7 @@ public class StmsBlock : Node
 
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "StmsBlock:");
+        Debug.Log(new string(' ', indent) + "StmsBlock:");
         foreach (var stmt in statements)
         {
             stmt.Print(indent + 2);
@@ -655,11 +688,16 @@ public class Assignment : Stmt
         Right = right;
     }
 
+    public void Execute()
+    {
+        throw new NotImplementedException();
+    }
+
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Assignment:");
+        Debug.Log(new string(' ', indent) + "Assignment:");
         Left?.Print(indent + 2);
-        Console.WriteLine(new string(' ', indent + 2) + "Op: " + Op.Lexeme);
+        Debug.Log(new string(' ', indent + 2) + "Op: " + Op.Lexeme);
         Right?.Print(indent + 2);
     }
 }
@@ -674,12 +712,17 @@ public class WhileStatement : Stmt
         Body = body;
     }
 
+    public void Execute()
+    {
+        throw new NotImplementedException();
+    }
+
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "WhileStatement:");
-        Console.WriteLine(new string(' ', indent + 2) + "Condition:");
+        Debug.Log(new string(' ', indent) + "WhileStatement:");
+        Debug.Log(new string(' ', indent + 2) + "Condition:");
         Condition?.Print(indent + 2);
-        Console.WriteLine(new string(' ', indent + 2) + "Body:");
+        Debug.Log(new string(' ', indent + 2) + "Body:");
         Body?.Print(indent + 2);
     }
 }
@@ -696,14 +739,19 @@ public class ForStatement : Stmt
         Body = body;
     }
 
+    public void Execute()
+    {
+        throw new NotImplementedException();
+    }
+
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "ForStatement:");
-        Console.WriteLine(new string(' ', indent + 2) + "Target:");
+        Debug.Log(new string(' ', indent) + "ForStatement:");
+        Debug.Log(new string(' ', indent + 2) + "Target:");
         Target?.Print(indent + 2);
-        Console.WriteLine(new string(' ', indent + 2) + "Targets:");
+        Debug.Log(new string(' ', indent + 2) + "Targets:");
         Targets?.Print(indent + 2);
-        Console.WriteLine(new string(' ', indent + 2) + "Body:");
+        Debug.Log(new string(' ', indent + 2) + "Body:");
         Body?.Print(indent + 2);
     }
 }
@@ -738,10 +786,15 @@ public class Function : Stmt
 
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Function:");
-        Console.WriteLine(new string(' ', indent + 2) + "FunctionName: " + FunctionName);
+        Debug.Log(new string(' ', indent) + "Function:");
+        Debug.Log(new string(' ', indent + 2) + "FunctionName: " + FunctionName);
         Args?.Print(indent + 2);
-        Console.WriteLine(new string(' ', indent + 2) + "Return Type: " + Type.ToString());
+        Debug.Log(new string(' ', indent + 2) + "Return Type: " + Type.ToString());
+    }
+
+    public void Execute()
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -755,6 +808,6 @@ public class Pointer : Node
 
     public void Print(int indent = 0)
     {
-        Console.WriteLine(new string(' ', indent) + "Pointer: " + pointer);
+        Debug.Log(new string(' ', indent) + "Pointer: " + pointer);
     }
 }

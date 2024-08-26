@@ -16,9 +16,12 @@ MonoBehaviour:
   id: 20
   description: 'Effect: Calculates the average of all the player cards and sets their
     points to that average'
-  effect: Average
+  effectText: 
   points: 9
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 5022514872253213944, guid: bdb0b2c89fc7fcc4096ffa07c7c3e7d9, type: 3}
   artwork: {fileID: 21300000, guid: 2110f2ac5b8668448b9d5ea9acefa37c, type: 3}
-  type: {fileID: 21300000, guid: ca9459662eca6124fb63db76cda3d919, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

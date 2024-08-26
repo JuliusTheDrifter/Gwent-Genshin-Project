@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Candance
   id: 15
   description: The scion of Al-Ahmar and protector of Aaru village
-  effect: CallWeather
+  effectText: 
   points: 8
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 1918560327822216844, guid: bac413a433049914b972870ed1e5366c, type: 3}
   artwork: {fileID: 21300000, guid: d9d888c9292071545833f431230d6f6b, type: 3}
-  type: {fileID: 21300000, guid: f406cd94637e26d4e926b7400a2c0e39, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

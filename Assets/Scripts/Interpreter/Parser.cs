@@ -3,11 +3,14 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Collections.Generic;
+using System;
 
 public class Parser
 {
     private List<Token> Tokens{get;}
     private int current = 0;
+    public Exception Ex;
     public Parser(List<Token> tokens)
     {
         Tokens = tokens;
@@ -15,31 +18,38 @@ public class Parser
     public Node Parse()
     {
         Program Program = new Program();
-        while(!IsAtEnd())
+        try
         {
-            if(Match(TokenType.CARD))
+            while(!IsAtEnd())
             {
-                Consume(TokenType.LEFT_BRACE,"Expected '{' after card");
-                Program.Cards.Add(ParseCard());
-                Consume(TokenType.RIGHT_BRACE,"Expected '}' after card declaration");
+                if(Match(TokenType.CARD))
+                {
+                    Consume(TokenType.LEFT_BRACE,"Expected '{' after card");
+                    Program.CardNodes.Add(ParseCard());
+                    Consume(TokenType.RIGHT_BRACE,"Expected '}' after card declaration");
+                }
+                else if(Match(TokenType.EFFECT))
+                {
+                    Consume(TokenType.LEFT_BRACE,"Expected '{'");
+                    Program.EffectNodes.Add(ParseEffect());
+                    Consume(TokenType.RIGHT_BRACE,"Expected '}' after effect declaration");
+                }
+                else
+                {
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Card or Effect expected.");
+                }
             }
-            else if(Match(TokenType.EFFECT))
-            {
-                Consume(TokenType.LEFT_BRACE,"Expected '{'");
-                Program.Effects.Add(ParseEffect());
-                Consume(TokenType.RIGHT_BRACE,"Expected '}' after effect declaration");
-            }
-            else
-            {
-                throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Card or Effect expected.");
-            }
+        }
+        catch(Exception ex)
+        {
+            Ex=ex;
         }
         return Program;
     }
 
-    Card ParseCard()
+    CardNode ParseCard()
     {
-        Card card = new Card();
+        CardNode card = new CardNode();
         int[] counter = new int[6];
         while(!Check(TokenType.RIGHT_BRACE) && !IsAtEnd())
         {
@@ -94,27 +104,26 @@ public class Parser
             }
             else
             {
-                throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Invalid Card property.");
+                throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid Card property.");
             }
         }
-        if(counter[0]<1) throw new ParseException("A Type property is missing from card");
-        else if(counter[0]>1) throw new ParseException("Only one Type is allowed");
-        if(counter[1]<1) throw new ParseException("A Name property is missing from card");
-        else if(counter[1]>1) throw new ParseException("Only one Name is allowed");
-        if(counter[2]<1) throw new ParseException("A Faction property is missing from card");
-        else if(counter[2]>1) throw new ParseException("Only one Faction is allowed");
-        if(counter[3]<1) throw new ParseException("A Power property is missing from card");
-        else if(counter[3]>1) throw new ParseException("Only one Power is allowed");
-        if(counter[4]<1) throw new ParseException("A Range property is missing from card");
-        else if(counter[4]>1) throw new ParseException("Only one Range is allowed");
-        if(counter[5]<1) throw new ParseException("An OnActivation property is missing from card");
-        else if(counter[5]>1) throw new ParseException("Only one OnActivation is allowed");
+        if(counter[0]<1) throw new Exception("A Type property is missing from card");
+        else if(counter[0]>1) throw new Exception("Only one Type is allowed");
+        if(counter[1]<1) throw new Exception("A Name property is missing from card");
+        else if(counter[1]>1) throw new Exception("Only one Name is allowed");
+        if(counter[2]<1) throw new Exception("A Faction property is missing from card");
+        else if(counter[2]>1) throw new Exception("Only one Faction is allowed");
+        if(counter[3]<1) throw new Exception("A Power property is missing from card");
+        else if(counter[3]>1) throw new Exception("Only one Power is allowed");
+        if(counter[4]<1) throw new Exception("A Range property is missing from card");
+        else if(counter[4]>1) throw new Exception("Only one Range is allowed");
+        if(counter[5]>1) throw new Exception("Only one OnActivation is allowed");
         return card;
     }
 
-    Effect ParseEffect()
+    EffectNode ParseEffect()
     {
-        Effect effect = new Effect();
+        EffectNode effect = new EffectNode();
         int[] counter = new int[3];
         while(!Check(TokenType.RIGHT_BRACE) && !IsAtEnd())
         {
@@ -139,14 +148,14 @@ public class Parser
             }
             else
             {
-                throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Invalid Effect property.");
+                throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid Effect property.");
             }
         }
-        if(counter[0]<1) throw new ParseException("A Name property is missing from effect");
-        else if(counter[0]>1) throw new ParseException("Only one Name is allowed");
-        if(counter[1]>1) throw new ParseException("Only one Params is allowed");
-        if(counter[2]<1) throw new ParseException("An Action property is missing from effect");
-        else if(counter[2]>1) throw new ParseException("Only one Action is allowed");
+        if(counter[0]<1) throw new Exception("A Name property is missing from effect");
+        else if(counter[0]>1) throw new Exception("Only one Name is allowed");
+        if(counter[1]>1) throw new Exception("Only one Params is allowed");
+        if(counter[2]<1) throw new Exception("An Action property is missing from effect");
+        else if(counter[2]>1) throw new Exception("Only one Action is allowed");
         return effect;
     }
 
@@ -168,7 +177,7 @@ public class Parser
         Consume(TokenType.LEFT_BRACE,"Expected '{'");
         OAEffect onActivationEffect = null!;
         Selector selector = null!;
-        PostAction postAction = null!;
+        List<PostAction> postActions = new List<PostAction>();
         while(!Check(TokenType.RIGHT_BRACE) && !IsAtEnd())
         {
             if(Match(TokenType.ONACTIVATIONEFFECT))
@@ -180,7 +189,7 @@ public class Parser
                 }
                 else
                 {
-
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Only one OAEffect per Bracks");
                 }
             }
             else if(Match(TokenType.SELECTOR))
@@ -189,33 +198,26 @@ public class Parser
                 {
                     Consume(TokenType.COLON,"Expected ':'");
                     selector = ParseSelector();
-                    if(selector.Source == null) throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Missing field");
+                    if(selector.Source == null) throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Missing field");
                     //Consume(TokenType.COMMA,"Expected ','");
                 }
                 else
                 {
-
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Only one Selector per OAEffect");
                 }
             }
             else if(Match(TokenType.POSTACTION))
             {
-                if(postAction == null)
-                {
-                    Consume(TokenType.COLON,"Expected ':'");
-                    postAction = ParsePostAction();
-                }
-                else
-                {
-
-                }
+                Consume(TokenType.COLON,"Expected ':'");
+                postActions.Add(ParsePostAction());
             }
             else
             {
-                throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Invalid OnActivation field.");
+                throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid OnActivation field.");
             }
         }
         Consume(TokenType.RIGHT_BRACE,"Expected '}' after OnActivation declaration");
-        return new OnActivationElements(onActivationEffect,selector,postAction);
+        return new OnActivationElements(onActivationEffect,selector,postActions);
     }
 
     OAEffect ParseOAEffect()
@@ -240,7 +242,7 @@ public class Parser
                 }   
                 else
                 {
-
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid OAEffect field");
                 }
             }
         }
@@ -260,7 +262,7 @@ public class Parser
                         }
                         else
                         {
-                            throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Duplicate");
+                            throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Duplicate");
                         }
                     }
                     else
@@ -272,7 +274,7 @@ public class Parser
                         }
                         else
                         {
-                            throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Duplicate");
+                            throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Duplicate");
                         }
                     }
                 }
@@ -288,12 +290,12 @@ public class Parser
                 }
                 else
                 {
-
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid OAEffect field");
                 }
             }
             Consume(TokenType.RIGHT_BRACE,"Expected '}'");
         }
-        if(name == null) throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: No name");
+        if(name == null) throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: No name");
         return new OAEffect(name,assignments);
     }
 
@@ -316,12 +318,12 @@ public class Parser
                     }
                     else
                     {
-                        throw new ParseException("");
+                        throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid Source");
                     }
                 }
                 else
                 {
-                    throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Duplicate");
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Source duplicate");
                 }
                 if(!Check(TokenType.RIGHT_BRACE)) Consume(TokenType.COMMA,"Expected ','");
             }
@@ -334,7 +336,7 @@ public class Parser
                 }
                 else
                 {
-                    throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Duplicate");
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Single duplicate");
                 }
                 if(!Check(TokenType.RIGHT_BRACE)) Consume(TokenType.COMMA,"Expected ','");
             }
@@ -347,17 +349,17 @@ public class Parser
                 }
                 else
                 {
-                    throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Duplicate");
+                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Predicate dsuplicate");
                 }
                 if(!Check(TokenType.RIGHT_BRACE)) Consume(TokenType.COMMA,"Expected ','");
             }
             else
             {
-                throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Invalid field");
+                throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid Selector field");
             }
         }
         Consume(TokenType.RIGHT_BRACE,"Expected '}' after Selector declaration");
-        if(single == null || predicate == null) throw new ParseException($"'{Peek().Lexeme}' in {Peek().Line}: Missing field");
+        if(single == null || predicate == null) throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Missing field");
         return new Selector(source,single,predicate);
     }
 
@@ -397,11 +399,11 @@ public class Parser
             }
             else
             {
-                throw new ParseException("");
+                throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid PostAction field");
             }
         }
         Consume(TokenType.RIGHT_BRACE,"Expected '}'");
-        if(expression == null || selector == null) throw new ParseException("");
+        if(expression == null) throw new Exception("Missing PostAction Type");
         return new PostAction(expression,selector);
     }
 
@@ -485,7 +487,7 @@ public class Parser
                     }
                     else
                     {
-                        //Error
+                        throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid variable");
                     }
                 }
             }
@@ -518,18 +520,16 @@ public class Parser
         else if(Check(TokenType.IDENTIFIER))
         {
             Variable variable = ParseVariable();
-            Console.WriteLine(Peek().Lexeme + "666666666666");
             if(variable is VariableComp && Check(TokenType.SEMICOLON))
             {
                 VariableComp v = (variable as VariableComp)!;
                 if(v.args.Arguments[v.args.Arguments.Count-1].GetType() == typeof(Function))
                 {
                     Function function = (v.args.Arguments[v.args.Arguments.Count-1] as Function)!;
-                    if(function.Type != Variable.Type.VOID) throw new ParseException("");
                 }
                 else
                 {
-                    //Error
+                    throw new System.Exception("A compound variable most end in a function");
                 }
                 Consume(TokenType.SEMICOLON,"Expected ';'");
                 return (variable as VariableComp)!;
@@ -545,7 +545,7 @@ public class Parser
         }
         else
         {
-            throw new ParseException("");
+            throw new System.Exception("Invalid statement");
         }
     }
 
@@ -623,7 +623,6 @@ public class Parser
             else
             {
                 throw new Exception("Expected type after parameter name");
-                //return variables
             }
         }
         Consume(TokenType.RIGHT_BRACE,"Expected '}' after Params declaration");
@@ -633,20 +632,8 @@ public class Parser
 
     Expression ParseExpression()
     {
-        try
-        {
-            var result = Equality();
-            /*if (!IsAtEnd())
-            {
-                throw new ParseException($"Unexpected token '{Peek().Lexeme}' at line {Peek().Line}");
-            }*/
-            return result;
-        }
-        catch(ParseException exception)
-        {
-            Console.WriteLine($"Semantical error:{exception.Message}");
-            throw;
-        }
+        var result = Equality();
+        return result;
     }
 
     Expression Equality()
@@ -751,7 +738,8 @@ public class Parser
         {
             return ParseVariable();
         }
-        throw new ParseException($"'{Peek().Lexeme}' in line {Peek().Line}: Unexpected token.");
+        return new Bool(false); //*
+        throw new System.Exception($"'{Peek().Lexeme}' in line {Peek().Line}: Unexpected token.");
     }
 
     bool Match(TokenType type)
@@ -801,6 +789,6 @@ public class Parser
     {
         Console.WriteLine(Peek().Type + " " + Peek().Lexeme);
         if(Check(type)) return Advance();
-        throw new ParseException($"'{Peek().Lexeme}' in line {Peek().Line}: {message}");
+        throw new Exception($"'{Peek().Lexeme}' in line {Peek().Line}: {message}");
     }
 }

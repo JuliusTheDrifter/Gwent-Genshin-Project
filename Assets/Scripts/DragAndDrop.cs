@@ -79,7 +79,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             endTurn = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
             UnityEngine.Debug.Log("Effect");
             effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
-            effects.PlayCardEffect(gameObject.GetComponent<CardDisplay>().card.effect,gameObject);
+            effects.PlayCardEffect(gameObject.GetComponent<CardDisplay>().card.effectText,gameObject);
             //This is to check if there's any Inspire card and activate its effect again
             if(effects.inspireLoop)
             {
@@ -94,7 +94,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                 {
                     if(cards[i]!=null)
                     {
-                        effects.PlayCardEffect(cards[i].card.effect,cards[i].gameObject);
+                        effects.PlayCardEffect(cards[i].card.effectText,cards[i].gameObject);
                     }
                 }
             }
@@ -106,7 +106,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                 {
                     foreach(var card in cards)
                     {
-                        effects.PlayCardEffect(card.card.effect,card.gameObject);
+                        effects.PlayCardEffect(card.card.effectText,card.gameObject);
                     }
                 }
             }
@@ -131,12 +131,12 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
         CardDisplay card = gameObject.GetComponent<CardDisplay>();
         if(zoneName==card.position)return true;
         //Decoys can be placed in all the units zones
-        else if(card.team==1&&zoneName=="Melee1"&&card.card.effect=="Decoy")return true;
-        else if(card.team==1&&zoneName=="Ranged1"&&card.card.effect=="Decoy")return true;
-        else if(card.team==1&&zoneName=="Siege1"&&card.card.effect=="Decoy")return true;
-        else if(card.team==2&&zoneName=="Melee2"&&card.card.effect=="Decoy")return true;
-        else if(card.team==2&&zoneName=="Ranged2"&&card.card.effect=="Decoy")return true;
-        else if(card.team==2&&zoneName=="Siege2"&&card.card.effect=="Decoy")return true;
+        else if(card.team==1&&zoneName=="Melee1"&&card.card.effectText=="Decoy")return true;
+        else if(card.team==1&&zoneName=="Ranged1"&&card.card.effectText=="Decoy")return true;
+        else if(card.team==1&&zoneName=="Siege1"&&card.card.effectText=="Decoy")return true;
+        else if(card.team==2&&zoneName=="Melee2"&&card.card.effectText=="Decoy")return true;
+        else if(card.team==2&&zoneName=="Ranged2"&&card.card.effectText=="Decoy")return true;
+        else if(card.team==2&&zoneName=="Siege2"&&card.card.effectText=="Decoy")return true;
         else return false;
     }
     //This method is for the Decoy effect, it returns the card on the field you clicked on to the hand
@@ -191,11 +191,10 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             if(changeCards.changeTime)
             {
                 deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
-                List<GameObject> deckCards = deck.GetCards();
                 if(cardDisplay.team == 1)
                 {
-                    deckCards.Add(gameObject);
-                    draw.Draw1();
+                    deck.GetComponent<Deck>().Push(gameObject.GetComponent<CardDisplay>().card);
+                    draw.DrawCard(1);
                     Destroy(gameObject);
                     changeCards.counter++;
                     if(changeCards.counter ==2)
@@ -214,11 +213,10 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             if(changeCards.changeTime)
             {
                 deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
-                List<GameObject> deckCards = deck.GetCards();
                 if(cardDisplay.team == 2)
                 {
-                    deckCards.Add(gameObject);
-                    draw.Draw2();
+                    deck.GetComponent<Deck>().Push(gameObject.GetComponent<CardDisplay>().card);
+                    draw.DrawCard(2);
                     Destroy(gameObject);
                     changeCards.counter++;
                     if(changeCards.counter == 2)

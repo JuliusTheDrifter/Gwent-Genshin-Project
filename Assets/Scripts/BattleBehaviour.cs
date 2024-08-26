@@ -18,6 +18,10 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
     public int P2roundsWon;
     public GameObject player1Hand;
     public GameObject player2Hand;
+    public GameObject Units1;
+    public GameObject Units2;
+    public GameObject Inspires1;
+    public GameObject Inspires2;
     public Button leader1;
     public Button leader2;
     public Draw draw;
@@ -34,14 +38,13 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
     {
         //Here each player draw 10 cards at the start of the game
         //Player 1 draws 1 more card than player 2 because of his leader effect
-        draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
         for(int i=0;i<11;i++)
         {
-            draw.Draw1();
+            draw.DrawCard(1);
         }
         for(int i=0;i<10;i++)
         {
-            draw.Draw2();
+            draw.DrawCard(2);
         }
         NoInteractions(leader1,false);
         NoInteractions(leader2,false);
@@ -55,6 +58,94 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
         Immovable(player1Hand,false);
         Immovable(player2Hand,false);
     }
+
+    public int TriggerPlayer()
+    {
+        if(player1Turn)
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+
+    public Hand HandOfPlayer(int player) //*
+    {
+        if(player == 1)
+        {
+            return GameObject.Find("Hand1").GetComponent<Hand>();
+        }
+        else
+        {
+            return GameObject.Find("Hand2").GetComponent<Hand>();
+        }
+    }
+
+    /*public Deck DeckOfPlayer(int player) //*
+    {
+
+    }*/
+
+    public Field FieldOfPlayer(int player) //*
+    {
+        if(player == 1)
+        {
+            return GameObject.Find("UnitsZone1").GetComponent<Field>();
+        }
+        else
+        {
+            return GameObject.Find("UnitsZone2").GetComponent<Field>();
+        }
+    }
+
+    public Graveyard GraveYardOfPlayer(int player) //*
+    {
+        if(player == 1)
+        {
+            return GameObject.Find("Graveyard1").GetComponent<Graveyard>();
+        }
+        else
+        {
+            return GameObject.Find("Graveyard2").GetComponent<Graveyard>();
+        }
+    }
+
+    public List<Card> Board() //*
+    {
+        List<Card> cards = new List<Card>();
+        foreach(Transform zone in Units1.transform)
+        {
+            foreach(GameObject card in zone.transform)
+            {
+                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+            }
+        }
+        foreach(Transform zone in Units2.transform)
+        {
+            foreach(Transform card in zone.transform)
+            {
+                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+            }
+        }
+        foreach(Transform zone in Inspires1.transform)
+        {
+            foreach(GameObject card in zone.transform)
+            {
+                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+            }
+        }
+        foreach(Transform zone in Inspires2.transform)
+        {
+            foreach(Transform card in zone.transform)
+            {
+                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+            }
+        }
+        return cards;
+    }
+
     public void OnClick() //This method is to manage the rounds
     {
         if(player1Turn)
@@ -84,8 +175,8 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
             draw = GameObject.Find("BattleSystem").GetComponent<Draw>();
             for(int i=0;i<2;i++) //Each player draws 2 cards at the start of each round
             {
-                draw.Draw1();
-                draw.Draw2();
+                draw.DrawCard(1);
+                draw.DrawCard(2);
             }
             winner = GameObject.Find("FinalPanel").GetComponent<WinnerScreen>();
             int p1points = int.Parse(player1Points.text);
@@ -137,6 +228,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
             counter = 0;
         }
     }
+
     public void EndTurn() //This method changes turns every time is called
     {
         if(!round)
@@ -163,6 +255,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
             Visibility(player2Hand,true);
         }
     }
+
     public void NoInteractions(Button leader,bool  active) //This method disables/enables the Leader button
     {
         if(active)
@@ -174,6 +267,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
             leader.interactable = active;
         }
     }
+
     //This method disable/enable the Drag method so the cards can't/can be movable
     public void Immovable(GameObject hand,bool movable)
     {
@@ -183,6 +277,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
             card.enabled = movable;
         }
     }
+
     //This method hides/shows the cards from the hand by putting each card in -10/0 in the z axis
     public void  Visibility(GameObject playerHand,bool visible)
     {
@@ -203,6 +298,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
             }
         }
     }
+
     public void Pose(GameObject playerHand) //This method rotates the player2 cards
     {
         UnityEngine.Quaternion pos = transform.rotation;
@@ -213,6 +309,7 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
             card.transform.rotation = pos;
         }
     }
+
     void CleanField() //This method eliminates the cards from the field
     {
         int deathcard1 = 0;
@@ -266,4 +363,5 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
         GraveYard1.text = deathcard1.ToString();
         GraveYard2.text = deathcard2.ToString();
     }
+
 }

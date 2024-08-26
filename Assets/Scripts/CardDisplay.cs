@@ -7,7 +7,7 @@ using TMPro;
 
 public class CardDisplay : MonoBehaviour //This script is the information that will be shown in the UI
 {
-   public string position;
+    public string position;
     public int team;
     public int points;
     public bool isEnhanced;
@@ -22,7 +22,7 @@ public class CardDisplay : MonoBehaviour //This script is the information that w
     {
         artworkImage.sprite = card.artwork;
         auraImage.sprite = card.aura;                                                                                                                                                                                                                                                                                                                                                                                                                    
-        typeImage.sprite = card.type;
+        typeImage.sprite = card.posSprite;
         nameText.text = card.name;
         descriptionText.text = card.description;
         points = card.points;

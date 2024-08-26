@@ -16,9 +16,12 @@ MonoBehaviour:
   id: 17
   description: 'Effect: This cards points are multiplied by the amount of cards exactly
     like it'
-  effect: Multiply
+  effectText: 
   points: 6
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 3490232810987286200, guid: cb33fe343f4809e4ea672393a7d6ccc5, type: 3}
   artwork: {fileID: 21300000, guid: 1fd695a6930ef4d409ddaf7661ad5487, type: 3}
-  type: {fileID: 21300000, guid: d4605397402a50945a50facaa5bd6bd1, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

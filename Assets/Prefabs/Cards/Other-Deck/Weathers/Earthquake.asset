@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Earthquake
   id: 27
   description: 'Effect: Decreases the points of both,ally or enemy, Melee areas cards'
-  effect: Weather
+  effectText: 
   points: 0
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 4284435316919879812, guid: ccb0c6687cb1d3c43b731553703ca18e, type: 3}
   artwork: {fileID: 21300000, guid: c31b74d9c4cf54b4da2aeef89b3cd2db, type: 3}
-  type: {fileID: 21300000, guid: 7b7a9cbd55746ca45aaedfaffecbf610, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

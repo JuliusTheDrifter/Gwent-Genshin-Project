@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Ceremony
   id: 26
   description: 'Effect: Increases the points of the Siege area'
-  effect: Inspire
+  effectText: 
   points: 0
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 8436405284470909320, guid: 9b0a25c92922d6b4fb80a751494b7fe0, type: 3}
   artwork: {fileID: 21300000, guid: c702b61ec1fab9f47907c2f012f924d9, type: 3}
-  type: {fileID: 21300000, guid: c4db90747fb306940bf9142b34538d5b, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

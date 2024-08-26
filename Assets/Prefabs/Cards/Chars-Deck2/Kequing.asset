@@ -16,9 +16,12 @@ MonoBehaviour:
   id: 19
   description: Yuheng of the Liyue Qixing. She doesn't let the Gods determine her
     fate
-  effect: 
+  effectText: 
   points: 8
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 6854630834917153313, guid: 432c2befb360bb445a208783bb402c9e, type: 3}
   artwork: {fileID: 21300000, guid: 2a0884bf792ac904b89a5f0fb608097d, type: 3}
-  type: {fileID: 21300000, guid: f406cd94637e26d4e926b7400a2c0e39, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

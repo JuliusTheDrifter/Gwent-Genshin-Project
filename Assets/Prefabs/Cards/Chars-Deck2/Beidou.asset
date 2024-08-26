@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Beidou
   id: 14
   description: 'Effect: Eliminates the file with the less amount of enemies'
-  effect: EraseFile
+  effectText: 
   points: 8
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 3027576374075226037, guid: 96126c77dccf27046bca90cdde75578d, type: 3}
   artwork: {fileID: 21300000, guid: a2a0a9fec04e01244b415f309df2e621, type: 3}
-  type: {fileID: 21300000, guid: ca9459662eca6124fb63db76cda3d919, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

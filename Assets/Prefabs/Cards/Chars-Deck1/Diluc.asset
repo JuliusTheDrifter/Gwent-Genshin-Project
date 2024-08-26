@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Diluc
   id: 1
   description: 'Effect: Increases the points of the cards in the same file'
-  effect: OwnFileIncrease
+  effectText: 
   points: 15
   golden: 1
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 1843932100347988202, guid: 2244b72b74a6f0844b41bcd0ed4e06dc, type: 3}
   artwork: {fileID: 0}
-  type: {fileID: 21300000, guid: 8caeb6ce392527e41b68d913f991486c, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

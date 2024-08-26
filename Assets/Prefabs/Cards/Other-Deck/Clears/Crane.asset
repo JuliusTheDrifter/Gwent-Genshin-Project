@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Crane
   id: 32
   description: 'Effect: Cleanse the weathers'
-  effect: Cleanse
+  effectText: 
   points: 0
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 7916560033677427569, guid: 7c53b9c45a6affa4d84adaff79e79e4a, type: 3}
   artwork: {fileID: 21300000, guid: 7d7c82aa8f6da504c82af0839092e84a, type: 3}
-  type: {fileID: 21300000, guid: 7b7a9cbd55746ca45aaedfaffecbf610, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

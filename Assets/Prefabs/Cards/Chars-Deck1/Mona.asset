@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Mona
   id: 9
   description: 'Effect: Draw a card'
-  effect: Draw
+  effectText: 
   points: 7
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 3680443390916493779, guid: 7f5a333df5fe6134583e9cf092631be5, type: 3}
   artwork: {fileID: 21300000, guid: 9accaf25e147e1643893f87d8d00f6aa, type: 3}
-  type: {fileID: 21300000, guid: ca9459662eca6124fb63db76cda3d919, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

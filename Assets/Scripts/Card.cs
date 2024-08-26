@@ -9,12 +9,17 @@ public class Card: ScriptableObject //In this script I create the class card as 
 {
     public new string name;
     public int id;
+
+    //card.Owner missing
     public string description;
-    public string effect;
+    public string effectText;
     public int points;
-    public bool golden;
+    public bool golden; //Eliminar
+    public string type;
+    public Effect effect;
+    public GameObject prefab; //Ponerlo a cada carta
     public Sprite artwork;
-    public Sprite type;
+    public Sprite posSprite;
     public Sprite aura;
 }
 

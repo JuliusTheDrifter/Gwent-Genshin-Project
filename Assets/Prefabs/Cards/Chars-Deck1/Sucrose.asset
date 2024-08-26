@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Sucrose
   id: 12
   description: 'Effect: Eliminates the card with the highest points, ally or enemy'
-  effect: Highest
+  effectText: 
   points: 5
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 826308610527650235, guid: dde960d747b672e47b1beabb54bbcc37, type: 3}
   artwork: {fileID: 21300000, guid: a4f8a251577a932428006c12a13a4017, type: 3}
-  type: {fileID: 21300000, guid: ca9459662eca6124fb63db76cda3d919, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

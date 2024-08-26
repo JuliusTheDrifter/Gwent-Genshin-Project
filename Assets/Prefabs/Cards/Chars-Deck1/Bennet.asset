@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Bennet
   id: 4
   description: 'Effect: Eliminates the enemy card with the lowest points'
-  effect: Lowest
+  effectText: 
   points: 4
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 8742491694611024088, guid: d8a3e8c401f87ce4fbe724fb410521d4, type: 3}
   artwork: {fileID: 21300000, guid: 196b9342721f893489e42cc8eefe08eb, type: 3}
-  type: {fileID: 21300000, guid: f406cd94637e26d4e926b7400a2c0e39, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

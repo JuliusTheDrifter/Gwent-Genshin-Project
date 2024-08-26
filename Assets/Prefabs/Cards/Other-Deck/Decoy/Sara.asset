@@ -16,9 +16,12 @@ MonoBehaviour:
   id: 30
   description: Effect :After placing it returns the card on the field you click on
     to the hand
-  effect: Decoy
+  effectText: 
   points: 0
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 6317745437666799008, guid: 5d32306f45b366f4badb3177c2514725, type: 3}
   artwork: {fileID: 21300000, guid: ada6b42eb7ccd3b4e9b11f57817d2f88, type: 3}
-  type: {fileID: 21300000, guid: 893ae5d88bdacda4db7bf04fada97cd7, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}

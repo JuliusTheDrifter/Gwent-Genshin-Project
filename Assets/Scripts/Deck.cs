@@ -3,67 +3,73 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 using Unity.VisualScripting;
+using System;
 
 public class Deck : MonoBehaviour //This scrip is where the deck is formed
 {
-    public GameObject Card1;
-    public GameObject Card2;
-    public GameObject Card3;
-    public GameObject Card4;
-    public GameObject Card5;
-    public GameObject Card6;
-    public GameObject Card7;
-    public GameObject Card8;
-    public GameObject Card9;
-    public GameObject Card10;
-    public GameObject Card11;
-    public GameObject Card12;
-    public GameObject Card13;
-    public GameObject Card14;
-    public GameObject Card15;
-    public GameObject Card16;
-    public GameObject Card17;
-    public GameObject Card18;
-    public GameObject Card19;
-    public GameObject Card20;
-    public GameObject Card21;
-    public GameObject Card22;
-    public GameObject Card23;
-    public GameObject Card24;
-    public GameObject Card25;
-    
-    List<GameObject> cards = new List<GameObject>(); //In this list I'll add each card to later assing them via hierarchy
+    public TextMeshProUGUI textMeshPro;
+    public List<GameObject> gameObjects;
+    public List<Card> Cards;
+
     void Awake()
     {
-        cards.Add(Card1);
-        cards.Add(Card2);
-        cards.Add(Card3);
-        cards.Add(Card4);
-        cards.Add(Card5);
-        cards.Add(Card6);
-        cards.Add(Card7);
-        cards.Add(Card8);
-        cards.Add(Card9);
-        cards.Add(Card10);
-        cards.Add(Card11);
-        cards.Add(Card12);
-        cards.Add(Card13);
-        cards.Add(Card14);
-        cards.Add(Card15);
-        cards.Add(Card16);
-        cards.Add(Card17);
-        cards.Add(Card18);
-        cards.Add(Card19);
-        cards.Add(Card20);
-        cards.Add(Card21);
-        cards.Add(Card22);
-        cards.Add(Card23);
-        cards.Add(Card24);
-        cards.Add(Card25);
+        foreach(var card in gameObjects)
+        {
+            Cards.Add(card.GetComponent<CardDisplay>().card);
+        }
     }
-    public List<GameObject> GetCards() //This method is to obtain all the cards from the list
+    void Start()
     {
-        return cards;
+        textMeshPro.text = gameObjects.Count.ToString(); 
+        Shuffle();  
+    }
+
+    /*public List<Card> Find(Predicate predicate)
+    {
+        return Cards.Where().ToList();
+    }*/
+
+    public void Push(Card card)
+    {
+        Cards.Add(card);
+        int aux = GetNumber();
+        textMeshPro.text = aux+1.ToString();
+    }
+
+    public void SendBottom(Card card)
+    {
+        Cards.Insert(0,card);
+        int aux = GetNumber();
+        textMeshPro.text = aux+1.ToString();
+    }
+
+    public Card Pop()
+    {
+        Card card = Cards[Cards.Count-1];
+        Cards.RemoveAt(Cards.Count-1);
+        int aux = GetNumber();
+        textMeshPro.text = aux--.ToString();
+        return card;
+    }
+
+    public void Remove(Card card)
+    {
+        int aux = GetNumber();
+        textMeshPro.text = aux--.ToString();
+        Cards.Remove(card);
+    }
+
+    public void Shuffle()
+    {
+        Cards = Cards.OrderBy(x => UnityEngine.Random.value).ToList();
+    }
+
+    public int GetNumber()
+    {
+        string aux = textMeshPro.text.ToString();
+        int temp = int.Parse(aux);
+        return temp;
     }
 }

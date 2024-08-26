@@ -15,9 +15,12 @@ MonoBehaviour:
   name: Kaeya
   id: 7
   description: Calvary captain of the Knights of Favonius
-  effect: 
+  effectText: 
   points: 8
   golden: 0
+  type: 
+  effect: {fileID: 0}
+  prefab: {fileID: 3381899768909752976, guid: 041033ab16241a340b8333635b47bb0b, type: 3}
   artwork: {fileID: 21300000, guid: a4189d54940bc1b42974758f514fa1ab, type: 3}
-  type: {fileID: 21300000, guid: d4605397402a50945a50facaa5bd6bd1, type: 3}
+  posSprite: {fileID: 0}
   aura: {fileID: 21300000, guid: fc039c4ad3325ee48b88b9e59afa28c7, type: 3}
