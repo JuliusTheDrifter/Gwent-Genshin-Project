@@ -9,12 +9,13 @@ public class Context
 {
     public Dictionary<string,Card> cards = new Dictionary<string,Card>();
     public Dictionary<string,EffectNode> effects = new Dictionary<string,EffectNode>();
-
+    public Dictionary<string,object> variables = new Dictionary<string,object>();
+    public BattleBehaviour battleBehaviour;
     public void AddCard(string name)
     {
         if(cards.ContainsKey(name))
         {
-            throw new Exception($"Hay otra carta con el nombre: '{name}'.");
+            throw new Exception($"There is another card with the name: '{name}'.");
         }
         cards[name] = new Card();
     }
@@ -22,7 +23,7 @@ public class Context
     {
         if(effects.ContainsKey(name))
         {
-            throw new Exception($"Hay otra carta con el nombre: '{name}'.");
+            throw new Exception($"There is another card with the name: '{name}'.");
         }
         effects[name] = new EffectNode();
     }

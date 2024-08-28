@@ -70,6 +70,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        //Needs to be updated
         isDragging = false;
         if(IsOverDropZone && CorrectZone()) //This checks if the card can be placed in the zone
         {
@@ -79,7 +80,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
             endTurn = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
             UnityEngine.Debug.Log("Effect");
             effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
-            effects.PlayCardEffect(gameObject.GetComponent<CardDisplay>().card.effectText,gameObject);
+            effects.PlayCardEffect(gameObject.GetComponent<CardDisplay>().card.effectText,gameObject);//Delete
             //This is to check if there's any Inspire card and activate its effect again
             if(effects.inspireLoop)
             {

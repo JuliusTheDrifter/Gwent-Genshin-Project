@@ -26,10 +26,10 @@ public class Deck : MonoBehaviour //This scrip is where the deck is formed
         Shuffle();  
     }
 
-    /*public List<Card> Find(Predicate predicate)
+    public List<Card> Find(Func<Card,bool> func)
     {
-        return Cards.Where().ToList();
-    }*/
+        return Cards.Where(func).ToList();
+    }
 
     public void Push(Card card)
     {

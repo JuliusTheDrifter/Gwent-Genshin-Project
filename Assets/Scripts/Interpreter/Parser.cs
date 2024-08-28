@@ -57,7 +57,7 @@ public class Parser
             {
                 counter[0]+=1;
                 Consume(TokenType.COLON,"Expected ':' after Type");
-                card.Type = new Type(ParseExpression());
+                card.Type = new CardType(ParseExpression());
                 Consume(TokenType.COMMA,"Expected ',' after expression");
             }
             else if(Match(TokenType.NAME))
@@ -451,7 +451,7 @@ public class Parser
                 {
                     if(Match(TokenType.TYPE))
                     {
-                        Type type = new Type(new String(Previous().Lexeme));
+                        CardType type = new CardType(new String(Previous().Lexeme));
                         varType = Variable.Type.STRING;
                         variableComp.args.Arguments.Add(type);
                     }
@@ -484,6 +484,18 @@ public class Parser
                         Pointer pointer = new Pointer(Previous().Lexeme);
                         //varType = Variable.Type.STRING;
                         variableComp.args.Arguments.Add(pointer);
+                    }
+                    else if(Match(TokenType.OWNER))
+                    {
+                        Owner owner = new Owner(Previous().Lexeme);
+                        varType = Variable.Type.INT;
+                        variableComp.args.Arguments.Add(owner);
+                    }
+                    else if(Match(TokenType.LEFT_BRACK))
+                    {
+                        Indexer indexer = new Indexer(Convert.ToInt32(Advance().Literal));
+                        Consume(TokenType.RIGHT_BRACK,"Expected ']'");
+                        variableComp.args.Arguments.Add(indexer);
                     }
                     else
                     {

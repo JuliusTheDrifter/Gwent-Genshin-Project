@@ -32,7 +32,7 @@ public class Program : Node
 
 public class CardNode : Node
 {
-    public Type Type;
+    public CardType Type;
     public Name Name;
     public Faction Faction;
     public Power Power;
@@ -42,7 +42,7 @@ public class CardNode : Node
     {
         
     }
-    public CardNode(Type type,Name name,Faction faction,Power power,Range range,OnActivation onActivation)
+    public CardNode(CardType type,Name name,Faction faction,Power power,Range range,OnActivation onActivation)
     {
         Type = type;
         Name = name;
@@ -80,18 +80,18 @@ public class Name : Node
     }
 }
 
-public class Type : Node
+public class CardType : Node
 {
     public Expression type;
 
-    public Type (Expression expression)
+    public CardType (Expression expression)
     {
         type = expression;
     }
     public void Print(int indent = 0)
     {
 
-        Debug.Log(new string(' ', indent) + "Type:");
+        Debug.Log(new string(' ', indent) + "CardType:");
         type.Print(indent + 2);
     }
 }
@@ -369,7 +369,7 @@ public class Action : Node
 public abstract class Expression : Node
 {
     public abstract void Print(int indent=0);
-    public abstract object Evaluate();
+    public abstract object Evaluate(Context context);
 }
 
 public class Number : Expression
@@ -380,7 +380,7 @@ public class Number : Expression
         Value = value;
     }
 
-    public override object Evaluate()
+    public override object Evaluate(Context context)
     {
         return Value;
     }
@@ -399,7 +399,7 @@ public class String : Expression
         Value = value;
     }
 
-    public override object Evaluate()
+    public override object Evaluate(Context context)
     {
         return Value;
     }
@@ -418,7 +418,7 @@ public class Bool : Expression
         Value = value;
     }
 
-    public override object Evaluate()
+    public override object Evaluate(Context context)
     {
         return Value;
     }
@@ -440,10 +440,10 @@ public class BinaryExpression : Expression
         Operators = operators;
         Right = right;
     }
-    public override object Evaluate()
+    public override object Evaluate(Context context)
     {
-        object leftValue = Left.Evaluate();
-        object rightValue = Right.Evaluate();
+        object leftValue = Left.Evaluate(context);
+        object rightValue = Right.Evaluate(context);
         if(leftValue is double && rightValue is double)
         {
             switch (Operators.Type)
@@ -521,9 +521,9 @@ public class UnaryExpression : Expression
         Operators = operators;
         Right = right;
     }
-    public override object Evaluate()
+    public override object Evaluate(Context context)
     {
-        object rightValue = Right.Evaluate();
+        object rightValue = Right.Evaluate(context);
 
         switch (Operators.Type)
         {
@@ -560,9 +560,9 @@ public class ExpressionGroup : Expression
     {
         Exp = expression;
     }
-    public override object Evaluate()
+    public override object Evaluate(Context context)
     {
-        return Exp.Evaluate();
+        return Exp.Evaluate(context);
     }
     public override void Print(int indent = 0)
     {
@@ -602,9 +602,9 @@ public class Variable : Expression
         }
     }
 
-    public override object Evaluate()
+    public override object Evaluate(Context context)
     {
-        return "a";
+        return context.variables[Value];
     }
 
     public override void Print(int indent = 0)
@@ -622,9 +622,62 @@ public class VariableComp : Variable,Stmt
         args = new Args();
     }
 
-    public void Execute()
+    public void Execute(Context context)
     {
         throw new NotImplementedException();
+    }
+
+    public override object Evaluate(Context context)
+    {
+        object last = null;
+        foreach(var arg in args.Arguments)
+        {
+            if(arg is Function)
+            {
+                last = (arg as Function).GetValue(context,last);
+            }
+            else if(arg is Indexer)
+            {
+                if(last is List<Card>)
+                {
+                    List<Card> cards = last as List<Card>;
+                    Indexer indexer = arg as Indexer;
+                    last = cards[indexer.index];
+                }
+                else
+                {
+                    string[] range = last as string[];
+                    Indexer indexer = arg as Indexer;
+                    last = range[indexer.index];
+                }
+            }
+            else if(arg is Pointer)
+            {
+                Pointer pointer = arg as Pointer;
+                switch(pointer.pointer)
+                {
+                    case "Hand": last = context.battleBehaviour.HandOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Deck": last = context.battleBehaviour.DeckOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Graveyard": last = context.battleBehaviour.GraveYardOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Field": last = context.battleBehaviour.FieldOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Board": last = context.battleBehaviour.Board();break;
+                }
+            }
+            else
+            {
+                Card card = last as Card;
+                switch(arg)
+                {
+                    case CardType: last = card.type;break;
+                    case Name: last = card.name;break;
+                    case Faction: last = card.faction;break;
+                    case PowerAsField: last = card.points;break;
+                    case Range: last = card.range;break;
+                    case Owner: last = card.Owner;break;
+                }
+            }
+        }
+        return last;
     }
 
     public override void Print(int indent = 0)
@@ -654,7 +707,7 @@ public class Args : Node
 
 public interface Stmt : Node
 {
-    public void Execute();
+    public void Execute(Context context);
 }
 
 public class StmsBlock : Node
@@ -688,9 +741,45 @@ public class Assignment : Stmt
         Right = right;
     }
 
-    public void Execute()
+    public void Execute(Context context)
     {
-        throw new NotImplementedException();
+        if(Op.Type == TokenType.EQUAL)
+        {
+            if(Left is VariableComp)
+            {
+
+            }
+            else
+            {
+                context.variables[Left.Value] = Right.Evaluate(context);
+            }
+        }
+        else if(Op.Type == TokenType.PLUS_EQUALS)
+        {
+            if(Left is VariableComp)
+            {
+
+            }
+            else
+            {
+                int result = Convert.ToInt32(context.variables[Left.Value]);
+                result += Convert.ToInt32(Right.Evaluate(context));
+                context.variables[Left.Value] = result;
+            }
+        }
+        else if(Op.Type == TokenType.MINUS_EQUALS)
+        {
+            if(Left is VariableComp)
+            {
+
+            }
+            else
+            {
+                int result = Convert.ToInt32(context.variables[Left.Value]);
+                result -= Convert.ToInt32(Right.Evaluate(context));
+                context.variables[Left.Value] = result;
+            }
+        }
     }
 
     public void Print(int indent = 0)
@@ -712,9 +801,15 @@ public class WhileStatement : Stmt
         Body = body;
     }
 
-    public void Execute()
+    public void Execute(Context context)
     {
-        throw new NotImplementedException();
+        while((bool)Condition.Evaluate(context))
+        {
+            foreach(var stmt in Body.statements)
+            {
+                stmt.Execute(context);
+            }
+        }
     }
 
     public void Print(int indent = 0)
@@ -739,9 +834,17 @@ public class ForStatement : Stmt
         Body = body;
     }
 
-    public void Execute()
+    public void Execute(Context context)
     {
-        throw new NotImplementedException();
+        foreach(Card target in context.variables["targets"] as List<Card>)
+        {
+            context.variables["target"] = target;
+            foreach(var stmt in Body.statements)
+            {
+                stmt.Execute(context);
+            }
+            context.variables.Remove("target");
+        }
     }
 
     public void Print(int indent = 0)
@@ -792,9 +895,28 @@ public class Function : Stmt
         Debug.Log(new string(' ', indent + 2) + "Return Type: " + Type.ToString());
     }
 
-    public void Execute()
+    public void Execute(Context context)
     {
         throw new NotImplementedException();
+    }
+
+    public object GetValue(Context context, object value)
+    {
+        switch(FunctionName)
+        {
+            case "TriggerPlayer": return context.battleBehaviour.TriggerPlayer();
+            case "HandOfPlayer":  
+            case "DeckOfPlayer":
+            case "GraveyardOfPlayer":
+            case "FieldOfPlayer":
+            case "Find":
+            case "Push":
+            case "SendBottom":
+            case "Pop":
+            case "Remove":
+            case "Shuffle": 
+        }
+
     }
 }
 
@@ -809,5 +931,33 @@ public class Pointer : Node
     public void Print(int indent = 0)
     {
         Debug.Log(new string(' ', indent) + "Pointer: " + pointer);
+    }
+}
+
+public class Owner : Node
+{
+    public string owner;
+    public Owner(string owner)
+    {
+        this.owner = owner;
+    }
+
+    public void Print(int indent = 0)
+    {
+        Debug.Log(new string(' ', indent) + "Owner: " + owner);
+    }
+}
+
+public class Indexer : Node
+{
+    public int index;
+    public Indexer(int index)
+    {
+        this.index = index;
+    }
+
+    public void Print(int indent = 0)
+    {
+        Debug.Log(new string(' ', indent) + "Indexer: " + index);
     }
 }

@@ -83,10 +83,17 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
         }
     }
 
-    /*public Deck DeckOfPlayer(int player) //*
+    public Deck DeckOfPlayer(int player) //*
     {
-
-    }*/
+        if(player == 1)
+        {
+            return GameObject.Find("DeckManager1").GetComponent<Deck>();
+        }
+        else
+        {
+            return GameObject.Find("DeckManager2").GetComponent<Deck>();
+        }
+    }
 
     public Field FieldOfPlayer(int player) //*
     {

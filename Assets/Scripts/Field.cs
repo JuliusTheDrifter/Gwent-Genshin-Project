@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using System.Linq;
 
 public class Field : MonoBehaviour
@@ -8,10 +9,10 @@ public class Field : MonoBehaviour
     public List<Card> Cards = new List<Card>();
     public GameObject Units;
 
-    /*public List<Card> Find(Predicate predicate)
+    public List<Card> Find(Func<Card,bool> func)
     {
-        return Cards.Where().ToList();
-    }*/
+        return Cards.Where(func).ToList();
+    }
 
     public void Push(Card card)
     {
@@ -41,6 +42,6 @@ public class Field : MonoBehaviour
 
     public void Shuffle()
     {
-        Cards = Cards.OrderBy(x => Random.value).ToList();
+        Cards = Cards.OrderBy(x => UnityEngine.Random.value).ToList();
     }
 }

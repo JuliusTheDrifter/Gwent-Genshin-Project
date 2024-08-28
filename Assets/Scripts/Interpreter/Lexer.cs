@@ -33,6 +33,7 @@ public class Lexer
         keywords.Add("Faction", new Token(TokenType.FACTION, "Faction", "Faction", 0, 0));
         keywords.Add("Power", new Token(TokenType.POWER, "Power", "Power", 0, 0));
         keywords.Add("Range", new Token(TokenType.RANGE, "Range", "Range", 0, 0));
+        keywords.Add("Owner", new Token(TokenType.OWNER, "Owner", "Owner", 0, 0));
         keywords.Add("OnActivation", new Token(TokenType.ONACTIVATION, "OnActivation", "OnActivation", 0, 0));
         keywords.Add("Effect", new Token(TokenType.ONACTIVATIONEFFECT, "Effect", "Effect", 0, 0));
         keywords.Add("Selector", new Token(TokenType.SELECTOR, "Selector", "Selector", 0, 0));

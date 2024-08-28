@@ -4,16 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Unity.VisualScripting;
+using System;
 
 public class Hand : MonoBehaviour
 {
     public List<Card> Cards = new List<Card>();
     public GameObject hand;
 
-    /*public List<Card> Find(Predicate predicate)
+    public List<Card> Find(Func<Card,bool> func)
     {
-        return Cards.Where().ToList();
-    }*/
+        return Cards.Where(func).ToList();
+    }
 
     public void Push(Card card)
     {
@@ -51,6 +52,6 @@ public class Hand : MonoBehaviour
 
     public void Shuffle()
     {
-        Cards = Cards.OrderBy(x => Random.value).ToList();
+        Cards = Cards.OrderBy(x => UnityEngine.Random.value).ToList();
     }
 }

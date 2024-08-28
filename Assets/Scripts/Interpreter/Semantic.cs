@@ -44,6 +44,18 @@ public class SemanticalCheck
         CheckNumericExpression(card.Power.power);
         CheckRangeSemantics(card.Range.range);
         CheckOnActivationSemantics(card.OnActivation.Elements);
+        Card trueCard = new Card();
+        trueCard.type = Convert.ToString(card.Type.type.Evaluate());
+        trueCard.name = Convert.ToString(card.Name.name.Evaluate());
+        trueCard.faction = Convert.ToString(card.Faction.faction.Evaluate());
+        trueCard.points = Convert.ToInt32(card.Power.power.Evaluate());
+        int pos = 0;
+        foreach(var expression in card.Range.range)
+        {
+            trueCard.range[pos++] = expression.Evaluate() as string; 
+        }
+        trueCard.effects = card.OnActivation;
+        Context.cards[trueCard.name] = trueCard; 
         symbolTable.PopScope();
     }
 
@@ -324,7 +336,7 @@ public class SemanticalCheck
         symbolTable.PopScope();
     }
 
-    void CheckVariableUsage( Variable variable)
+    void CheckVariableUsage(Variable variable)
     {
         try
         {
@@ -402,7 +414,9 @@ public class SemanticalCheck
             }
             else if (arg is Type || arg is Name || arg is Faction || arg is PowerAsField || arg is Range || arg is Pointer)
             {
-                
+                // Check if the property access is valid for the current type
+                // You may need to define rules for what properties are accessible for each type
+                // Update currentType based on the property type
             }
         }
     

@@ -12,6 +12,11 @@ public class Graveyard : MonoBehaviour
 
     public TextMeshProUGUI textMeshPro;
 
+    public List<Card> Find(Func<Card,bool> func)
+    {
+        return Cards.Where(func).ToList();
+    }
+
     public void Push(Card card)
     {
         Cards.Add(card);
