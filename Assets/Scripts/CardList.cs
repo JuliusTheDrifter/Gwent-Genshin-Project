@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Linq;
+using System;
 
-public class Field : CardList
+public abstract class CardList : MonoBehaviour
 {
-    public GameObject Units;
+    public List<Card> Cards = new List<Card>();
+
+    public List<Card> Find(Func<Card,bool> func)
+    {
+        return Cards.Where(func).ToList();
+    }
 
     public void Push(Card card)
     {
@@ -20,10 +25,6 @@ public class Field : CardList
 
     public Card Pop()
     {
-        if(Cards.Count == 0)
-        {
-
-        }
         Card card = Cards[Cards.Count-1];
         Cards.RemoveAt(Cards.Count-1);
         return card;
@@ -38,4 +39,5 @@ public class Field : CardList
     {
         Cards = Cards.OrderBy(x => UnityEngine.Random.value).ToList();
     }
+
 }

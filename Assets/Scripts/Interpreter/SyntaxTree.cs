@@ -292,10 +292,6 @@ public class Predicate : Node
         Var?.Print(indent + 2);
         Condition?.Print(indent + 2);
     }
-    /*public Func<Card,bool> Evaluate()
-    {
-
-    }*/
 }
 
 public class PostAction : Node
@@ -444,30 +440,30 @@ public class BinaryExpression : Expression
     {
         object leftValue = Left.Evaluate(context);
         object rightValue = Right.Evaluate(context);
-        if(leftValue is double && rightValue is double)
+        if(leftValue is int && rightValue is int)
         {
             switch (Operators.Type)
             {
                 case TokenType.PLUS:
-                    return Convert.ToInt32(leftValue) + Convert.ToDouble(rightValue);    
+                    return Convert.ToInt32(leftValue) + Convert.ToInt32(rightValue);    
                 case TokenType.MINUS:
-                    return Convert.ToDouble(leftValue) - Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) - Convert.ToInt32(rightValue);
                 case TokenType.STAR:
-                    return Convert.ToDouble(leftValue) * Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) * Convert.ToInt32(rightValue);
                 case TokenType.SLASH:
-                    return Convert.ToDouble(leftValue) / Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) / Convert.ToInt32(rightValue);
                 case TokenType.PERCENT:
-                    return Convert.ToDouble(leftValue) % Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) % Convert.ToInt32(rightValue);
                 case TokenType.POW:
-                    return Math.Pow(Convert.ToDouble(leftValue),Convert.ToDouble(rightValue));
+                    return Math.Pow(Convert.ToInt32(leftValue),Convert.ToInt32(rightValue));
                 case TokenType.GREATER:
-                    return Convert.ToDouble(leftValue) > Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) > Convert.ToInt32(rightValue);
                 case TokenType.GREATER_EQUAL:
-                    return Convert.ToDouble(leftValue) >= Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) >= Convert.ToInt32(rightValue);
                 case TokenType.LESS:
-                    return Convert.ToDouble(leftValue) < Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) < Convert.ToInt32(rightValue);
                 case TokenType.LESS_EQUAL:
-                    return Convert.ToDouble(leftValue) <= Convert.ToDouble(rightValue);
+                    return Convert.ToInt32(leftValue) <= Convert.ToInt32(rightValue);
                 case TokenType.BANG_EQUAL: return !leftValue.Equals(rightValue);
                 case TokenType.EQUAL_EQUAL: return leftValue.Equals(rightValue);
                 default:
@@ -480,6 +476,7 @@ public class BinaryExpression : Expression
             {
                 case TokenType.ATSIGN : return leftValue.ToString() + rightValue.ToString();
                 case TokenType.ATSIGN_ATSIGN : return leftValue.ToString() + " " + rightValue.ToString();
+                case TokenType.EQUAL_EQUAL: return leftValue.Equals(rightValue);
                 default:
                 throw new InvalidOperationException("Unsupported operator: " + Operators.Lexeme);
             }
@@ -531,6 +528,20 @@ public class UnaryExpression : Expression
                 return -Convert.ToDouble(rightValue);
             case TokenType.BANG:
                 return !(bool)rightValue;
+            case TokenType.PLUS_PLUS_LEFT:
+                return Convert.ToInt32(rightValue) + 1;
+            case TokenType.MINUS_MINUS_LEFT:
+                return Convert.ToInt32(rightValue) - 1;
+            case TokenType.PLUS_PLUS_RIGHT:
+                int originalValue = Convert.ToInt32(rightValue);
+                int newValue = originalValue + 1;
+                context.variables[(Right as Variable).Value] = newValue;
+                return originalValue;
+            case TokenType.MINUS_MINUS_RIGHT:
+                int oGval = Convert.ToInt32(rightValue);
+                int newVal = oGval + 1;
+                context.variables[(Right as Variable).Value] = newVal;
+                return oGval;
             default:
                 throw new InvalidOperationException("Unsupported operator: " + Operators.Lexeme);
         }
@@ -624,12 +635,31 @@ public class VariableComp : Variable,Stmt
 
     public void Execute(Context context)
     {
-        throw new NotImplementedException();
+        object last = null;
+        foreach(var arg in args.Arguments)
+        {
+            if(arg is Function)
+            {
+                last = (arg as Function).GetValue(context,last);
+            }
+            else if(arg is Pointer)
+            {
+                Pointer pointer = arg as Pointer;
+                switch(pointer.pointer)
+                {
+                    case "Hand": last = context.battleBehaviour.HandOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Deck": last = context.battleBehaviour.DeckOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Graveyard": last = context.battleBehaviour.GraveYardOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Field": last = context.battleBehaviour.FieldOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Board": last = context.battleBehaviour.Board();break;
+                }
+            }
+        }
     }
 
     public override object Evaluate(Context context)
     {
-        object last = null;
+        object last = context.variables[Value];
         foreach(var arg in args.Arguments)
         {
             if(arg is Function)
@@ -638,9 +668,9 @@ public class VariableComp : Variable,Stmt
             }
             else if(arg is Indexer)
             {
-                if(last is List<Card>)
+                if(last is CardList)
                 {
-                    List<Card> cards = last as List<Card>;
+                    List<Card> cards = (last as CardList).Cards;
                     Indexer indexer = arg as Indexer;
                     last = cards[indexer.index];
                 }
@@ -678,6 +708,61 @@ public class VariableComp : Variable,Stmt
             }
         }
         return last;
+    }
+
+    public void AssignValue(Context context, object value)
+    {
+        object last = null;
+        if(Value == "target")
+        {
+            last = context.variables[Value];
+        }
+        foreach(var arg in args.Arguments)
+        {
+            if(arg is Function)
+            {
+                last = (arg as Function).GetValue(context,last);
+            }
+            else if(arg is Indexer)
+            {
+                if(last is CardList)
+                {
+                    List<Card> cards = (last as CardList).Cards;
+                    Indexer indexer = arg as Indexer;
+                    last = cards[indexer.index];
+                }
+                else
+                {
+                    string[] range = last as string[];
+                    Indexer indexer = arg as Indexer;
+                    range[indexer.index] = value as string;
+                }
+            }
+            else if(arg is Pointer)
+            {
+                Pointer pointer = arg as Pointer;
+                switch(pointer.pointer)
+                {
+                    case "Hand": last = context.battleBehaviour.HandOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Deck": last = context.battleBehaviour.DeckOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Graveyard": last = context.battleBehaviour.GraveYardOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Field": last = context.battleBehaviour.FieldOfPlayer(context.battleBehaviour.TriggerPlayer());break;
+                    case "Board": last = context.battleBehaviour.Board();break;
+                }
+            }
+            else
+            {
+                Card card = last as Card;
+                switch(arg)
+                {
+                    case CardType: card.type = value as string;break;
+                    case Name: card.name = value as string;break;
+                    case Faction: card.faction = value as string;break;
+                    case PowerAsField: card.points = Convert.ToInt32(value);break;
+                    case Range: last = card.range;break;
+                }
+            }
+        }
     }
 
     public override void Print(int indent = 0)
@@ -747,7 +832,7 @@ public class Assignment : Stmt
         {
             if(Left is VariableComp)
             {
-
+                (Left as VariableComp).AssignValue(context,Right.Evaluate(context));
             }
             else
             {
@@ -758,7 +843,7 @@ public class Assignment : Stmt
         {
             if(Left is VariableComp)
             {
-
+                (Left as VariableComp).AssignValue(context,Convert.ToInt32(Left.Evaluate(context))+Convert.ToInt32(Right.Evaluate(context)));
             }
             else
             {
@@ -771,7 +856,7 @@ public class Assignment : Stmt
         {
             if(Left is VariableComp)
             {
-
+                (Left as VariableComp).AssignValue(context,Convert.ToInt32(Left.Evaluate(context))-Convert.ToInt32(Right.Evaluate(context)));
             }
             else
             {
@@ -905,18 +990,22 @@ public class Function : Stmt
         switch(FunctionName)
         {
             case "TriggerPlayer": return context.battleBehaviour.TriggerPlayer();
-            case "HandOfPlayer":  
-            case "DeckOfPlayer":
-            case "GraveyardOfPlayer":
-            case "FieldOfPlayer":
-            case "Find":
-            case "Push":
-            case "SendBottom":
-            case "Pop":
-            case "Remove":
-            case "Shuffle": 
+            case "HandOfPlayer": if(Args.Arguments[0] is Function) return context.battleBehaviour.HandOfPlayer(Convert.ToInt32((Args.Arguments[0] as Function).GetValue(context,value)));
+            else return context.battleBehaviour.HandOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
+            case "DeckOfPlayer": if(Args.Arguments[0] is Function) return context.battleBehaviour.DeckOfPlayer(Convert.ToInt32((Args.Arguments[0] as Function).GetValue(context,value)));
+            else return context.battleBehaviour.DeckOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
+            case "GraveyardOfPlayer": if(Args.Arguments[0] is Function) return context.battleBehaviour.GraveYardOfPlayer(Convert.ToInt32((Args.Arguments[0] as Function).GetValue(context,value)));
+            else return context.battleBehaviour.GraveYardOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
+            case "FieldOfPlayer": if(Args.Arguments[0] is Function) return context.battleBehaviour.FieldOfPlayer(Convert.ToInt32((Args.Arguments[0] as Function).GetValue(context,value)));
+            else return context.battleBehaviour.FieldOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
+            //case "Find": return (value as CardList).Find()
+            case "Push": (value as CardList).Push((Args.Arguments[0] as Expression).Evaluate(context) as Card);return null;
+            case "SendBottom": (value as CardList).SendBottom((Args.Arguments[0] as Expression).Evaluate(context) as Card);return null;
+            case "Pop": return (value as CardList).Pop();
+            case "Remove": (value as CardList).Remove((Args.Arguments[0] as Expression).Evaluate(context) as Card);return null;
+            case "Shuffle": (value as CardList).Shuffle();return null; 
+            default: return null;
         }
-
     }
 }
 

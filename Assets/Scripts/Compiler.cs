@@ -9,8 +9,9 @@ public class Compiler : MonoBehaviour
 {
     public TMP_Text myTextMeshPro;
     public GameObject panel;
-    public Button button;
+    public GameObject scroll;
     public GameObject prefab;
+    public Hand hand;
     public Card card;
     public Transform canvas;
 
@@ -35,6 +36,7 @@ public class Compiler : MonoBehaviour
             return;
         }
         Context context = new Context();
+        context.battleBehaviour = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         SemanticalCheck semanticalCheck = new SemanticalCheck(node,context,errors);
         if(errors.Count != 0)
         {
@@ -42,7 +44,10 @@ public class Compiler : MonoBehaviour
             PrintErrors(joinedText);
             return;
         }
-        
+        foreach(CardNode card in (node as Program).CardNodes)
+        {
+            SpawnCard(card,context);
+        }
     }
     void PrintErrors(string joinedText)
     {
@@ -50,14 +55,35 @@ public class Compiler : MonoBehaviour
         TogglePanelVisibility();
     }
     
-    void TogglePanelVisibility()
+    public void TogglePanelVisibility()
     {
         bool isActive = panel.activeSelf;
         panel.SetActive(!isActive);
     }
-    void SpawnCard()
+
+    public void ToggleEditPanel()
     {
-        UnityEngine.Vector3 vector3 = new UnityEngine.Vector3(342, 40, 0);
-        Instantiate(prefab,vector3,UnityEngine.Quaternion.identity).transform.SetParent(canvas,false);
+        bool isActive = scroll.activeSelf;
+        scroll.SetActive(!isActive);
+    }
+
+    void SpawnCard(CardNode cardnode, Context context)
+    {
+        Card card = new Card();
+        card.name = cardnode.Name.name.Evaluate(new Context()).ToString();
+        card.type = cardnode.Type.type.Evaluate(new Context()).ToString();
+        card.faction = cardnode.Faction.faction.Evaluate(new Context()).ToString();
+        card.points = (int)cardnode.Power.power.Evaluate(new Context());
+        card.context = context;
+        int i=0;
+        foreach(var zone in cardnode.Range.range)
+        {
+            card.range[i++] = zone.Evaluate(new Context()) as string;
+        }
+        card.effects = cardnode.OnActivation;
+        CardDisplay cardDisplay = prefab.GetComponent<CardDisplay>();
+        cardDisplay.card = card;
+        card.prefab = prefab;
+        hand.Push(card);
     }
 }

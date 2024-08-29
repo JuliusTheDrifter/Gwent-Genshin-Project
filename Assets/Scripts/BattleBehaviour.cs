@@ -124,30 +124,30 @@ public class BattleBehaviour : MonoBehaviour //This is the scrip where I manage 
         List<Card> cards = new List<Card>();
         foreach(Transform zone in Units1.transform)
         {
-            foreach(GameObject card in zone.transform)
+            foreach(Transform card in zone.transform)
             {
-                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+                cards.Add(card.GetComponent<CardDisplay>().card);
             }
         }
         foreach(Transform zone in Units2.transform)
         {
             foreach(Transform card in zone.transform)
             {
-                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+                cards.Add(card.GetComponent<CardDisplay>().card);
             }
         }
         foreach(Transform zone in Inspires1.transform)
         {
-            foreach(GameObject card in zone.transform)
+            foreach(Transform card in zone.transform)
             {
-                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+                cards.Add(card.GetComponent<CardDisplay>().card);
             }
         }
         foreach(Transform zone in Inspires2.transform)
         {
             foreach(Transform card in zone.transform)
             {
-                cards.Add(card.GetComponent<CardDisplay>().GetComponent<Card>());
+                cards.Add(card.GetComponent<CardDisplay>().card);
             }
         }
         return cards;

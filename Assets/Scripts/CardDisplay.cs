@@ -10,7 +10,7 @@ public class CardDisplay : MonoBehaviour //This script is the information that w
     public string position;
     public int team;
     public int points;
-    public bool isEnhanced;
+    public bool isEnhanced;    
     public Card card;
     public TMP_Text nameText;
     public TMP_Text descriptionText;

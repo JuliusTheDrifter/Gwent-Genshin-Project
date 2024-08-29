@@ -6,38 +6,32 @@ using System.Linq;
 using Unity.VisualScripting;
 using System;
 
-public class Hand : MonoBehaviour
+public class Hand : CardList
 {
-    public List<Card> Cards = new List<Card>();
     public GameObject hand;
 
-    public List<Card> Find(Func<Card,bool> func)
-    {
-        return Cards.Where(func).ToList();
-    }
-
-    public void Push(Card card)
+    public new void Push(Card card)
     {
         Cards.Add(card);
         GameObject auxCard = Instantiate(card.prefab);
         auxCard.transform.SetParent(hand.transform);
     }
 
-    public void SendBottom(Card card)
+    public new void SendBottom(Card card)
     {
         Cards.Insert(0,card);
         GameObject auxCard = Instantiate(card.prefab);
         auxCard.transform.SetParent(hand.transform);
     }
 
-    public Card Pop()
+    public new Card Pop()
     {
         Card card = Cards[Cards.Count-1];
         Remove(card);
         return card;
     }
 
-    public void Remove(Card card)
+    public new void Remove(Card card)
     {
         foreach(Transform transform in hand.transform)
         {
@@ -48,10 +42,5 @@ public class Hand : MonoBehaviour
             }
         }
         Cards.Remove(card);
-    }
-
-    public void Shuffle()
-    {
-        Cards = Cards.OrderBy(x => UnityEngine.Random.value).ToList();
     }
 }

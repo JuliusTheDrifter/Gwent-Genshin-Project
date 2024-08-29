@@ -7,11 +7,10 @@ using System.Linq;
 using Unity.VisualScripting;
 using System;
 
-public class Deck : MonoBehaviour //This scrip is where the deck is formed
+public class Deck : CardList //This scrip is where the deck is formed
 {
     public TextMeshProUGUI textMeshPro;
     public List<GameObject> gameObjects;
-    public List<Card> Cards;
 
     void Awake()
     {
@@ -26,26 +25,21 @@ public class Deck : MonoBehaviour //This scrip is where the deck is formed
         Shuffle();  
     }
 
-    public List<Card> Find(Func<Card,bool> func)
-    {
-        return Cards.Where(func).ToList();
-    }
-
-    public void Push(Card card)
+    public new void Push(Card card)
     {
         Cards.Add(card);
         int aux = GetNumber();
         textMeshPro.text = aux+1.ToString();
     }
 
-    public void SendBottom(Card card)
+    public new void SendBottom(Card card)
     {
         Cards.Insert(0,card);
         int aux = GetNumber();
         textMeshPro.text = aux+1.ToString();
     }
 
-    public Card Pop()
+    public new Card Pop()
     {
         Card card = Cards[Cards.Count-1];
         Cards.RemoveAt(Cards.Count-1);
@@ -54,16 +48,11 @@ public class Deck : MonoBehaviour //This scrip is where the deck is formed
         return card;
     }
 
-    public void Remove(Card card)
+    public new void Remove(Card card)
     {
         int aux = GetNumber();
         textMeshPro.text = aux--.ToString();
         Cards.Remove(card);
-    }
-
-    public void Shuffle()
-    {
-        Cards = Cards.OrderBy(x => UnityEngine.Random.value).ToList();
     }
 
     public int GetNumber()

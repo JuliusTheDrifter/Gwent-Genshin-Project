@@ -1,28 +1,33 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using UnityEngine;
 
 public class Evaluator
 {
-    BattleBehaviour battleBehaviour;
     Card Card;
     Context Context;
     public Evaluator(Card card,Context context)
     {
         Card = card;
         Context = context;
+        UnityEngine.Debug.Log("Creado");
     }
 
     public void EvaluateEffects()
     {
+        UnityEngine.Debug.Log("Empezamos");
         foreach(var oAElement in Card.effects.Elements)
         {
             EvaluateOAE(oAElement);
         }
+        UnityEngine.Debug.Log("Terminamos");
     }
     
     void EvaluateOAE(OnActivationElements oAElement)
     {
+        UnityEngine.Debug.Log("OAEfecto");
         EvaluateOAEffect(oAElement.OAEffect,oAElement.Selector);
         if(oAElement.postActions != null)
         {
@@ -31,10 +36,12 @@ public class Evaluator
                 EvaluatePostActions(postAction,oAElement.Selector.Source);
             }
         }
+        UnityEngine.Debug.Log("Fin de efecto");
     }
 
     void EvaluateOAEffect(OAEffect oAEffect,Selector selector)
     {
+        UnityEngine.Debug.Log("Efecto real");
         EffectNode effect = Context.effects[oAEffect.Name];
         foreach(var assignment in oAEffect.Assingments)
         {
@@ -50,6 +57,7 @@ public class Evaluator
         {
             EvaluateAction(effect.Action);
         }
+        UnityEngine.Debug.Log("Fin de efecto real");
     }
 
     void EvaluatePostActions(PostAction postAction,string source)
@@ -92,16 +100,16 @@ public class Evaluator
     {
         switch(source)
         {
-            case "hand": return battleBehaviour.HandOfPlayer(battleBehaviour.TriggerPlayer()).Cards;
-            case "otherHand":if(battleBehaviour.TriggerPlayer()==2) return battleBehaviour.HandOfPlayer(1).Cards;
-            else return battleBehaviour.HandOfPlayer(2).Cards;
-            case "deck": return battleBehaviour.DeckOfPlayer(battleBehaviour.TriggerPlayer()).Cards;
-            case "otherDeck":if(battleBehaviour.TriggerPlayer()==2) return battleBehaviour.DeckOfPlayer(1).Cards;
-            else return battleBehaviour.DeckOfPlayer(2).Cards;
-            case "field": return battleBehaviour.FieldOfPlayer(battleBehaviour.TriggerPlayer()).Cards;
-            case "otherField":if(battleBehaviour.TriggerPlayer()==2) return battleBehaviour.FieldOfPlayer(1).Cards;
-            else return battleBehaviour.FieldOfPlayer(2).Cards;
-            default: return battleBehaviour.Board();
+            case "hand": return Context.battleBehaviour.HandOfPlayer(Context.battleBehaviour.TriggerPlayer()).Cards;
+            case "otherHand":if(Context.battleBehaviour.TriggerPlayer()==2) return Context.battleBehaviour.HandOfPlayer(1).Cards;
+            else return Context.battleBehaviour.HandOfPlayer(2).Cards;
+            case "deck": return Context.battleBehaviour.DeckOfPlayer(Context.battleBehaviour.TriggerPlayer()).Cards;
+            case "otherDeck":if(Context.battleBehaviour.TriggerPlayer()==2) return Context.battleBehaviour.DeckOfPlayer(1).Cards;
+            else return Context.battleBehaviour.DeckOfPlayer(2).Cards;
+            case "field": return Context.battleBehaviour.FieldOfPlayer(Context.battleBehaviour.TriggerPlayer()).Cards;
+            case "otherField":if(Context.battleBehaviour.TriggerPlayer()==2) return Context.battleBehaviour.FieldOfPlayer(1).Cards;
+            else return Context.battleBehaviour.FieldOfPlayer(2).Cards;
+            default: return Context.battleBehaviour.Board();
         }
     }
 
@@ -125,5 +133,7 @@ public class Evaluator
         {
             stm.Execute(Context);
         }
+        UnityEngine.Debug.Log("aaaaaaaaaaa");
     }
+
 }

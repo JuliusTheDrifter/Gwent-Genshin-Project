@@ -17,7 +17,7 @@ public class Lexer
     {
         Input=input;
         this.errors = errors;
-
+        keywords = new Dictionary<string, Token>();
         keywords.Add("while", new Token(TokenType.WHILE,"while","while",0,0));
         keywords.Add("for", new Token(TokenType.FOR,"for","for",0,0));
         keywords.Add("in", new Token(TokenType.IN,"in","in",0,0));
@@ -103,12 +103,12 @@ public class Lexer
             case '%': AddToken(TokenType.PERCENT); break;
             //One,two or three character token
             case '+':
-            if(Match('+')) AddToken(TokenType.PLUS_PLUS);
+            if(Match('+')) AddToken(TokenType.PLUS_PLUS_LEFT);
             else if(Match('=')) AddToken(TokenType.PLUS_EQUALS);
             else AddToken(TokenType.PLUS);
             break;
             case '-':
-            if(Match('-')) AddToken(TokenType.MINUS_MINUS);
+            if(Match('-')) AddToken(TokenType.MINUS_MINUS_RIGHT);
             else if(Match('=')) AddToken(TokenType.MINUS_EQUALS);
             else AddToken(TokenType.MINUS);
             break;

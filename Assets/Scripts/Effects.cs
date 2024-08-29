@@ -91,6 +91,11 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 decoy.team2 = true;
             }
         }
+        if(effect == "a")
+        {
+            Evaluator evaluator = new Evaluator(card.GetComponent<CardDisplay>().card,card.GetComponent<CardDisplay>().card.context);
+            evaluator.EvaluateEffects();
+        }
     }
     //All of the effects ignore the golden cards
     //All of the points effects change the texts colors when applied

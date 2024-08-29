@@ -45,14 +45,14 @@ public class SemanticalCheck
         CheckRangeSemantics(card.Range.range);
         CheckOnActivationSemantics(card.OnActivation.Elements);
         Card trueCard = new Card();
-        trueCard.type = Convert.ToString(card.Type.type.Evaluate());
-        trueCard.name = Convert.ToString(card.Name.name.Evaluate());
-        trueCard.faction = Convert.ToString(card.Faction.faction.Evaluate());
-        trueCard.points = Convert.ToInt32(card.Power.power.Evaluate());
+        trueCard.type = Convert.ToString(card.Type.type.Evaluate(Context));
+        trueCard.name = Convert.ToString(card.Name.name.Evaluate(Context));
+        trueCard.faction = Convert.ToString(card.Faction.faction.Evaluate(Context));
+        trueCard.points = Convert.ToInt32(card.Power.power.Evaluate(Context));
         int pos = 0;
         foreach(var expression in card.Range.range)
         {
-            trueCard.range[pos++] = expression.Evaluate() as string; 
+            trueCard.range[pos++] = expression.Evaluate(Context) as string; 
         }
         trueCard.effects = card.OnActivation;
         Context.cards[trueCard.name] = trueCard; 
@@ -69,23 +69,23 @@ public class SemanticalCheck
         }
         CheckActionSemantics(effect.Action);
         symbolTable.PopScope();
-        Context.effects[Convert.ToString(effect.Name.name.Evaluate())!] = new EffectNode(effect.Name,effect.Params!,effect.Action);
+        Context.effects[Convert.ToString(effect.Name.name.Evaluate(Context))!] = new EffectNode(effect.Name,effect.Params!,effect.Action);
     }
 
-    void CheckTypeSemantics(Type type)
+    void CheckTypeSemantics(CardType type)
     {
         CheckStringExpression(type.type);
-        var trueType = Convert.ToString(type.type.Evaluate());
+        var trueType = Convert.ToString(type.type.Evaluate(Context));
         if(trueType!="Oro" && trueType!="Plata" && trueType!="Clima" && trueType!="Decoy" && trueType!="Aumento" && trueType!="Despeje")
         {
-            errors.Add($"The type : '{type}' is not a valid type.");
+            errors.Add($"The type : '{type}' is not a valid type.a");
         }
     }
 
     void CheckCardNameSemantics(Name name)
     {
         CheckStringExpression(name.name);
-        var trueName = Convert.ToString(name.name.Evaluate())!;
+        var trueName = Convert.ToString(name.name.Evaluate(Context))!;
         Context.AddCard(trueName);
     }
 
@@ -94,10 +94,10 @@ public class SemanticalCheck
         foreach(var expression in expressions)
         {
             CheckStringExpression(expression);
-            var range = Convert.ToString(expression.Evaluate());
+            var range = Convert.ToString(expression.Evaluate(Context));
             if(range != "Melee" && range != "Ranged" && range!= "Siege")
             {
-                errors.Add($"The range : '{expression}' is not a valid range.");
+                errors.Add($"The range : '{expression}' is not a valid range.e");
             }
         }
     }
@@ -148,7 +148,7 @@ public class SemanticalCheck
         {
             if(assignment.Left.type != GetExpressionType(assignment.Right))
             {
-                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
+                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sidei");
             }
         }
     }
@@ -163,7 +163,7 @@ public class SemanticalCheck
         foreach(var postAction in postActions)
         {
             CheckStringExpression(postAction.Type);
-            List<Node> parammeters = Context.GetEffect(Convert.ToString(postAction.Type.Evaluate())!).Params.Arguments;
+            List<Node> parammeters = Context.GetEffect(Convert.ToString(postAction.Type.Evaluate(Context))!).Params.Arguments;
             List<Assignment> assignments = postAction.Assingments;
             int paramCounter = 0;
             int assignmentCounter = 0;
@@ -180,13 +180,13 @@ public class SemanticalCheck
             }
             if(parammeters.Count!=paramCounter || assignments.Count!=assignmentCounter)
             {
-                errors.Add("Params form the PostAction doesn't match the effect params");
+                errors.Add("Params form the PostAction doesn't match the effect paramso");
             }
             foreach(var assignment in postAction.Assingments)
             {
                 if(assignment.Left.type != GetExpressionType(assignment.Right))
                 {
-                    errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
+                    errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sideu");
                 }
             }
             if(postAction.Selector != null)
@@ -200,7 +200,7 @@ public class SemanticalCheck
     {
         if (predicate.Var.type != Variable.Type.CARD)
         {
-            errors.Add($"Predicate variable must be of type CARD, but got {predicate.Var.type}");
+            errors.Add($"Predicate variable must be of type CARD, but got {predicate.Var.type}q");
         }
 
         symbolTable.PushScope();
@@ -214,7 +214,7 @@ public class SemanticalCheck
     void CheckEffectNameSemantics(Name name)
     {
         CheckStringExpression(name.name);
-        string trueName = Convert.ToString(name.name.Evaluate())!;
+        string trueName = Convert.ToString(name.name.Evaluate(Context))!;
         Context.AddEffect(trueName);
     }
 
@@ -278,7 +278,7 @@ public class SemanticalCheck
                 Variable.Type type = symbolTable.LookupVariable(assignment.Left.Value);
                 if(type != InferExpressionType(assignment.Right))
                 {
-                    errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
+                    errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sidew");
                 }
             }
             else
@@ -288,21 +288,23 @@ public class SemanticalCheck
         }
         else
         {
-            if(assignment.Left is Variable)
-            {
-                CheckVariableUsage(assignment.Left);
-            }
-            else
+            if(assignment.Left is VariableComp)
             {
                 CheckVarCompSemantics((assignment.Left as VariableComp)!);
             }
+            else
+            {
+                CheckVariableUsage(assignment.Left);
+            }
             if(assignment.Left.type != InferExpressionType(assignment.Right))
             {
-                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
+                UnityEngine.Debug.Log(assignment.Left.type);
+                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sider");
             }
             if(assignment.Left.type != Variable.Type.INT && assignment.Left.type != Variable.Type.STRING)
             {
-                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
+                UnityEngine.Debug.Log(assignment.Left.type);
+                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sidet");
             }
         }
     }
@@ -328,7 +330,7 @@ public class SemanticalCheck
             }
             catch (Exception)
             {
-                errors.Add($"Variable '{variable.Value}' in while condition is not declared.");
+                errors.Add($"Variable '{variable.Value}' in while condition is not declared.y");
             }
         }
         CheckBooleanExpression(whileStmt.Condition);
@@ -341,7 +343,8 @@ public class SemanticalCheck
         try
         {
             var varType = symbolTable.LookupVariable(variable.Value);
-            Console.WriteLine($"Variable '{variable.Value}' is of type {varType}");
+            variable.type = varType;
+            Console.WriteLine($"Variable '{variable.Value}' is of type {varType}p");
         }
         catch (Exception ex)
         {
@@ -349,12 +352,12 @@ public class SemanticalCheck
         }
     }
 
-    void CheckFunctionCall( Function function)
+    void CheckFunctionCall(Function function)
     {
         try
         {
             var returnType = symbolTable.LookupFunction(function.FunctionName);
-            Console.WriteLine($"Function '{function.FunctionName}' returns type {returnType}");
+            Console.WriteLine($"Function '{function.FunctionName}' returns type {returnType}s");
             // Check argument types and count
         }
         catch (Exception ex)
@@ -403,7 +406,7 @@ public class SemanticalCheck
 
     void CheckVarCompSemantics(VariableComp variableComp)
     {
-        Variable.Type currentType = symbolTable.LookupVariable(variableComp.Value);
+        /*Variable.Type currentType = symbolTable.LookupVariable(variableComp.Value);
     
         foreach (var arg in variableComp.args.Arguments)
         {
@@ -420,7 +423,7 @@ public class SemanticalCheck
             }
         }
     
-        variableComp.type = currentType;
+        variableComp.type = currentType;*/
     }
 
     void CheckStringExpression(Expression expression)
@@ -450,7 +453,7 @@ public class SemanticalCheck
                     CheckVarCompSemantics(variableComp);
                     if(variableComp.type != Variable.Type.STRING)
                     {
-                        errors.Add($"A string was expected but instead got {variableComp.type}");
+                        errors.Add($"A string was expected but instead got {variableComp.type}d");
                     }
                 }
                 else
@@ -459,7 +462,7 @@ public class SemanticalCheck
                     symbolTable.LookupVariable(variable.Value);
                     if(variable.type != Variable.Type.STRING)
                     {
-                        errors.Add($"A string was expected but instead got {variable.type}");
+                        errors.Add($"A string was expected but instead got {variable.type}f");
                     }
                 }
             }
@@ -506,16 +509,15 @@ public class SemanticalCheck
                     CheckVarCompSemantics(variableComp);
                     if(variableComp.type != Variable.Type.INT)
                     {
-                        errors.Add($"A number was expected but instead got {variableComp.type}");
+                        errors.Add($"A number was expected but instead got {variableComp.type}g");
                     }
                 }
                 else
                 {
                     Variable variable = (expression as Variable)!;
-                    symbolTable.LookupVariable(variable.Value);
-                    if(variable.type != Variable.Type.INT)
+                    if(symbolTable.LookupVariable(variable.Value) != Variable.Type.INT)
                     {
-                        errors.Add($"A number was expected but instead got {variable.type}");
+                        errors.Add($"A number was expected but instead got {variable.type}h");
                     }
                 }
             }
@@ -559,7 +561,7 @@ public class SemanticalCheck
                     var rightType = InferExpressionType(binaryBooleanExpression.Right);
                     if(!AreCompatibleTypes(leftType, rightType))
                     {
-                        errors.Add($"Incompatible types in comparison: {leftType} and {rightType}");
+                        errors.Add($"Incompatible types in comparison: {leftType} and {rightType}j");
                     }
                     if(leftType == Variable.Type.INT)
                     {
@@ -588,7 +590,7 @@ public class SemanticalCheck
                 var varType = symbolTable.LookupVariable(variable.Value);
                 if (varType != Variable.Type.BOOL)
                 {
-                    errors.Add($"Variable '{variable.Value}' is not of type BOOL");
+                    errors.Add($"Variable '{variable.Value}' is not of type BOOLk");
                 }
             }
             else if (expression is VariableComp variableComp)
@@ -596,12 +598,12 @@ public class SemanticalCheck
                 CheckVarCompSemantics(variableComp);
                 if (variableComp.type != Variable.Type.BOOL)
                 {
-                    errors.Add($"Expression does not evaluate to a BOOL type");
+                    errors.Add($"Expression does not evaluate to a BOOL typel");
                 }
             }
             else
             {
-                errors.Add($"Invalid expression type for boolean context: {expression.GetType().Name}");
+                errors.Add($"Invalid expression type for boolean context: {expression.GetType().Name}z");
             }
         }
         catch(Exception ex)

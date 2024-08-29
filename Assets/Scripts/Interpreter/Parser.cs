@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 public class Parser
 {
@@ -600,6 +601,12 @@ public class Parser
             {
                 args.Arguments.Add(ParseVariable());
             }
+            else if(Match(TokenType.EQUAL_GREATER))
+            {
+                Predicate predicate = new Predicate(args.Arguments[args.Arguments.Count-1] as Variable,ParseExpression());
+                args.Arguments.RemoveAt(args.Arguments.Count-1);
+                args.Arguments.Add(predicate);
+            }
             else if(Check(TokenType.FUN))
             {
                 args.Arguments.Add(ParseFunction(Advance().Lexeme));
@@ -710,7 +717,7 @@ public class Parser
 
     Expression Unary()
     {
-        if(Match(TokenType.MINUS)||Match(TokenType.PLUS_PLUS))
+        if(Match(TokenType.MINUS)||Match(TokenType.PLUS_PLUS_LEFT)||Match(TokenType.MINUS_MINUS_LEFT))
         {
             Token operators = Previous();
             Expression right = Unary();
@@ -722,10 +729,18 @@ public class Parser
             Expression right = Unary();
             return new UnaryBooleanExpression(operators,right);   
         }
-        else if (Check(TokenType.IDENTIFIER) && LookAhead(TokenType.PLUS_PLUS))
+        else if (Check(TokenType.IDENTIFIER) && LookAhead(TokenType.PLUS_PLUS_LEFT))
         {
             Expression left = ParseVariable();
             Token operatorToken = Advance();
+            operatorToken.Type = TokenType.PLUS_PLUS_RIGHT;
+            return new UnaryIntergerExpression(operatorToken, left);
+        }
+        else if (Check(TokenType.IDENTIFIER) && LookAhead(TokenType.MINUS_MINUS_LEFT))
+        {
+            Expression left = ParseVariable();
+            Token operatorToken = Advance();
+            operatorToken.Type = TokenType.MINUS_MINUS_RIGHT;
             return new UnaryIntergerExpression(operatorToken, left);
         }
         return Primary();
