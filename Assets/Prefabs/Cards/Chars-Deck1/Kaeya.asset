@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Kaeya
   id: 7
+  Owner: 1
   description: Calvary captain of the Knights of Favonius
   effectText: 
   points: 8
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Monstad
+  range:
+  - Ranged
+  - 
+  - 
   prefab: {fileID: 3381899768909752976, guid: 041033ab16241a340b8333635b47bb0b, type: 3}
   artwork: {fileID: 21300000, guid: a4189d54940bc1b42974758f514fa1ab, type: 3}
   posSprite: {fileID: 0}

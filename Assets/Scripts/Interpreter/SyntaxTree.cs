@@ -636,6 +636,7 @@ public class VariableComp : Variable,Stmt
     public void Execute(Context context)
     {
         object last = null;
+        if(context.variables.ContainsKey(Value)) last = context.variables[Value];
         foreach(var arg in args.Arguments)
         {
             if(arg is Function)
@@ -659,7 +660,8 @@ public class VariableComp : Variable,Stmt
 
     public override object Evaluate(Context context)
     {
-        object last = context.variables[Value];
+        object last = null;
+        if(Value != "context")last = context.variables[Value];
         foreach(var arg in args.Arguments)
         {
             if(arg is Function)
@@ -670,7 +672,7 @@ public class VariableComp : Variable,Stmt
             {
                 if(last is CardList)
                 {
-                    List<Card> cards = (last as CardList).Cards;
+                    List<GameObject> cards = (last as CardList).GetCards();
                     Indexer indexer = arg as Indexer;
                     last = cards[indexer.index];
                 }
@@ -695,15 +697,15 @@ public class VariableComp : Variable,Stmt
             }
             else
             {
-                Card card = last as Card;
+                GameObject card = last as GameObject;
                 switch(arg)
                 {
-                    case CardType: last = card.type;break;
-                    case Name: last = card.name;break;
-                    case Faction: last = card.faction;break;
-                    case PowerAsField: last = card.points;break;
-                    case Range: last = card.range;break;
-                    case Owner: last = card.Owner;break;
+                    case CardType: last = card.GetComponent<CardDisplay>().type;break;
+                    case Name: last = card.GetComponent<CardDisplay>().nameText.text;break;
+                    case Faction: last = card.GetComponent<CardDisplay>().faction;break;
+                    case PowerAsField: last = card.GetComponent<CardDisplay>().points;break;
+                    case Range: last = card.GetComponent<CardDisplay>().range;break;
+                    case Owner: last = card.GetComponent<CardDisplay>().card.Owner;break;
                 }
             }
         }
@@ -727,7 +729,7 @@ public class VariableComp : Variable,Stmt
             {
                 if(last is CardList)
                 {
-                    List<Card> cards = (last as CardList).Cards;
+                    List<GameObject> cards = (last as CardList).Cards;
                     Indexer indexer = arg as Indexer;
                     last = cards[indexer.index];
                 }
@@ -752,14 +754,16 @@ public class VariableComp : Variable,Stmt
             }
             else
             {
-                Card card = last as Card;
+                GameObject card = last as GameObject;
                 switch(arg)
                 {
-                    case CardType: card.type = value as string;break;
-                    case Name: card.name = value as string;break;
-                    case Faction: card.faction = value as string;break;
-                    case PowerAsField: card.points = Convert.ToInt32(value);break;
-                    case Range: last = card.range;break;
+                    case CardType: card.GetComponent<CardDisplay>().type = value as string;break;
+                    case Name: card.GetComponent<CardDisplay>().nameText.text = value as string;break;
+                    case Faction: card.GetComponent<CardDisplay>().faction = value as string;break;
+                    case PowerAsField: card.GetComponent<CardDisplay>().points = Convert.ToInt32(value);
+                    card.GetComponent<CardDisplay>().UpdateDisplay();
+                    break;
+                    case Range: last = card.GetComponent<CardDisplay>().range;break;
                 }
             }
         }
@@ -921,7 +925,7 @@ public class ForStatement : Stmt
 
     public void Execute(Context context)
     {
-        foreach(Card target in context.variables["targets"] as List<Card>)
+        foreach(GameObject target in context.variables["targets"] as List<GameObject>)
         {
             context.variables["target"] = target;
             foreach(var stmt in Body.statements)
@@ -998,11 +1002,11 @@ public class Function : Stmt
             else return context.battleBehaviour.GraveYardOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
             case "FieldOfPlayer": if(Args.Arguments[0] is Function) return context.battleBehaviour.FieldOfPlayer(Convert.ToInt32((Args.Arguments[0] as Function).GetValue(context,value)));
             else return context.battleBehaviour.FieldOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
-            //case "Find": return (value as CardList).Find()
-            case "Push": (value as CardList).Push((Args.Arguments[0] as Expression).Evaluate(context) as Card);return null;
-            case "SendBottom": (value as CardList).SendBottom((Args.Arguments[0] as Expression).Evaluate(context) as Card);return null;
+            case "Find": (value as CardList).Find(Args.Arguments[0] as Predicate);return null;
+            case "Push": (value as CardList).Push((Args.Arguments[0] as Expression).Evaluate(context) as GameObject);return null;
+            case "SendBottom": (value as CardList).SendBottom((Args.Arguments[0] as Expression).Evaluate(context) as GameObject);return null;
             case "Pop": return (value as CardList).Pop();
-            case "Remove": (value as CardList).Remove((Args.Arguments[0] as Expression).Evaluate(context) as Card);return null;
+            case "Remove": (value as CardList).Remove((Args.Arguments[0] as Expression).Evaluate(context) as GameObject);return null;
             case "Shuffle": (value as CardList).Shuffle();return null; 
             default: return null;
         }

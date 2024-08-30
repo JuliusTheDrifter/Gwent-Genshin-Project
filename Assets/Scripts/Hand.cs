@@ -10,34 +10,47 @@ public class Hand : CardList
 {
     public GameObject hand;
 
-    public new void Push(Card card)
+    public override List<GameObject> GetCards()
     {
-        Cards.Add(card);
-        GameObject auxCard = Instantiate(card.prefab);
+        List<GameObject> cards = new List<GameObject>();
+        foreach(Transform transform in hand.transform)
+        {
+            cards.Add(transform.gameObject);
+        }
+        return cards;
+    }
+
+    public override void Push(GameObject card)
+    {
+        GameObject auxCard = Instantiate(card);
         auxCard.transform.SetParent(hand.transform);
     }
 
-    public new void SendBottom(Card card)
+    public override void SendBottom(GameObject card)
     {
-        Cards.Insert(0,card);
-        GameObject auxCard = Instantiate(card.prefab);
+        GameObject auxCard = Instantiate(card);
         auxCard.transform.SetParent(hand.transform);
     }
 
-    public new Card Pop()
+    public override GameObject Pop()
     {
-        Card card = Cards[Cards.Count-1];
+        if(Cards.Count == 0)
+        {
+            return null;
+        }
+        GameObject card = GetCards()[Cards.Count-1];
         Remove(card);
         return card;
     }
 
-    public new void Remove(Card card)
+    public override void Remove(GameObject card)
     {
-        foreach(Transform transform in hand.transform)
+        CardDisplay[] cardDisplays = hand.GetComponentsInChildren<CardDisplay>();
+        foreach(var cardDisplay in cardDisplays)
         {
-            if(transform.gameObject.GetComponent<Card>()==card)
+            if(cardDisplay.Equals(card.GetComponent<CardDisplay>()))
             {
-                Destroy(transform.gameObject);
+                Destroy(card.gameObject);
                 break;
             }
         }

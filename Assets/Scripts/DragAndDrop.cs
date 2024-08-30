@@ -74,6 +74,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
         isDragging = false;
         if(IsOverDropZone && CorrectZone()) //This checks if the card can be placed in the zone
         {
+            if(transform.gameObject.GetComponent<CardDisplay>().team == 1) GameObject.Find("Hand1").GetComponent<Hand>().Cards.Remove(transform.gameObject);
             //This sets the card as child of the dropzone
             transform.SetParent(dropZone.transform, false);
             canBePlaced=true;
@@ -130,9 +131,14 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
         ZoneConditions conditions = dropZone.GetComponent<ZoneConditions>(); 
         string zoneName = conditions.theZone;
         CardDisplay card = gameObject.GetComponent<CardDisplay>();
-        if(zoneName==card.position)return true;
+        foreach(var pos in card.range)
+        {
+            if(zoneName==pos && conditions.team == card.team)return true;
+        }
+        if(card.type == "Clima" && zoneName == "Weather")return true;
+        if(card.type == "Aumento" && zoneName == "Inspire" && card.team == conditions.team)return true; 
         //Decoys can be placed in all the units zones
-        else if(card.team==1&&zoneName=="Melee1"&&card.card.effectText=="Decoy")return true;
+        if(card.team==1&&zoneName=="Melee1"&&card.card.effectText=="Decoy")return true;
         else if(card.team==1&&zoneName=="Ranged1"&&card.card.effectText=="Decoy")return true;
         else if(card.team==1&&zoneName=="Siege1"&&card.card.effectText=="Decoy")return true;
         else if(card.team==2&&zoneName=="Melee2"&&card.card.effectText=="Decoy")return true;
@@ -194,7 +200,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                 deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
                 if(cardDisplay.team == 1)
                 {
-                    deck.GetComponent<Deck>().Push(gameObject.GetComponent<CardDisplay>().card);
+                    deck.GetComponent<Deck>().Push(gameObject);
                     draw.DrawCard(1);
                     Destroy(gameObject);
                     changeCards.counter++;
@@ -216,7 +222,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
                 deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
                 if(cardDisplay.team == 2)
                 {
-                    deck.GetComponent<Deck>().Push(gameObject.GetComponent<CardDisplay>().card);
+                    deck.GetComponent<Deck>().Push(gameObject);
                     draw.DrawCard(2);
                     Destroy(gameObject);
                     changeCards.counter++;

@@ -14,13 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Collei
   id: 17
+  Owner: 2
   description: 'Effect: This cards points are multiplied by the amount of cards exactly
     like it'
   effectText: 
   points: 6
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Inazuma
+  range:
+  - Ranged
+  - 
+  - 
   prefab: {fileID: 3490232810987286200, guid: cb33fe343f4809e4ea672393a7d6ccc5, type: 3}
   artwork: {fileID: 21300000, guid: 1fd695a6930ef4d409ddaf7661ad5487, type: 3}
   posSprite: {fileID: 0}

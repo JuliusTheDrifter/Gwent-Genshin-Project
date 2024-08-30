@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Cyno
   id: 18
+  Owner: 2
   description: As the General Mahamatra, Cyno strikes fear into his enemies
   effectText: 
   points: 12
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Inazuma
+  range:
+  - Ranged
+  - 
+  - 
   prefab: {fileID: 4974625573365855124, guid: e8502f4f955da58419d37d6befe4bbc7, type: 3}
   artwork: {fileID: 21300000, guid: 71c88b62a13990b49a798a3979a741c9, type: 3}
   posSprite: {fileID: 0}

@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Xiangling
   id: 22
+  Owner: 2
   description: 'Effect: Eliminates the enemy card with the lowest points'
   effectText: 
   points: 5
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Inazuma
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 5911880672161023241, guid: 07a094ab8c0ee9049ad7bde24a0bed82, type: 3}
   artwork: {fileID: 21300000, guid: acb18958daa1ca643a7cec5a0dfc25fc, type: 3}
   posSprite: {fileID: 0}

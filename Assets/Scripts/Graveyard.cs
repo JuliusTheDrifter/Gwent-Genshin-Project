@@ -10,30 +10,35 @@ public class Graveyard : CardList
 {
     public TextMeshProUGUI textMeshPro;
 
-    public new void Push(Card card)
+    public override List<GameObject> GetCards()
+    {
+        return Cards;
+    }
+
+    public override void Push(GameObject card)
     {
         Cards.Add(card);
         int aux = GetNumber();
         textMeshPro.text = aux+1.ToString();
     }
 
-    public new void SendBottom(Card card)
+    public override void SendBottom(GameObject card)
     {
         Cards.Insert(0,card);
         int aux = GetNumber();
         textMeshPro.text = aux+1.ToString();
     }
 
-    public new Card Pop()
+    public override GameObject Pop()
     {
-        Card card = Cards[Cards.Count-1];
+        GameObject card = Cards[Cards.Count-1];
         Cards.RemoveAt(Cards.Count-1);
         int aux = GetNumber();
         textMeshPro.text = aux--.ToString();
         return card;
     }
 
-    public new void Remove(Card card)
+    public override void Remove(GameObject card)
     {
         int aux = GetNumber();
         textMeshPro.text = aux--.ToString();

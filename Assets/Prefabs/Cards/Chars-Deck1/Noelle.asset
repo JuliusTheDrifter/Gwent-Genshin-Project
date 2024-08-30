@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Noelle
   id: 10
+  Owner: 1
   description: Considered "The maid of all maids" in the Knights of Favonius
   effectText: 
   points: 8
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Monstad
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 261885218958118593, guid: 4eddd7837ce999148a533e9785d4d76f, type: 3}
   artwork: {fileID: 21300000, guid: 165352a8d7775364fa631baaeadf7c30, type: 3}
   posSprite: {fileID: 0}

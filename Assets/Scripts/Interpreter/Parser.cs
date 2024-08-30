@@ -168,6 +168,7 @@ public class Parser
         while(!Check(TokenType.RIGHT_BRACK) && !IsAtEnd())
         {
             onActivation.Elements.Add(ParseOAE());
+            if(!Check(TokenType.RIGHT_BRACK) && !IsAtEnd()) Consume(TokenType.COMMA,"Expected ,");
         }
         Consume(TokenType.RIGHT_BRACK,"Expected ']'");
         return onActivation;
@@ -217,7 +218,7 @@ public class Parser
                 throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid OnActivation field.");
             }
         }
-        Consume(TokenType.RIGHT_BRACE,"Expected '}' after OnActivation declaration");
+        Consume(TokenType.RIGHT_BRACE,"Expected '}' after OnActivationEffect declaration");
         return new OnActivationElements(onActivationEffect,selector,postActions);
     }
 
@@ -228,8 +229,8 @@ public class Parser
         if(Check(TokenType.STRING))
         {
             name = Advance().Lexeme.Substring(1,Previous().Lexeme.Length-2);
-            Consume(TokenType.COMMA,"Expected ','");
-            while(!Check(TokenType.SELECTOR))
+            if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ','");
+            while(!Check(TokenType.SELECTOR) && !Check(TokenType.RIGHT_BRACE))
             {
                 if(Check(TokenType.IDENTIFIER))
                 {
@@ -315,7 +316,7 @@ public class Parser
                 {
                     if(Convert.ToString(Peek().Literal) == "deck"||Convert.ToString(Peek().Literal) == "otherDeck"||Convert.ToString(Peek().Literal) == "hand"||Convert.ToString(Peek().Literal) == "otherHand"||Convert.ToString(Peek().Literal) == "field"||Convert.ToString(Peek().Literal) == "otherField"||Convert.ToString(Peek().Literal) == "parent"||Convert.ToString(Peek().Literal) == "board")
                     {
-                        source = Advance().Lexeme;
+                        source = Advance().Literal as string;
                     }
                     else
                     {
@@ -376,7 +377,7 @@ public class Parser
             {
                 Consume(TokenType.COLON,"Expected ':'");
                 expression = ParseExpression();
-                if(!Check(TokenType.RIGHT_BRACE)) Consume(TokenType.COMMA,"Expected ','");
+                if(!Check(TokenType.RIGHT_BRACE)) Consume(TokenType.COMMA,"Expected ','aaaaa");
             }
             else if(Match(TokenType.SELECTOR))
             {
@@ -444,7 +445,7 @@ public class Parser
             {
                 if(Match(TokenType.FUN))
                 {
-                    Function function = ParseFunction(Previous().Lexeme);
+                    Function function = ParseFunction(Previous().Literal as string);
                     varType = function.Type;
                     variableComp.args.Arguments.Add(function);
                 }
@@ -452,19 +453,19 @@ public class Parser
                 {
                     if(Match(TokenType.TYPE))
                     {
-                        CardType type = new CardType(new String(Previous().Lexeme));
+                        CardType type = new CardType(new String(Previous().Literal as string));
                         varType = Variable.Type.STRING;
                         variableComp.args.Arguments.Add(type);
                     }
                     else if(Match(TokenType.NAME))
                     {
-                        Name name = new Name(new String(Previous().Lexeme));
+                        Name name = new Name(new String(Previous().Literal as string));
                         varType = Variable.Type.STRING;
                         variableComp.args.Arguments.Add(name);
                     }
                     else if(Match(TokenType.FACTION))
                     {
-                        Faction faction = new Faction(new String(Previous().Lexeme));
+                        Faction faction = new Faction(new String(Previous().Literal as string));
                         varType = Variable.Type.STRING;
                         variableComp.args.Arguments.Add(faction);
                     }
@@ -476,27 +477,26 @@ public class Parser
                     }
                     else if(Match(TokenType.RANGE))
                     {
-                        Range range = new Range(Previous().Lexeme);
+                        Range range = new Range(Previous().Literal as string);
                         varType = Variable.Type.STRING;
                         variableComp.args.Arguments.Add(range);
                     }
                     else if(Match(TokenType.POINTER))
                     {
-                        Pointer pointer = new Pointer(Previous().Lexeme);
-                        //varType = Variable.Type.STRING;
+                        Pointer pointer = new Pointer(Previous().Literal as string);
                         variableComp.args.Arguments.Add(pointer);
+                        if(Match(TokenType.LEFT_BRACK))
+                        {
+                            Indexer indexer = new Indexer(Convert.ToInt32(Advance().Literal));
+                            Consume(TokenType.RIGHT_BRACK,"Expected ']'");
+                            variableComp.args.Arguments.Add(indexer);
+                        }
                     }
                     else if(Match(TokenType.OWNER))
                     {
-                        Owner owner = new Owner(Previous().Lexeme);
+                        Owner owner = new Owner(Previous().Literal as string);
                         varType = Variable.Type.INT;
                         variableComp.args.Arguments.Add(owner);
-                    }
-                    else if(Match(TokenType.LEFT_BRACK))
-                    {
-                        Indexer indexer = new Indexer(Convert.ToInt32(Advance().Literal));
-                        Consume(TokenType.RIGHT_BRACK,"Expected ']'");
-                        variableComp.args.Arguments.Add(indexer);
                     }
                     else
                     {
@@ -609,7 +609,7 @@ public class Parser
             }
             else if(Check(TokenType.FUN))
             {
-                args.Arguments.Add(ParseFunction(Advance().Lexeme));
+                args.Arguments.Add(ParseFunction(Advance().Literal as string));
             }
             else
             {

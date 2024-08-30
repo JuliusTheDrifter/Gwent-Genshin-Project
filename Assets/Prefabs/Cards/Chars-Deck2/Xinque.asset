@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Xinque
   id: 23
+  Owner: 2
   description: Second son of the Guild Manager of the Feiyun Commerce Guild
   effectText: 
   points: 6
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Inazuma
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 3619242115116273164, guid: f52dcef963d02e9498b7de799308a8bd, type: 3}
   artwork: {fileID: 21300000, guid: fb22b3f78a18e6543a0367fa9009872b, type: 3}
   posSprite: {fileID: 0}

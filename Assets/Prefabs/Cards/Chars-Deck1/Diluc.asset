@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Diluc
   id: 1
+  Owner: 1
   description: 'Effect: Increases the points of the cards in the same file'
   effectText: 
   points: 15
   golden: 1
-  type: 
-  effect: {fileID: 0}
+  type: Oro
+  faction: Monstad
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 1843932100347988202, guid: 2244b72b74a6f0844b41bcd0ed4e06dc, type: 3}
   artwork: {fileID: 0}
   posSprite: {fileID: 0}

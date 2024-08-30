@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ayaka
   id: 13
+  Owner: 2
   description: 'Effect: Increases the points of the cards in the same file'
   effectText: 
   points: 15
   golden: 1
-  type: 
-  effect: {fileID: 0}
+  type: Oro
+  faction: Inazuma
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 7826756066353138456, guid: b98e45c575788d14e8d6bc1247921c7c, type: 3}
   artwork: {fileID: 21300000, guid: 6ed89b48cc075c746bebdbd0a6739048, type: 3}
   posSprite: {fileID: 0}

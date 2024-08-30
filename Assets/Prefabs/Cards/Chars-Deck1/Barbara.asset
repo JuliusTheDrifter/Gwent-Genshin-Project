@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Barbara
   id: 3
+  Owner: 1
   description: Effect :Eliminates the file with the less amount of enemies
   effectText: 
   points: 5
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Monstad
+  range:
+  - Siege
+  - 
+  - 
   prefab: {fileID: 8545675215881230539, guid: 550caa74580a8de4d95f651ceb6b3b0e, type: 3}
   artwork: {fileID: 21300000, guid: 69dbc96bbf97be94c8df92ffb90c07f6, type: 3}
   posSprite: {fileID: 0}

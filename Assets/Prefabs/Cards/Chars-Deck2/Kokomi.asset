@@ -14,13 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Kokomi
   id: 20
+  Owner: 2
   description: 'Effect: Calculates the average of all the player cards and sets their
     points to that average'
   effectText: 
   points: 9
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Inazuma
+  range:
+  - Siege
+  - 
+  - 
   prefab: {fileID: 5022514872253213944, guid: bdb0b2c89fc7fcc4096ffa07c7c3e7d9, type: 3}
   artwork: {fileID: 21300000, guid: 2110f2ac5b8668448b9d5ea9acefa37c, type: 3}
   posSprite: {fileID: 0}

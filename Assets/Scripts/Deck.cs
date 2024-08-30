@@ -16,43 +16,60 @@ public class Deck : CardList //This scrip is where the deck is formed
     {
         foreach(var card in gameObjects)
         {
-            Cards.Add(card.GetComponent<CardDisplay>().card);
+            Cards.Add(card);
         }
     }
     void Start()
     {
-        textMeshPro.text = gameObjects.Count.ToString(); 
-        Shuffle();  
+        Shuffle();
     }
 
-    public new void Push(Card card)
+    public override List<GameObject> GetCards()
+    {
+        return Cards;
+    }
+
+    public override void Push(GameObject card)
     {
         Cards.Add(card);
         int aux = GetNumber();
         textMeshPro.text = aux+1.ToString();
     }
 
-    public new void SendBottom(Card card)
+    public override void SendBottom(GameObject card)
     {
         Cards.Insert(0,card);
         int aux = GetNumber();
         textMeshPro.text = aux+1.ToString();
     }
 
-    public new Card Pop()
+    public override GameObject Pop()
     {
-        Card card = Cards[Cards.Count-1];
+        Debug.Log("wwwww");
+        GameObject card = Cards[Cards.Count-1];
         Cards.RemoveAt(Cards.Count-1);
         int aux = GetNumber();
         textMeshPro.text = aux--.ToString();
         return card;
     }
 
-    public new void Remove(Card card)
+    public override void Remove(GameObject card)
     {
         int aux = GetNumber();
         textMeshPro.text = aux--.ToString();
         Cards.Remove(card);
+    }
+
+    public override void Shuffle()
+    {
+        List<GameObject> cards = GetCards();
+        for(int i=0;i<cards.Count;i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0,cards.Count);
+            GameObject temp = cards[i];
+            cards[i] = cards[randomIndex];
+            cards[randomIndex] = temp;
+        }
     }
 
     public int GetNumber()

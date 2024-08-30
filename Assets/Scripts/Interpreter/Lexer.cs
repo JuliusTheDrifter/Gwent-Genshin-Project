@@ -66,21 +66,13 @@ public class Lexer
     }
     public List<Token> ScanTokens()
     {
-        //try
-        //{
-            while (!IsAtTheEnd())
-            {
-                start = current;
-                ScanToken();
-            }
-            Tokens.Add(new Token(TokenType.EOF, "", "" , line, current));
-            return Tokens;
-        //}
-        /*catch(ParseException ex)
+        while (!IsAtTheEnd())
         {
-            /*Console.WriteLine($"Lexic error: {ex.Message}");
-            throw;
-        }*/
+            start = current;
+            ScanToken();
+        }
+        Tokens.Add(new Token(TokenType.EOF, "", "" , line, current));
+        return Tokens;
     }
     void ScanToken()
     {

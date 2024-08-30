@@ -114,7 +114,10 @@ public class SemanticalCheck
     {
         symbolTable.PushScope();
         CheckOAEffect(oAElements.OAEffect);
-        CheckSelectorSemantics(oAElements.Selector);
+        if(oAElements.Selector != null)
+        {
+            CheckSelectorSemantics(oAElements.Selector);
+        }
         if(oAElements.postActions != null)
         {
             CheckPostActionSemantics(oAElements.postActions);
@@ -124,25 +127,28 @@ public class SemanticalCheck
 
     void CheckOAEffect(OAEffect oAEffect)
     {
-        List<Node> parammeters = Context.GetEffect(oAEffect.Name).Params.Arguments;
-        List<Assignment> assignments = oAEffect.Assingments;
-        int paramCounter = 0;
-        int assignmentCounter = 0;
-        foreach(var assignment in assignments)
+        if(Context.GetEffect(oAEffect.Name).Params != null)
         {
-            assignment.Left.type = InferExpressionType(assignment.Right);
-            foreach(var param in parammeters)
+            List<Node> parammeters = Context.GetEffect(oAEffect.Name).Params.Arguments;
+            List<Assignment> assignments = oAEffect.Assingments;
+            int paramCounter = 0;
+            int assignmentCounter = 0;
+            foreach(var assignment in assignments)
             {
-                if(assignment.Left.type == (param as Variable)!.type)
+                assignment.Left.type = InferExpressionType(assignment.Right);
+                foreach(var param in parammeters)
                 {
-                    paramCounter++;
-                    assignmentCounter++;
+                    if(assignment.Left.type == (param as Variable)!.type)
+                    {
+                        paramCounter++;
+                        assignmentCounter++;
+                    }
                 }
             }
-        }
-        if(parammeters.Count!=paramCounter || assignments.Count!=assignmentCounter)
-        {
-            errors.Add(parammeters.Count + " " + assignments.Count);
+            if(parammeters.Count!=paramCounter || assignments.Count!=assignmentCounter)
+            {
+                errors.Add(parammeters.Count + " " + assignments.Count);
+            }
         }
         foreach(var assignment in oAEffect.Assingments)
         {
@@ -163,30 +169,44 @@ public class SemanticalCheck
         foreach(var postAction in postActions)
         {
             CheckStringExpression(postAction.Type);
-            List<Node> parammeters = Context.GetEffect(Convert.ToString(postAction.Type.Evaluate(Context))!).Params.Arguments;
-            List<Assignment> assignments = postAction.Assingments;
-            int paramCounter = 0;
-            int assignmentCounter = 0;
-            foreach(var assignment in assignments)
+            if(Context.GetEffect(Convert.ToString(postAction.Type.Evaluate(Context))!).Params != null)
             {
-                foreach(var param in parammeters)
+                List<Node> parammeters = Context.GetEffect(Convert.ToString(postAction.Type.Evaluate(Context))!).Params.Arguments;
+                List<Assignment> assignments = postAction.Assingments;
+                int paramCounter = 0;
+                int assignmentCounter = 0;
+                foreach(var assignment in assignments)
                 {
-                    if(assignment.Left.type == (param as Variable)!.type)
+                    foreach(var param in parammeters)
                     {
-                        paramCounter++;
-                        assignmentCounter++;
+                        if(assignment.Left.type == (param as Variable)!.type)
+                        {
+                            paramCounter++;
+                            assignmentCounter++;
+                        }
+                    }
+                }
+                if(parammeters.Count!=paramCounter || assignments.Count!=assignmentCounter)
+                {
+                    errors.Add("Params form the PostAction doesn't match the effect paramso");
+                }
+                foreach(var assignment in postAction.Assingments)
+                {
+                    if(assignment.Left.type != GetExpressionType(assignment.Right))
+                    {
+                        errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sideu");
                     }
                 }
             }
-            if(parammeters.Count!=paramCounter || assignments.Count!=assignmentCounter)
+            else
             {
-                errors.Add("Params form the PostAction doesn't match the effect paramso");
-            }
-            foreach(var assignment in postAction.Assingments)
-            {
-                if(assignment.Left.type != GetExpressionType(assignment.Right))
+                List<Assignment> assignments = postAction.Assingments;
+                foreach(var assignment in postAction.Assingments)
                 {
-                    errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sideu");
+                    if(assignment.Left.type != GetExpressionType(assignment.Right))
+                    {
+                        errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sideu");
+                    }
                 }
             }
             if(postAction.Selector != null)
@@ -275,10 +295,19 @@ public class SemanticalCheck
         {
             if(symbolTable.ExistsVariable(assignment.Left.Value))
             {
-                Variable.Type type = symbolTable.LookupVariable(assignment.Left.Value);
+                Variable.Type type = Variable.Type.NULL;
+                if(assignment.Left is VariableComp variableComp)
+                {
+                    CheckVarCompSemantics(variableComp);
+                    type = variableComp.type;
+                }
+                else
+                {
+                    type = symbolTable.LookupVariable(assignment.Left.Value);
+                }
                 if(type != InferExpressionType(assignment.Right))
                 {
-                    errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sidew");
+                    errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
                 }
             }
             else
@@ -298,13 +327,11 @@ public class SemanticalCheck
             }
             if(assignment.Left.type != InferExpressionType(assignment.Right))
             {
-                UnityEngine.Debug.Log(assignment.Left.type);
-                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sider");
+                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
             }
             if(assignment.Left.type != Variable.Type.INT && assignment.Left.type != Variable.Type.STRING)
             {
-                UnityEngine.Debug.Log(assignment.Left.type);
-                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right sidet");
+                errors.Add($"The type of the left side of the assignment '{assignment.Left}' is not equal to the right side");
             }
         }
     }
@@ -330,7 +357,7 @@ public class SemanticalCheck
             }
             catch (Exception)
             {
-                errors.Add($"Variable '{variable.Value}' in while condition is not declared.y");
+                errors.Add($"Variable '{variable.Value}' in while condition is not declared.");
             }
         }
         CheckBooleanExpression(whileStmt.Condition);
@@ -344,7 +371,7 @@ public class SemanticalCheck
         {
             var varType = symbolTable.LookupVariable(variable.Value);
             variable.type = varType;
-            Console.WriteLine($"Variable '{variable.Value}' is of type {varType}p");
+            Console.WriteLine($"Variable '{variable.Value}' is of type {varType}");
         }
         catch (Exception ex)
         {
@@ -352,12 +379,12 @@ public class SemanticalCheck
         }
     }
 
-    void CheckFunctionCall(Function function)
+    void CheckFunctionCall(Function function) //*
     {
         try
         {
             var returnType = symbolTable.LookupFunction(function.FunctionName);
-            Console.WriteLine($"Function '{function.FunctionName}' returns type {returnType}s");
+            Console.WriteLine($"Function '{function.FunctionName}' returns type {returnType}");
             // Check argument types and count
         }
         catch (Exception ex)
@@ -404,25 +431,24 @@ public class SemanticalCheck
         }
     }
 
-    void CheckVarCompSemantics(VariableComp variableComp)
+    void CheckVarCompSemantics(VariableComp variableComp) //*
     {
         /*Variable.Type currentType = symbolTable.LookupVariable(variableComp.Value);
     
         foreach (var arg in variableComp.args.Arguments)
         {
-            if (arg is Function function)
+            if(arg is Function function)
             {
+                
                 CheckFunctionCall(function);
                 currentType = function.Type;
             }
-            else if (arg is Type || arg is Name || arg is Faction || arg is PowerAsField || arg is Range || arg is Pointer)
+            else if(arg is Pointer pointer)
             {
-                // Check if the property access is valid for the current type
-                // You may need to define rules for what properties are accessible for each type
-                // Update currentType based on the property type
+                
             }
         }
-    
+
         variableComp.type = currentType;*/
     }
 
@@ -453,7 +479,7 @@ public class SemanticalCheck
                     CheckVarCompSemantics(variableComp);
                     if(variableComp.type != Variable.Type.STRING)
                     {
-                        errors.Add($"A string was expected but instead got {variableComp.type}d");
+                        errors.Add($"A string was expected but instead got {variableComp.type}");
                     }
                 }
                 else
@@ -462,7 +488,7 @@ public class SemanticalCheck
                     symbolTable.LookupVariable(variable.Value);
                     if(variable.type != Variable.Type.STRING)
                     {
-                        errors.Add($"A string was expected but instead got {variable.type}f");
+                        errors.Add($"A string was expected but instead got {variable.type}");
                     }
                 }
             }
@@ -509,7 +535,7 @@ public class SemanticalCheck
                     CheckVarCompSemantics(variableComp);
                     if(variableComp.type != Variable.Type.INT)
                     {
-                        errors.Add($"A number was expected but instead got {variableComp.type}g");
+                        errors.Add($"A number was expected but instead got {variableComp.type}");
                     }
                 }
                 else
@@ -517,7 +543,7 @@ public class SemanticalCheck
                     Variable variable = (expression as Variable)!;
                     if(symbolTable.LookupVariable(variable.Value) != Variable.Type.INT)
                     {
-                        errors.Add($"A number was expected but instead got {variable.type}h");
+                        errors.Add($"A number was expected but instead got {variable.type}");
                     }
                 }
             }
@@ -561,7 +587,7 @@ public class SemanticalCheck
                     var rightType = InferExpressionType(binaryBooleanExpression.Right);
                     if(!AreCompatibleTypes(leftType, rightType))
                     {
-                        errors.Add($"Incompatible types in comparison: {leftType} and {rightType}j");
+                        errors.Add($"Incompatible types in comparison: {leftType} and {rightType}");
                     }
                     if(leftType == Variable.Type.INT)
                     {
@@ -590,7 +616,7 @@ public class SemanticalCheck
                 var varType = symbolTable.LookupVariable(variable.Value);
                 if (varType != Variable.Type.BOOL)
                 {
-                    errors.Add($"Variable '{variable.Value}' is not of type BOOLk");
+                    errors.Add($"Variable '{variable.Value}' is not of type BOOL");
                 }
             }
             else if (expression is VariableComp variableComp)
@@ -598,12 +624,12 @@ public class SemanticalCheck
                 CheckVarCompSemantics(variableComp);
                 if (variableComp.type != Variable.Type.BOOL)
                 {
-                    errors.Add($"Expression does not evaluate to a BOOL typel");
+                    errors.Add($"Expression does not evaluate to a BOOL type");
                 }
             }
             else
             {
-                errors.Add($"Invalid expression type for boolean context: {expression.GetType().Name}z");
+                errors.Add($"Invalid expression type for boolean context: {expression.GetType().Name}");
             }
         }
         catch(Exception ex)

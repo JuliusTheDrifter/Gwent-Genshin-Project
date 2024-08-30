@@ -6,38 +6,58 @@ using System;
 
 public abstract class CardList : MonoBehaviour
 {
-    public List<Card> Cards = new List<Card>();
+    public Context Context;
+    public List<GameObject> Cards = new List<GameObject>();
 
-    public List<Card> Find(Func<Card,bool> func)
+    public abstract List<GameObject> GetCards();
+    public virtual List<GameObject> Find(Predicate predicate)
     {
-        return Cards.Where(func).ToList();
+        List<GameObject> filtredCards = new List<GameObject>();
+        foreach(var card in Cards)
+        {
+            Context.variables[predicate.Var.Value] = card;
+            if((bool)predicate.Condition.Evaluate(Context)) filtredCards.Add(card);
+            Context.variables.Remove(predicate.Var.Value);
+        }
+        return filtredCards;
     }
 
-    public void Push(Card card)
+    public virtual void Push(GameObject card)
     {
         Cards.Add(card);
     }
 
-    public void SendBottom(Card card)
+    public virtual void SendBottom(GameObject card)
     {
         Cards.Insert(0,card);
     }
 
-    public Card Pop()
+    public virtual GameObject Pop()
     {
-        Card card = Cards[Cards.Count-1];
+        if(Cards.Count == 0)
+        {
+            return null;
+        }
+        GameObject card = Cards[Cards.Count-1];
         Cards.RemoveAt(Cards.Count-1);
         return card;
     }
 
-    public void Remove(Card card)
+    public virtual void Remove(GameObject card)
     {
         Cards.Remove(card);
     }
 
-    public void Shuffle()
+    public virtual void Shuffle()
     {
-        Cards = Cards.OrderBy(x => UnityEngine.Random.value).ToList();
+        List<GameObject> cards = GetCards();
+        for(int i=0;i<cards.Count;i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0,cards.Count);
+            GameObject temp = cards[i];
+            cards[i] = cards[randomIndex];
+            cards[randomIndex] = temp;
+        }
     }
 
 }

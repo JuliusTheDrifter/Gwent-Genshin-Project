@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Eula
   id: 2
+  Owner: 1
   description: Captain of the Reconnaissance Company of the Knights of Favonius
   effectText: 
   points: 10
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Monstad
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 2106055481186928423, guid: 669061549117e8245ae8092b300570b7, type: 3}
   artwork: {fileID: 0}
   posSprite: {fileID: 0}

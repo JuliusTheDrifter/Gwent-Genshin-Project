@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bennet
   id: 4
+  Owner: 1
   description: 'Effect: Eliminates the enemy card with the lowest points'
   effectText: 
   points: 4
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Monstad
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 8742491694611024088, guid: d8a3e8c401f87ce4fbe724fb410521d4, type: 3}
   artwork: {fileID: 21300000, guid: 196b9342721f893489e42cc8eefe08eb, type: 3}
   posSprite: {fileID: 0}

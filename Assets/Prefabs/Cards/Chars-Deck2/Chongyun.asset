@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Chongyun
   id: 16
+  Owner: 2
   description: 'Effect: Eliminates the card with the highest points, ally or enemy'
   effectText: 
   points: 8
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Inazuma
+  range:
+  - Siege
+  - 
+  - 
   prefab: {fileID: 6686572964276920112, guid: c4784d5ccc515d44d99bc11a4d8de468, type: 3}
   artwork: {fileID: 21300000, guid: c17aec9f1fae71e45bb5ea3b71bacf9d, type: 3}
   posSprite: {fileID: 0}

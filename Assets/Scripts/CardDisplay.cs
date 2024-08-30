@@ -7,9 +7,11 @@ using TMPro;
 
 public class CardDisplay : MonoBehaviour //This script is the information that will be shown in the UI
 {
-    public string position;
     public int team;
     public int points;
+    public string type;
+    public string faction;
+    public string[] range = new string[3];
     public bool isEnhanced;    
     public Card card;
     public TMP_Text nameText;
@@ -26,8 +28,18 @@ public class CardDisplay : MonoBehaviour //This script is the information that w
         nameText.text = card.name;
         descriptionText.text = card.description;
         points = card.points;
-        //This is to only show the points of the units cards
-        if(position == "Melee1"||position == "Melee2"||position == "Ranged1"||position == "Ranged2"||position == "Siege1"||position == "Siege2")
+        type = card.type;
+        faction = card.faction;
+        range = card.range;
+        team = card.Owner;
+        if(type == "Oro" || type == "Plata")
+        {
+            pointsText.text = points.ToString();
+        }
+    }
+    public void UpdateDisplay()
+    {
+        if(type == "Oro" || type == "Plata")
         {
             pointsText.text = points.ToString();
         }

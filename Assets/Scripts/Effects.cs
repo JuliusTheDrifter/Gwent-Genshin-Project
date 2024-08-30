@@ -19,6 +19,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     public bool weatherLoop;
     public BattleBehaviour decoy;
     public BattleBehaviour deathCount;
+    public Hand hand1;
     public Draw draw;
     public Deck deck;
     public Effects effects;
@@ -27,39 +28,39 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     {
         if(effect == "OwnFileIncrease")
         {
-            OwnFileIncrease(card);
+            //OwnFileIncrease(card);
         }
         if(effect == "Weather")
         {
-            Weather(card);
+            //Weather(card);
         }
         if(effect == "Cleanse")
         {
-            Cleanse(card);
+           //Cleanse(card);
         }
         if(effect == "Inspire")
         {
-            Inspire(card);
+            //Inspire(card);
         }
         if(effect == "Average")
         {
-            Average(card);
+            //Average(card);
         }
         if(effect == "Multiply")
         {
-            Multiply(card);
+            //Multiply(card);
         }
         if(effect == "Highest")
         {
-            AnnihilateHighest();
+            //AnnihilateHighest();
         }
         if(effect == "Lowest")
         {
-            AnnihilateLowest(card);
+            //AnnihilateLowest(card);
         }
         if(effect == "EraseFile")
         {
-            EraseFile(card);
+            //EraseFile(card);
         }
         if(effect == "Draw") //Draw a card
         {
@@ -76,7 +77,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         }
         if(effect == "CallWeather")
         {
-            CallWeather(card);
+            //CallWeather(card);
         }
         if(effect == "Decoy") //This allows the decoy effect to happen
         {
@@ -101,7 +102,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     //All of the points effects change the texts colors when applied
 
     //Increases the points of the cards in the same zone of the card that activated the effect
-    void OwnFileIncrease(GameObject cardplayed)
+    /*void OwnFileIncrease(GameObject cardplayed)
     {
         string cardPosition = cardplayed.GetComponent<CardDisplay>().position;
         zone1 = GameObject.Find(cardPosition);
@@ -659,12 +660,12 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         if(cardDisplay.team ==1)
         {
             deck = GameObject.Find("DeckManager1").GetComponent<Deck>();
-            List<Card> deckCards = deck.GetComponent<Deck>().Cards;
+            List<GameObject> deckCards = deck.GetComponent<Deck>().Cards;
             for(int i=0;i<deckCards.Count;i++)
             {
-                if(deckCards[i].prefab.GetComponent<CardDisplay>().name == "Frost"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Winds"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Earthquake")
+                if(deckCards[i].GetComponent<CardDisplay>().name == "Frost"||deckCards[i].GetComponent<CardDisplay>().name == "Winds"||deckCards[i].GetComponent<CardDisplay>().name == "Earthquake")
                 {
-                    GameObject playerCard = Instantiate(deckCards[i].prefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    GameObject playerCard = Instantiate(deckCards[i], new Vector3(0, 0, 0), Quaternion.identity);
                     playerCard.transform.SetParent(zone1.transform, false);
                     deck.Remove(deckCards[i]);
                     effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
@@ -676,12 +677,12 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         else
         {
             deck = GameObject.Find("DeckManager2").GetComponent<Deck>();
-            List<Card> deckCards = deck.GetComponent<Deck>().Cards;
+            List<GameObject> deckCards = deck.GetComponent<Deck>().Cards;
             for(int i=0;i<deckCards.Count;i++)
             {
-                if(deckCards[i].prefab.GetComponent<CardDisplay>().name == "Frost"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Winds"||deckCards[i].prefab.GetComponent<CardDisplay>().name == "Earthquake")
+                if(deckCards[i].GetComponent<CardDisplay>().name == "Frost"||deckCards[i].GetComponent<CardDisplay>().name == "Winds"||deckCards[i].GetComponent<CardDisplay>().name == "Earthquake")
                 {
-                    GameObject playerCard = Instantiate(deckCards[i].prefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    GameObject playerCard = Instantiate(deckCards[i], new Vector3(0, 0, 0), Quaternion.identity);
                     playerCard.transform.SetParent(zone1.transform, false);
                     deck.Remove(deckCards[i]);
                     effects = GameObject.Find("BattleSystem").GetComponent<Effects>();
@@ -690,5 +691,5 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 }
             }
         }
-    }
+    }*/
 }

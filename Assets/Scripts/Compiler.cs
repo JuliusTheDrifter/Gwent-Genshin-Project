@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Numerics;
+using Unity.VisualScripting;
 
 public class Compiler : MonoBehaviour
 {
@@ -81,9 +82,12 @@ public class Compiler : MonoBehaviour
             card.range[i++] = zone.Evaluate(new Context()) as string;
         }
         card.effects = cardnode.OnActivation;
-        CardDisplay cardDisplay = prefab.GetComponent<CardDisplay>();
-        cardDisplay.card = card;
         card.prefab = prefab;
-        hand.Push(card);
+        card.Owner = 1;
+        card.effectText = "a";
+        GameObject gameObject = Instantiate(prefab);
+        gameObject.GetComponent<CardDisplay>().card = card;
+        gameObject.GetComponent<CardDisplay>().team = 1;
+        hand.Push(gameObject);
     }
 }

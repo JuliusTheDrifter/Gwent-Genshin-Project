@@ -1,26 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Linq;
-using Unity.VisualScripting;
 
-public class Field : CardList
+public class Board : CardList
 {
-    public GameObject Units;
-    public GameObject Inspires;
-
+    public GameObject Units1;
+    public GameObject Units2;
+    public GameObject Inspires1;
+    public GameObject Inspires2;
     public override List<GameObject> GetCards()
     {
         List<GameObject> cards = new List<GameObject>();
-        foreach(Transform transform in Units.transform)
+        foreach(Transform transform in Units1.transform)
         {
             foreach(Transform trans in transform)
             {
                 cards.Add(trans.gameObject);
             }
         }
-        foreach(Transform transform in Inspires.transform)
+        foreach(Transform transform in Inspires1.transform)
+        {
+            foreach(Transform trans in transform)
+            {
+                cards.Add(trans.gameObject);
+            }
+        }
+        foreach(Transform transform in Units2.transform)
+        {
+            foreach(Transform trans in transform)
+            {
+                cards.Add(trans.gameObject);
+            }
+        }
+        foreach(Transform transform in Inspires2.transform)
         {
             foreach(Transform trans in transform)
             {
@@ -63,7 +75,7 @@ public class Field : CardList
 
     void DeleteCard(GameObject card)
     {
-        foreach(Transform transform in Units.transform)
+        foreach(Transform transform in Units1.transform)
         {
             foreach(Transform trans in transform)
             {
@@ -74,7 +86,29 @@ public class Field : CardList
                 }
             }
         }
-        foreach(Transform transform in Inspires.transform)
+        foreach(Transform transform in Inspires1.transform)
+        {
+            foreach(Transform trans in transform)
+            {
+                if(trans.gameObject == card)
+                {
+                    Destroy(trans.gameObject);
+                    break;
+                }
+            }
+        }
+        foreach(Transform transform in Units2.transform)
+        {
+            foreach(Transform trans in transform)
+            {
+                if(trans.gameObject == card)
+                {
+                    Destroy(trans.gameObject);
+                    break;
+                }
+            }
+        }
+        foreach(Transform transform in Inspires2.transform)
         {
             foreach(Transform trans in transform)
             {

@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Jean
   id: 6
+  Owner: 1
   description: Grand Master of the Knights of Favonius
   effectText: 
   points: 8
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Monstad
+  range:
+  - Melee
+  - 
+  - 
   prefab: {fileID: 1807305613585902462, guid: 0d4ff4dd83bc0e5429c0bf1fc1a940c9, type: 3}
   artwork: {fileID: 21300000, guid: 65999ad8e6fb27042866a0cc1e485b1d, type: 3}
   posSprite: {fileID: 0}

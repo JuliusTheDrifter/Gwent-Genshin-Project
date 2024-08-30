@@ -14,13 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Yoimiya
   id: 24
+  Owner: 2
   description: Current owner of Naganohara Fireworks, loved by everyone on Narukami
     Island
   effectText: 
   points: 8
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Plata
+  faction: Inazuma
+  range:
+  - Ranged
+  - 
+  - 
   prefab: {fileID: 8108425398155020026, guid: 9c10ea8a47132864d9fdc41fae394af5, type: 3}
   artwork: {fileID: 21300000, guid: e8e5d8b4660dc3b41a1701c9f6670daa, type: 3}
   posSprite: {fileID: 0}
