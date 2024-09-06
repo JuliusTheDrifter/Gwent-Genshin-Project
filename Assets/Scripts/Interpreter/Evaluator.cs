@@ -12,22 +12,18 @@ public class Evaluator
     {
         Card = card;
         Context = context;
-        UnityEngine.Debug.Log("Creado");
     }
 
     public void EvaluateEffects()
     {
-        UnityEngine.Debug.Log("Empezamos");
         foreach(var oAElement in Card.effects.Elements)
         {
             EvaluateOAE(oAElement);
         }
-        UnityEngine.Debug.Log("Terminamos");
     }
     
     void EvaluateOAE(OnActivationElements oAElement)
     {
-        UnityEngine.Debug.Log("OAEfecto");
         EvaluateOAEffect(oAElement.OAEffect,oAElement.Selector);
         if(oAElement.postActions != null)
         {
@@ -36,12 +32,10 @@ public class Evaluator
                 EvaluatePostActions(postAction,oAElement.Selector.Source);
             }
         }
-        UnityEngine.Debug.Log("Fin de efecto");
     }
 
     void EvaluateOAEffect(OAEffect oAEffect,Selector selector)
     {
-        UnityEngine.Debug.Log("Efecto real");
         EffectNode effect = Context.effects[oAEffect.Name];
         foreach(var assignment in oAEffect.Assingments)
         {
@@ -57,7 +51,6 @@ public class Evaluator
         {
             EvaluateAction(effect.Action);
         }
-        UnityEngine.Debug.Log("Fin de efecto real");
     }
 
     void EvaluatePostActions(PostAction postAction,string source)

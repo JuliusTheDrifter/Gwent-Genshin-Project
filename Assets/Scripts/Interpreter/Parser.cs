@@ -296,6 +296,7 @@ public class Parser
                 }
             }
             Consume(TokenType.RIGHT_BRACE,"Expected '}'");
+            Consume(TokenType.COMMA,"Expected ','");
         }
         if(name == null) throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: No name");
         return new OAEffect(name,assignments);

@@ -369,27 +369,59 @@ public class SemanticalCheck
     {
         try
         {
-            var varType = symbolTable.LookupVariable(variable.Value);
-            variable.type = varType;
-            Console.WriteLine($"Variable '{variable.Value}' is of type {varType}");
+            if(variable is VariableComp variableComp)
+            {
+                CheckVarCompSemantics(variableComp);
+            }
+            else
+            {
+                var varType = symbolTable.LookupVariable(variable.Value);
+                variable.type = varType;
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            errors.Add(ex.Message);
         }
     }
 
-    void CheckFunctionCall(Function function) //*
+    void CheckFunctionCall(Function function)
     {
-        try
+        switch(function.FunctionName)
         {
-            var returnType = symbolTable.LookupFunction(function.FunctionName);
-            Console.WriteLine($"Function '{function.FunctionName}' returns type {returnType}");
-            // Check argument types and count
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
+            case "TriggerPlayer":
+            case "Shuffle":
+            case "Pop": if(function.Args.Arguments.Count !=0) errors.Add("The function does not allow any argument");break;
+            case "Find": if(function.Args.Arguments.Count ==0) errors.Add("Missing argument in function Find");
+            else
+            {
+                if(function.Args.Arguments[0] is Predicate predicate)break;
+                else  errors.Add("The argument in function most be of Type Predicate");
+            }break;
+            case "Push":
+            case "SendBottom":
+            case "Remove": if(function.Args.Arguments.Count ==0) errors.Add("Missing argument in function");
+            else
+            {
+                if(function.Args.Arguments[0] is Variable variable)
+                {
+                    CheckVariableUsage(variable);
+                    if(variable.type == Variable.Type.CARD)break;
+                    else errors.Add("The argument in function most be of Type Card");
+                }
+                else if(function.Args.Arguments[0] is Function function1 && function1.Type == Variable.Type.CARD)break;
+                else  errors.Add("The argument in function most be of Type Card");
+            }break;
+            case "HandOfPlayer":
+            case "DeckOfPalyer":
+            case "FieldOfPlayer":
+            case "GraveyardOfPlayer": if(function.Args.Arguments.Count ==0) errors.Add("Missing argument in function");
+            else
+            {
+                if(function.Args.Arguments[0] is Function function1 && function1.Type == Variable.Type.INT ||
+                function.Args.Arguments[0] is Expression expression && InferExpressionType(expression) == Variable.Type.INT)break;
+                else errors.Add("The argument in function most be of Type INT");
+            }break;
         }
     }
 
@@ -431,25 +463,96 @@ public class SemanticalCheck
         }
     }
 
-    void CheckVarCompSemantics(VariableComp variableComp) //*
+    void CheckVarCompSemantics(VariableComp variableComp)
     {
-        /*Variable.Type currentType = symbolTable.LookupVariable(variableComp.Value);
-    
-        foreach (var arg in variableComp.args.Arguments)
+        Variable.Type last = symbolTable.LookupVariable(variableComp.Value);
+        foreach(var arg in variableComp.args.Arguments)
         {
             if(arg is Function function)
             {
-                
                 CheckFunctionCall(function);
-                currentType = function.Type;
+                if(last == Variable.Type.LIST || last == Variable.Type.TARGETS)
+                {
+                    switch(function.FunctionName)
+                    {
+                        case "Find":
+                        case "Pop": last = Variable.Type.CARD;break;
+                        case "TriggerPlayer": last = Variable.Type.INT;break;
+                        case "Add":
+                        case "Remove":
+                        case "Shuffle":
+                        case "SendBottom":
+                        case "Push": last = Variable.Type.NULL;break;
+                    }
+                }
+                else if(last == Variable.Type.CONTEXT)
+                {
+                    switch(function.FunctionName)
+                    {
+                        case "HandOfPlayer":
+                        case "DeckOfPlayer":
+                        case "FieldOfPlayer":
+                        case "GraveyardOfPlayer":
+                        case "Board": last = Variable.Type.LIST;break;
+                    }
+                }
+                else
+                {
+                    errors.Add("There needs to be a cardList or a context before a function");
+                }
             }
-            else if(arg is Pointer pointer)
+            else if(arg is Pointer)
             {
-                
+                if(last == Variable.Type.CONTEXT)
+                {
+                    last = Variable.Type.LIST;
+                }
+                else
+                {
+                    errors.Add("There needs to be a context before a pointer");
+                }
+            }
+            else if(arg is Indexer)
+            {
+                if(last == Variable.Type.LIST)
+                {
+                    last = Variable.Type.CARD;
+                }
+                else if(last == Variable.Type.RANGE)
+                {
+                    last = Variable.Type.STRING;
+                }
+                else
+                {
+                    errors.Add("There needs to be a list of cards before indexing");
+                }
+            }
+            else
+            {
+                if(last == Variable.Type.CARD)
+                {
+                    switch(arg)
+                    {
+                        case CardType: 
+                        case Name:
+                        case Faction: last = Variable.Type.STRING;break;
+                        case PowerAsField:
+                        case Owner: last = Variable.Type.INT;break;
+                        case Range: last = Variable.Type.RANGE;break;
+                    }
+                }
+                else if(last != Variable.Type.NULL)
+                {
+                    errors.Add("There needs to be a card before accessing the property");
+                }
+                else
+                {
+                    errors.Add("Invalid property access");
+                    errors.Add(arg.ToString());
+                }
             }
         }
-
-        variableComp.type = currentType;*/
+        variableComp.type = last;
     }
 
     void CheckStringExpression(Expression expression)
@@ -494,12 +597,12 @@ public class SemanticalCheck
             }
             else
             {
-
+                errors.Add($"Invalid expression type for interger context: {expression.GetType().Name}");
             }
         }
         catch(Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            errors.Add(ex.Message);
         }
     }
 
@@ -549,12 +652,12 @@ public class SemanticalCheck
             }
             else
             {
-
+                errors.Add($"Invalid expression type for string context: {expression.GetType().Name}");
             }
         }
         catch(Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            errors.Add(ex.Message);
         }
     }
 
@@ -634,7 +737,7 @@ public class SemanticalCheck
         }
         catch(Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            errors.Add(ex.Message);
         }
     }
 
@@ -657,7 +760,7 @@ public class SemanticalCheck
         return variables;
     }
 
-    Variable.Type InferExpressionType(Expression expression)
+    Variable.Type InferExpressionType(Node expression)
     {
         if (expression is Number)
         {
@@ -673,6 +776,7 @@ public class SemanticalCheck
         }
         else if(expression is VariableComp variableComp)
         {
+            CheckVarCompSemantics(variableComp);
             return variableComp.type;
         }
         else if(expression is Variable variable)

@@ -589,7 +589,7 @@ public class Variable : Expression
     public Type type;
     public enum Type
     {
-        TARGETS, CONTEXT, CARD, FIELD, INT, STRING, BOOL, VOID, NULL
+        TARGETS, CONTEXT, CARD, FIELD, INT, STRING, BOOL, VOID, NULL, LIST, RANGE
     }
     public Variable(Token token)
     {
