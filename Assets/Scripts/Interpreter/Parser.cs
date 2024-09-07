@@ -59,28 +59,28 @@ public class Parser
                 counter[0]+=1;
                 Consume(TokenType.COLON,"Expected ':' after Type");
                 card.Type = new CardType(ParseExpression());
-                Consume(TokenType.COMMA,"Expected ',' after expression");
+                if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ',' after expression");
             }
             else if(Match(TokenType.NAME))
             {
                 counter[1]+=1;
                 Consume(TokenType.COLON,"Expected ':' after Name");
                 card.Name = new Name(ParseExpression());
-                Consume(TokenType.COMMA,"Expected ',' after expression");
+                if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ',' after expression");
             }
             else if(Match(TokenType.FACTION))
             {
                 counter[2]+=1;
                 Consume(TokenType.COLON,"Expected ':' after Faction");
                 card.Faction = new Faction(ParseExpression());
-                Consume(TokenType.COMMA,"Expected ',' after expression");
+                if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ',' after expression");
             }
             else if(Match(TokenType.POWER))
             {
                 counter[3]+=1;
                 Consume(TokenType.COLON,"Expected ':' after Power");
                 card.Power = new Power(ParseExpression());
-                Consume(TokenType.COMMA,"Expected ',' after expression");
+                if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ',' after expression");
             }
             else if(Match(TokenType.RANGE))
             {
@@ -95,7 +95,7 @@ public class Parser
                     else break;
                 }
                 Consume(TokenType.RIGHT_BRACK,"Expected ']'");
-                Consume(TokenType.COMMA,"Expected ',' after Range");
+                if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ',' after Range");
                 card.Range = new Range(expressions.ToArray());
             }
             else if(Match(TokenType.ONACTIVATION))
@@ -133,7 +133,7 @@ public class Parser
                 counter[0]+=1;
                 Consume(TokenType.COLON,"Expected ':' after Name");
                 effect.Name = new Name(ParseExpression());
-                Consume(TokenType.COMMA,"Expected ',' after expression");
+                if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ',' after expression");
             }
             else if(Match(TokenType.PARAMS))
             {
@@ -188,6 +188,7 @@ public class Parser
                 {
                     Consume(TokenType.COLON,"Expected ':'");
                     onActivationEffect = ParseOAEffect();
+                    //if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ','");
                 }
                 else
                 {
@@ -201,7 +202,7 @@ public class Parser
                     Consume(TokenType.COLON,"Expected ':'");
                     selector = ParseSelector();
                     if(selector.Source == null) throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Missing field");
-                    //Consume(TokenType.COMMA,"Expected ','");
+                    //if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ','");
                 }
                 else
                 {
@@ -212,6 +213,7 @@ public class Parser
             {
                 Consume(TokenType.COLON,"Expected ':'");
                 postActions.Add(ParsePostAction());
+                //if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ','");
             }
             else
             {
@@ -240,7 +242,7 @@ public class Parser
                     Expression expression = ParseExpression();
                     Assignment assignment = new Assignment(variable,token,expression);
                     assignments.Add(assignment);
-                    Consume(TokenType.COMMA,"Expected ','");
+                    if(!Check(TokenType.RIGHT_BRACE))Consume(TokenType.COMMA,"Expected ','");
                 }   
                 else
                 {
@@ -292,11 +294,11 @@ public class Parser
                 }
                 else
                 {
-                    throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: Invalid OAEffect field");
+                    throw new Exception($"'{Peek().Lexeme}' {Peek().Type} in {Peek().Line}: Invalid OAEffect field");
                 }
             }
             Consume(TokenType.RIGHT_BRACE,"Expected '}'");
-            Consume(TokenType.COMMA,"Expected ','");
+            //Consume(TokenType.COMMA,"Expected ','");
         }
         if(name == null) throw new Exception($"'{Peek().Lexeme}' in {Peek().Line}: No name");
         return new OAEffect(name,assignments);
@@ -646,7 +648,7 @@ public class Parser
             }
         }
         Consume(TokenType.RIGHT_BRACE,"Expected '}' after Params declaration");
-        Consume(TokenType.COMMA,"Expected ','");
+        //Consume(TokenType.COMMA,"Expected ','");
         return variables;
     }
 
