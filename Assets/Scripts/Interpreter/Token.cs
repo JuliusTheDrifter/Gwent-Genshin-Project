@@ -30,7 +30,7 @@ public enum TokenType
     //Literals
     IDENTIFIER, STRING, NUMBER, BOOL,
     //KeyWords
-    AND, FALSE, TRUE, OR, IN,
+    AND, OR, IN,
     WHILE, FOR, CARD, EFFECT, OWNER,
     NAME, PARAMS, ACTION, TYPE,
     FACTION, POWER, RANGE, ONACTIVATION,

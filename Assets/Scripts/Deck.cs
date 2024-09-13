@@ -18,9 +18,6 @@ public class Deck : CardList //This scrip is where the deck is formed
         {
             Cards.Add(card);
         }
-    }
-    void Start()
-    {
         Shuffle();
     }
 
@@ -45,7 +42,6 @@ public class Deck : CardList //This scrip is where the deck is formed
 
     public override GameObject Pop()
     {
-        Debug.Log("wwwww");
         GameObject card = Cards[Cards.Count-1];
         Cards.RemoveAt(Cards.Count-1);
         int aux = GetNumber();
@@ -62,13 +58,12 @@ public class Deck : CardList //This scrip is where the deck is formed
 
     public override void Shuffle()
     {
-        List<GameObject> cards = GetCards();
-        for(int i=0;i<cards.Count;i++)
+        for(int i=0;i<Cards.Count;i++)
         {
-            int randomIndex = UnityEngine.Random.Range(0,cards.Count);
-            GameObject temp = cards[i];
-            cards[i] = cards[randomIndex];
-            cards[randomIndex] = temp;
+            int randomIndex = UnityEngine.Random.Range(0,Cards.Count);
+            GameObject temp = Cards[i];
+            Cards[i] = Cards[randomIndex];
+            Cards[randomIndex] = temp;
         }
     }
 

@@ -483,6 +483,12 @@ public class Parser
                         Range range = new Range(Previous().Literal as string);
                         varType = Variable.Type.STRING;
                         variableComp.args.Arguments.Add(range);
+                        if(Match(TokenType.LEFT_BRACK))
+                        {
+                            Indexer indexer = new Indexer(Convert.ToInt32(Advance().Literal));
+                            Consume(TokenType.RIGHT_BRACK,"Expected ']'");
+                            variableComp.args.Arguments.Add(indexer);
+                        }
                     }
                     else if(Match(TokenType.POINTER))
                     {
@@ -618,7 +624,7 @@ public class Parser
             {
                 args.Arguments.Add(ParseExpression());
             }
-            if(!Check(TokenType.RIGHT_PAREN)) Consume(TokenType.COMMA,"Expected ','");
+            if(!Check(TokenType.RIGHT_PAREN) && !Check(TokenType.EQUAL_GREATER)) Consume(TokenType.COMMA,"Expected ','");
         }
         Consume(TokenType.RIGHT_PAREN,"Expected ')'");
         Function function = new Function(name,args);
@@ -751,8 +757,8 @@ public class Parser
 
     Expression Primary()
     {
-        if(Match(TokenType.FALSE)) return new Bool(false);
-        if(Match(TokenType.TRUE)) return new Bool(true);
+        if(Match(TokenType.BOOL)&& Peek().Lexeme == "false") return new Bool(false);
+        if(Match(TokenType.BOOL)&& Peek().Lexeme == "true") return new Bool(true);
         if(Match(TokenType.NUMBER)) return new Number(Convert.ToInt32(Previous().Literal));
         if(Match(TokenType.STRING))
         {

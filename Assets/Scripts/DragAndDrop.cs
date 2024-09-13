@@ -52,7 +52,7 @@ public class DragAndDrop : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDrag
     {
         turns = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         bool rotateMouse = turns.player1Turn;
-        float f = 1.3f;
+        float f = 3f;
         //This checks if the card can move
         if(!canBePlaced)
         {

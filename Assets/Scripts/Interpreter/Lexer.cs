@@ -21,8 +21,8 @@ public class Lexer
         keywords.Add("while", new Token(TokenType.WHILE,"while","while",0,0));
         keywords.Add("for", new Token(TokenType.FOR,"for","for",0,0));
         keywords.Add("in", new Token(TokenType.IN,"in","in",0,0));
-        keywords.Add("true", new Token(TokenType.TRUE,"true","true",0,0));
-        keywords.Add("false", new Token(TokenType.FALSE,"false","false",0,0));
+        keywords.Add("true", new Token(TokenType.BOOL,"true","true",0,0));
+        keywords.Add("false", new Token(TokenType.BOOL,"false","false",0,0));
         
         keywords.Add("card", new Token(TokenType.CARD, "card", "card", 0, 0));
         keywords.Add("effect", new Token(TokenType.EFFECT, "effect", "effect", 0, 0));

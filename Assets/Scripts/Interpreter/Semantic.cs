@@ -95,7 +95,7 @@ public class SemanticalCheck
         {
             CheckStringExpression(expression);
             var range = Convert.ToString(expression.Evaluate(Context));
-            if(range != "Melee" && range != "Ranged" && range!= "Siege")
+            if(range != "Melee" && range != "Ranged" && range!= "Siege" && range != "Weather" && range != "Increase")
             {
                 errors.Add($"The range : '{expression}' is not a valid range.e");
             }

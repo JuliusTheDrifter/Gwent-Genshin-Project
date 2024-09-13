@@ -477,11 +477,21 @@ public class BinaryExpression : Expression
                 case TokenType.ATSIGN : return leftValue.ToString() + rightValue.ToString();
                 case TokenType.ATSIGN_ATSIGN : return leftValue.ToString() + " " + rightValue.ToString();
                 case TokenType.EQUAL_EQUAL: return leftValue.Equals(rightValue);
+                case TokenType.BANG_EQUAL: return !leftValue.Equals(rightValue);
                 default:
                 throw new InvalidOperationException("Unsupported operator: " + Operators.Lexeme);
             }
         }
-        else throw new InvalidOperationException("Unsupported operator: " + Operators.Lexeme);
+        else
+        {
+            switch (Operators.Type)
+            {
+                case TokenType.EQUAL_EQUAL: return leftValue.Equals(rightValue);
+                case TokenType.BANG_EQUAL: return !leftValue.Equals(rightValue);
+                default:
+                throw new InvalidOperationException("Unsupported operator: " + Operators.Lexeme);
+            }
+        }
     }
     public override void Print(int indent = 0)
     {
@@ -715,9 +725,11 @@ public class VariableComp : Variable,Stmt
     public void AssignValue(Context context, object value)
     {
         object last = null;
-        if(Value == "target")
+        if(Value != null)
         {
+            Debug.Log(Value);
             last = context.variables[Value];
+            Debug.Log(last);
         }
         foreach(var arg in args.Arguments)
         {
@@ -1002,7 +1014,7 @@ public class Function : Stmt
             else return context.battleBehaviour.GraveYardOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
             case "FieldOfPlayer": if(Args.Arguments[0] is Function) return context.battleBehaviour.FieldOfPlayer(Convert.ToInt32((Args.Arguments[0] as Function).GetValue(context,value)));
             else return context.battleBehaviour.FieldOfPlayer(Convert.ToInt32((Args.Arguments[0] as Expression).Evaluate(context)));
-            case "Find": (value as CardList).Find(Args.Arguments[0] as Predicate);return null;
+            case "Find": return (value as CardList).Find(Args.Arguments[0] as Predicate);
             case "Push": (value as CardList).Push((Args.Arguments[0] as Expression).Evaluate(context) as GameObject);return null;
             case "SendBottom": (value as CardList).SendBottom((Args.Arguments[0] as Expression).Evaluate(context) as GameObject);return null;
             case "Pop": return (value as CardList).Pop();

@@ -39,6 +39,7 @@ public class Compiler : MonoBehaviour
         Context context = new Context();
         context.battleBehaviour = GameObject.Find("BattleSystem").GetComponent<BattleBehaviour>();
         SemanticalCheck semanticalCheck = new SemanticalCheck(node,context,errors);
+        if(errors.Count ==1) errors.RemoveAt(0);
         if(errors.Count != 0)
         {
             string joinedText = string.Join("\n", errors);

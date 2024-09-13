@@ -28,39 +28,39 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     {
         if(effect == "OwnFileIncrease")
         {
-            //OwnFileIncrease(card);
+            OwnFileIncrease(card);
         }
         if(effect == "Weather")
         {
-            //Weather(card);
+            Weather(card);
         }
         if(effect == "Cleanse")
         {
-           //Cleanse(card);
+           Cleanse(card);
         }
         if(effect == "Inspire")
         {
-            //Inspire(card);
+            Inspire(card);
         }
         if(effect == "Average")
         {
-            //Average(card);
+            Average(card);
         }
         if(effect == "Multiply")
         {
-            //Multiply(card);
+            Multiply(card);
         }
         if(effect == "Highest")
         {
-            //AnnihilateHighest();
+            AnnihilateHighest();
         }
         if(effect == "Lowest")
         {
-            //AnnihilateLowest(card);
+            AnnihilateLowest(card);
         }
         if(effect == "EraseFile")
         {
-            //EraseFile(card);
+            EraseFile(card);
         }
         if(effect == "Draw") //Draw a card
         {
@@ -77,7 +77,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
         }
         if(effect == "CallWeather")
         {
-            //CallWeather(card);
+            CallWeather(card);
         }
         if(effect == "Decoy") //This allows the decoy effect to happen
         {
@@ -102,9 +102,9 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     //All of the points effects change the texts colors when applied
 
     //Increases the points of the cards in the same zone of the card that activated the effect
-    /*void OwnFileIncrease(GameObject cardplayed)
+    void OwnFileIncrease(GameObject cardplayed)
     {
-        string cardPosition = cardplayed.GetComponent<CardDisplay>().position;
+        string cardPosition = cardplayed.GetComponent<CardDisplay>().range[0];
         zone1 = GameObject.Find(cardPosition);
         //Gets the CardDisplay script from all the children of the zone
         CardDisplay[] cards = zone1.GetComponentsInChildren<CardDisplay>();
@@ -284,7 +284,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     //Increases the points of the cards in a specific zone
     void Inspire(GameObject cardplayed)
     {
-        string zoneInspired = cardplayed.GetComponent<CardDisplay>().position;
+        string zoneInspired = cardplayed.GetComponent<CardDisplay>().range[0];
         if(zoneInspired == "InspireM1") zone1 = GameObject.Find("Melee1");
         else if(zoneInspired == "InspireR1") zone1 = GameObject.Find("Ranged1");
         else if(zoneInspired == "InspireS1") zone1 = GameObject.Find("Siege1");
@@ -376,7 +376,7 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
     //The points of the card with this effect gets multiplied by the amount of others cards with the same id in the field
     void Multiply(GameObject cardplayed)
     {
-        string zone = cardplayed.GetComponent<CardDisplay>().position;
+        string zone = cardplayed.GetComponent<CardDisplay>().range[0];
         int id = cardplayed.GetComponent<CardDisplay>().card.id;
         int counter = 0;
         zone1 = GameObject.Find(zone);
@@ -691,5 +691,5 @@ public class Effects : MonoBehaviour //This script has the effects of the cards
                 }
             }
         }
-    }*/
+    }
 }

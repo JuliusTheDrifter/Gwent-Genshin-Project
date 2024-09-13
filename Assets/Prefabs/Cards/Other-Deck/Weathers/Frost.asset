@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Frost
   id: 25
+  Owner: 0
   description: 'Effect: Decreases the points of both,ally or enemy, Siege areas cards'
-  effectText: 
+  effectText: Weather
   points: 0
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Clima
+  faction: 
+  range:
+  - Weather
+  - 
+  - 
   prefab: {fileID: 5262313147761494447, guid: 0878b796993e0824f8a5f9c6a3d14a2f, type: 3}
   artwork: {fileID: 21300000, guid: 5ac9005ba9a0dbb4db055a8f6cdcb6dd, type: 3}
   posSprite: {fileID: 0}

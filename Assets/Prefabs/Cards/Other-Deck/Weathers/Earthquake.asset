@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Earthquake
   id: 27
+  Owner: 0
   description: 'Effect: Decreases the points of both,ally or enemy, Melee areas cards'
-  effectText: 
+  effectText: Weather
   points: 0
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Clima
+  faction: 
+  range:
+  - Weather
+  - 
+  - 
   prefab: {fileID: 4284435316919879812, guid: ccb0c6687cb1d3c43b731553703ca18e, type: 3}
   artwork: {fileID: 21300000, guid: c31b74d9c4cf54b4da2aeef89b3cd2db, type: 3}
   posSprite: {fileID: 0}

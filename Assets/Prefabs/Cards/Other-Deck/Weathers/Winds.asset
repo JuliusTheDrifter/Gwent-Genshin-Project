@@ -14,13 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Winds
   id: 26
+  Owner: 0
   description: 'Effect: Decreases the points of both,ally or enemy, Ranged areas
     cards'
-  effectText: 
+  effectText: Weather
   points: 0
   golden: 0
-  type: 
-  effect: {fileID: 0}
+  type: Clima
+  faction: 
+  range:
+  - Weather
+  - 
+  - 
   prefab: {fileID: 4283894047918921683, guid: 6f18a714a7da1254286c1f0f37d0b858, type: 3}
   artwork: {fileID: 21300000, guid: 1c2c28e8a38bcee44a602cb191ca749d, type: 3}
   posSprite: {fileID: 0}

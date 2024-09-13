@@ -16,7 +16,7 @@ MonoBehaviour:
   id: 3
   Owner: 1
   description: Effect :Eliminates the file with the less amount of enemies
-  effectText: 
+  effectText: OwnFileIncrease
   points: 5
   golden: 0
   type: Plata
