@@ -9,7 +9,7 @@ Lexer:
 
 SyntaxTree:
     An AST where the Node interface is the backbone of this architecture. It provides a Print method for any class that implements it, allowing objects to print their internal data in a structured way. This feature is helpful for debugging or inspecting objects. 
-    
+
     CardNode represents an individual card in the game.
     Properties:
         
@@ -37,7 +37,7 @@ SyntaxTree:
         
         Action: Encapsulates a game action, such as applying an effect to a target or context.
     
-    Expression: The base class for evaluating game logic. Various types of expressions exist. It has an Evaluate method that return the evaluation of the expression as an object.
+    ### Expression: The base class for evaluating game logic. Various types of expressions exist. It has an Evaluate method that return the evaluation of the expression as an object.
     Inheritance:
         
         Number: Handles integer values.
