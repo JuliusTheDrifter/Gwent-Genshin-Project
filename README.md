@@ -8,7 +8,7 @@ Lexer:
     The Lexer class is part of a lexical analyzer (or lexer) used in the process of interpreting or compiling code. Its primary job is to scan a source code string and break it down into tokens that can be used by a parser. When a letter is found it keeps loking for other words until another symbol is found. Then, if the letter is a keyword it is saved with preset properties, else, it is saved as an identifier.
 
 ### SyntaxTree:
-    An AST where the Node interface is the backbone of this architecture. It provides a Print method for any class that implements it, allowing objects to print their internal data in a structured way. This feature is helpful for debugging or inspecting objects. 
+An AST where the Node interface is the backbone of this architecture. It provides a Print method for any class that implements it, allowing objects to print their internal data in a structured way. This feature is helpful for debugging or inspecting objects. 
 
     CardNode represents an individual card in the game.
     Properties:
