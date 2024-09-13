@@ -1,11 +1,11 @@
 # Gwent-Genshin-Project
     Gwent-Compilation Project:
 
-Token:
-    The Token class and TokenType enum provide a structured way to represent and categorize various elements of source code, which is essential for building interpreters or compilers that process and understand programming languages. The Token class has a lexeme property where the word is saved as a string, a literal property where the value of the word/symbol is saved as an object, an int line and an int column to know where the word is when an error happen.
+### Token:
+The Token class and TokenType enum provide a structured way to represent and categorize various elements of source code, which is essential for building interpreters or compilers that process and understand programming languages. The Token class has a lexeme property where the word is saved as a string, a literal property where the value of the word/symbol is saved as an object, an int line and an int column to know where the word is when an error happen.
 
-Lexer:
-    The Lexer class is part of a lexical analyzer (or lexer) used in the process of interpreting or compiling code. Its primary job is to scan a source code string and break it down into tokens that can be used by a parser. When a letter is found it keeps loking for other words until another symbol is found. Then, if the letter is a keyword it is saved with preset properties, else, it is saved as an identifier.
+### Lexer:
+The Lexer class is part of a lexical analyzer (or lexer) used in the process of interpreting or compiling code. Its primary job is to scan a source code string and break it down into tokens that can be used by a parser. When a letter is found it keeps loking for other words until another symbol is found. Then, if the letter is a keyword it is saved with preset properties, else, it is saved as an identifier.
 
 ### SyntaxTree:
 An AST where the Node interface is the backbone of this architecture. It provides a Print method for any class that implements it, allowing objects to print their internal data in a structured way. This feature is helpful for debugging or inspecting objects. 
@@ -61,7 +61,7 @@ An AST where the Node interface is the backbone of this architecture. It provide
         
         Function Class: Represents built-in game functions that can perform actions like modifying a player's hand, deck, or graveyard. Functions take arguments and return values.
 
-Parser:
+### Parser:
 Key Components:
 
     1. Tokens and Token Matching: The parser operates on a list of Token objects (Tokens), which represent the individual pieces of input (like keywords, symbols, identifiers, etc).The Match, Check, Peek, Advance, and LookAhead methods are utility functions to navigate through the token list and ensure the tokens match the expected structure.
@@ -99,17 +99,17 @@ Key Components:
         Consume: This method ensures that the next token is of the expected type, and throws an exception if it's not. It is used frequently to validate the structure of the parsed program.
         The parser throws detailed exceptions when it encounters unexpected tokens or invalid structures, making debugging easier.
 
-Symboltable: 
-    SymbolTable class is designed to handle the storage and management of variables and functions in a programming language or scripting environment. It uses a stack-based approach to manage different "scopes" (regions in the code where certain variables are valid), such as inside functions or loops. Here's an explanation of each part of the code.
+### Symboltable: 
+SymbolTable class is designed to handle the storage and management of variables and functions in a programming language or scripting environment. It uses a stack-based approach to manage different "scopes" (regions in the code where certain variables are valid), such as inside functions or loops. Here's an explanation of each part of the code.
 
     Scopes (scopes Stack):
         The class manages a stack of dictionaries where each dictionary represents a scope. A scope holds variables with their names as keys and their types as values (Variable.Type). The stack allows the program to push and pop scopes, which is common in programming languages where scopes are nested (like in functions or blocks).
 
-Context: 
-    The Context class acts as a central data store for a card game framework. It holds information about cards, effects, variables, and the game state. This class would be used during gameplay or game logic evaluation, providing access to game components and ensuring the game can manage different cards and effects efficiently.
+### Context: 
+The Context class acts as a central data store for a card game framework. It holds information about cards, effects, variables, and the game state. This class would be used during gameplay or game logic evaluation, providing access to game components and ensuring the game can manage different cards and effects efficiently.
 
-SemanticalCheck: 
-    The SemanticalCheck class performs semantic validation of the Abstract Syntax Tree (AST) nodes within a game script or programming language. It ensures that the nodes are semantically correct, i.e., the types, assignments, function calls, and variable usage conform to the language's rules. This class works in tandem with a Context and a SymbolTable.
+### SemanticalCheck: 
+The SemanticalCheck class performs semantic validation of the Abstract Syntax Tree (AST) nodes within a game script or programming language. It ensures that the nodes are semantically correct, i.e., the types, assignments, function calls, and variable usage conform to the language's rules. This class works in tandem with a Context and a SymbolTable.
     Key Components
     
     Context:
@@ -136,15 +136,15 @@ SemanticalCheck:
     
     CheckVarCompSemantics: Checks each part of the compound variable and ensures it is being used correctly based on the type of the base variable.
 
-Compile:
-    The Compiler script processes text input to generate and display game cards in Unity. It involves lexical scanning, parsing, semantic checking, and then uses the parsed data to instantiate and display card game objects.
+### Compile:
+The Compiler script processes text input to generate and display game cards in Unity. It involves lexical scanning, parsing, semantic checking, and then uses the parsed data to instantiate and display card game objects.
     
     Error Handling: Errors encountered during the lexical analysis, parsing, or semantic checking are displayed to the user through UI panels.
     
     Card Management: The SpawnCard method creates card objects and displays them using a prefab and a hand object.
 
-Evaluate:
-    The Evaluator class is responsible for evaluating the effects and actions associated with a card when the card is placed, updating the game state as needed, and determining which cards are affected based on selectors.
+### Evaluate:
+The Evaluator class is responsible for evaluating the effects and actions associated with a card when the card is placed, updating the game state as needed, and determining which cards are affected based on selectors.
     
     Card Effects: Evaluates both primary effects and any post-actions, applying them to selected targets.
     
